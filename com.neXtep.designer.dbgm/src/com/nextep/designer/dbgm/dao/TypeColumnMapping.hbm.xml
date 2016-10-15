@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.dbgm.impl.TypeColumn"
+		table="DBGM_TYPE_COLUMNS"
+		lazy="false">
+			<id name="id" column="TYCL_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="name" column="COLUMN_NAME"/>
+			<property name="description" column="DESCRIPTION"/>
+			<property name="position" column="COLUMN_POSITION"/>
+		    <component name="datatype" class="com.nextep.datadesigner.dbgm.impl.Datatype">
+		          <property name="name" column="DATATYPE"/>
+		          <property name="length" column="DATATYPE_LENGTH"/>
+		          <property name="precision" column="DATATYPE_PRECISION"/>
+		    </component>
+			<many-to-one name="parent" class="com.nextep.datadesigner.dbgm.impl.UserType" column="UTYP_VERSION_ID" />
+			<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="COLUMN_REFID" cascade="persist,merge,save-update"/>
+	</class>
+</hibernate-mapping>

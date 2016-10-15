@@ -1,0 +1,5 @@
+
+a#nextep-tutorial-link img { background-image : url(graphics/tutorial_tutorial.png); }
+a#nextep-tutorial-link:hover img { background-image : url(graphics/tutorial_tutorial_hov.png); }
+a#nextep-demo-link img { background-image : url(graphics/tutorial_demo.png); }
+a#nextep-demo-link:hover img { background-image : url(graphics/tutorial_demo_hov.png); }

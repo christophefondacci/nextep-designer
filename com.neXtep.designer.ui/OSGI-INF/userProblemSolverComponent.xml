@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.ui.userProblemSolver">
+   <implementation class="com.nextep.designer.ui.model.impl.UserProblemSolver"/>
+   <service>
+      <provide interface="com.nextep.designer.core.model.IProblemSolver"/>
+   </service>
+</scr:component>

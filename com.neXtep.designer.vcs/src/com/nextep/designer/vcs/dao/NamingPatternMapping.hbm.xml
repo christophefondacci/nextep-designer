@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.vcs.impl.NamingPattern" table="REP_NAME_PATTERNS" lazy="false">
+		<!--cache usage="read-write"/> -->
+		<id name="id" column="NPAT_ID">
+			<generator class="hilo"/>
+		</id>
+		<many-to-one name="relatedContainer" class="com.nextep.datadesigner.vcs.impl.VersionContainer" column="MODULE_ID" cascade="all"/>
+		<property name="hibernateType" column="TYPE_ID"/>
+		<property name="pattern" column="PATTERN_STRING"/>
+	</class>
+</hibernate-mapping>

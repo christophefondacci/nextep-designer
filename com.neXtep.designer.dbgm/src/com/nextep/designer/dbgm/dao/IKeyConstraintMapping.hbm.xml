@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.datadesigner.dbgm.model.IKeyConstraint"
+		table="DBGM_KEYS"
+		lazy="false"
+		>
+			<id name="id" column="KEY_ID">
+				<generator class="hilo"/>
+			</id>
+
+
+			<property name="name" column="NAME"/>
+			<property name="description" column="DESCRIPTION"/>
+			<list name="constrainedColumnsRef" table="DBGM_KEY_COLUMNS" cascade="all" outer-join="false" lazy="false">
+				<key column="KEY_ID"/>
+				<list-index><column name="KEY_POSITION"/></list-index>
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="COL_REFID" unique="true"/>
+			</list>
+			<many-to-one name="constrainedTable" class="com.nextep.datadesigner.dbgm.impl.VersionedTable" not-null="true" column="TAB_VERSION_ID"/>
+			<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" column="KEY_REFID" cascade="save-update"/>
+	</class>
+</hibernate-mapping>

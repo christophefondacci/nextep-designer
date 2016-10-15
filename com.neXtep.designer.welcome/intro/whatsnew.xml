@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="nextep-whatsnew-extension" name="NeXtep WhatsNew Extension"
+		style="css/whatsnew.css" path="whatsnew/@">
+		<group id="nextep-whatsnew-extension-group" style-id="content-group">
+			<link id="nextep-whatsnew-release-page-link" style-id="content-link"
+				label="NeXtep Designer 1.0.7 is available!"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-release-page">
+			<text>
+				Discover the new features of the latest major release of neXtep
+				Designer!&lt;br/&gt;
+				It contains a complete redesign of database entities editors, taking
+				advantage of the Eclipse Forms UI framework, and overall quality
+				improvement.
+				&lt;br/&gt;&lt;b&gt;Click for more information on this new release.&lt;/b&gt;
+			</text>
+			</link>
+			<link id="nextep-whatsnew-command-page-link" style-id="content-link"
+				label="Check out the brand new NeXtep Designer headless mode!"
+				url="http://www.nextep-softwares.com/wiki/index.php/Command-line_NeXtep">
+				<text>
+					You can now run NeXtep Designer from a command line.
+					Click to discover how you can take control of the neXtep features from scripts,
+					and automate the build and deployment of any database component.
+				</text>
+			</link>
+			<link id="nextep-whatsnew-data-page-link" style-id="content-link"
+				label="Reference data lifecycle management"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-data-page">
+				<text>Discover how you can take the control over the lifecycle of your reference data
+				</text>
+			</link>
+			<link id="nextep-whatsnew-sqlclient-page-link" style-id="content-link"
+				label="New SQL client"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-sqlclient-page">
+				<text>Discover the features of the new neXtep SQL client 
+				</text>
+			</link>
+			<!-- link id="nextep-whatsnew-i18n-page-link" style-id="content-link"
+				label="NeXtep Designer internationalization"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-i18n-page">
+				<text>Find out about NeXtep Designer internationalization roadmap
+				</text>
+			</link -->
+		</group>
+	</extensionContent>
+	<page id="nextep-whatsnew-release-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer 1.0.7 is available!"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer 1.0.7 is available!
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="release-features" style-id="page-description"
+				label="&#8226;&#160;Release 1.0.7 new features">
+				<text id="entities-editors-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Database entities editors redesign:
+					&lt;/b&gt;
+					To improve their usability and readability, database entities editors
+					have been completely refactored to take advantage of the Eclipse Forms
+					UI framework. We wanted to provide easy and fluid navigation
+					throughout the editors. We think these new editors will make database
+					developments with neXtep designer IDE a lot easier.&lt;br/&gt;
+					Don't hesitate to give us feedback about those new editors through our
+					support forum!&lt;br/&gt;&lt;br/&gt;
+					Below are some screenshots of the new editors:
+				</text>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_Overview_Thumb.png" id="overview-img"
+					     alt="Overview tab of the table editor"></img>
+					<img src="img/Table_Editor_Columns_Thumb.png" id="columns-img"
+					     alt="Columns tab of the table editor"></img>
+				</group>
+				<group id="separator" style-id="page-description">
+					<text />
+				</group>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_UniqueKeys_Thumb.png" id="uniquekeys-img"
+					     alt="Unique Keys tab of the table editor"></img>
+					<img src="img/Table_Editor_ForeignKeys_Thumb.png" id="foreignkeys-img"
+					     alt="Foreign Keys tab of the table editor"></img>
+				</group>
+				<group id="separator" style-id="page-description">
+					<text />
+				</group>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_Indexes_Thumb.png" id="indexes-img"
+					     alt="Indexes tab of the table editor"></img>
+					<img src="img/Table_Editor_Physprops_Thumb.png" id="physprops-img"
+					     alt="Physical properties tab of the table editor"></img>
+				</group>
+				<text id="other-features-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Improved Oracle support:
+					&lt;/b&gt; Composite function-based indexes are now supported, and huge column's
+					default values are now properly handled.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;And of course a lot of bug fixes!&lt;/b&gt;
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<page id="nextep-whatsnew-data-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header"
+				label="NeXtep Designer&lt;br/&gt;manages your reference data !"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;manages your reference data !
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Why this update?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Reference data is part of your database application :
+					without them your application will probably not run at all. As such, static data
+					should be completly integrated with your application lifecycle. So far, neXtep 
+					had very light support for reference data and that required to have a separate
+					mechanism which could handle the data.
+				</text>
+				<hr />
+			</group>
+			<group id="how-that-works" style-id="page-description"
+				label="&#8226;&#160;How that works ?">
+				<text id="how-that-works-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;We extended the already existing concept of data sets
+					which you can define on any neXtep-managed table.
+					With 1.0.5 you can synchronize your data sets with any database : this allows
+					you to compare the data you have in the repository with database contents and
+					offers you to generate data re-alignment scripts or to import external data
+					back into the repository in order to put them under version control. The approach 
+					is very similar to a structural synchronization : same perspective, same controls, 
+					same actions. Only the internal mechanisms is new.
+					&lt;br/&gt;&lt;br/&gt;
+					The dataset editor has been completly redesigned and is now built on top of a
+					SQL client. You can therefore query and update your data sets using regular SQL!
+					Since we improved our SQL editors, you also have the option to edit data set
+					contents directly inside the table.
+				</text>
+				<hr />
+			</group>
+			<group id="limitations" style-id="page-description"
+				label="&#8226;&#160;Known limitations">
+				<text id="limitations-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;
+					We started to build a system which will be able to handle very large data sets 
+					without memory usage. With this first release, there is still some limitations
+					when playing with large datasets (500k+ lines). For example, we did not workaround
+					the MySQL JDBC driver limitation which loads all selected lines in memory (no streaming),
+					we have some memory limitations on the SQL data generation which uses
+					regular SQL scripts automatically displayed in the environment, which therefore need
+					to be loaded in memory.
+					&lt;br/&gt;&lt;br/&gt;Not all datatypes are supported yet : tables containing CLOB 
+					and BLOB cannot be handled properly, user-defined datatypes are not supported 
+					(Oracle, DB2). 
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<page id="nextep-whatsnew-sqlclient-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer&lt;br/&gt;has a brand new SQL client"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;has a brand new SQL client
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Why this update?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Until now, the SQL client bundled with neXtep was very
+					basic, unoptimized, and not very convenient to use. With the new support of
+					reference data lifecycle, the ability of neXtep to easily query and manipulate 
+					the data becomes very strategic. We decided to rewrite a full-featured SQL client
+					which we hope will become the core of data manipulation with neXtep. 
+				</text>
+				<hr />
+			</group>
+			<group id="features" style-id="page-description"
+				label="&#8226;&#160;The SQL-client features">
+				<text id="features-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Transaction support :&lt;/b&gt; The new SQL 
+					client now provides support for transactions for secure commit / rollback of 
+					your operations.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Externalized SQL results :&lt;/b&gt; The results
+					of your SQL queries are placed in standalone views which you can place wherever
+					you want. By default, one view is associated with one connection but you can
+					pin any view to preserve its contents.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;On the fly content edition :&lt;/b&gt; When you have
+					queried a table, you can now toggle the edit mode which allows you to modify
+					the data directly from the SQL result table, without writing any line of SQL. 
+					You can also add or remove any row and any erroneous data will be displayed. This
+					option is only active when you select all primary key columns of a single table
+					or when you do a select *.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Exports :&lt;/b&gt; You can export the results
+					from any SQL query into a CSV file, customizable through preferences. You can
+					also quickly copy / paste CSV-formatted text by selecting the rows you want and
+					right-clic Copy.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Performance improvements :&lt;/b&gt; Our main 
+					concern was performance. We think it is pretty good since sort features are 
+					really fast, lines are displayed lazily and very quickly. Please send us your
+					feedbacks through our forum.
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<!-- page id="nextep-whatsnew-i18n-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header"
+				label="NeXtep Designer&lt;br/&gt;is now opened to internationalization!"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;is now opened to internationalization!
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Why this update?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;We progressively introduced internationalized
+					messages and labels in the platform. This led to a mix of
+					translated and untranslated content which made the user navigation
+					unclear. Our efforts now concentrate in the global
+					internationalization of the platform.&lt;br/&gt;&lt;br/&gt;
+					Our wish
+					is to make the product close to the user. This could only by done
+					with a product which speaks the user's language.
+				</text>
+				<hr />
+			</group>
+			<group id="what-supported-languages" style-id="page-description"
+				label="&#8226;&#160;What languages are available?">
+				<text id="what-supported-languages-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;So far, NeXtep designer is available in
+					english and in french. 
+				</text>
+				<hr />
+			</group>
+			<group id="can-i-contribute" style-id="page-description"
+				label="&#8226;&#160;Can I contribute?">
+				<text id="can-i-contribute-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;If you want to help us translate the product
+					into another language, we would be pleased if you contact us. A czech translation
+					is on the way as well thanks to the kind contribution of Ladislav. 
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page -->
+</introContent>

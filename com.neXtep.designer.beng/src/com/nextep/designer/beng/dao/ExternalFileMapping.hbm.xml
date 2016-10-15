@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.designer.beng.model.impl.ExternalFile"
+		table="BENG_MODULE_EXTFILES"
+		lazy="false"
+		>
+			<id name="id" column="EXTFILE_ID">
+				<generator class="hilo"/>
+			</id>
+		<many-to-one name="delivery" class="com.nextep.designer.beng.model.impl.DeliveryModule" column="DELIVERY_ID"/>
+		<property name="name" column="FILENAME"/>
+		<property name="directory" column="DIRECTORY"/>
+		<property name="position" column="POSITION"/>
+	</class>
+</hibernate-mapping>

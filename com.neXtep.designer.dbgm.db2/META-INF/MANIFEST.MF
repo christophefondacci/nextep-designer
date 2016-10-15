@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DB2 specific model
+Eclipse-RegisterBuddy: com.neXtep.designer.hibernate,com.neXtep.designer.core
+Bundle-SymbolicName: com.neXtep.designer.dbgm.db2;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.dbgm.db2.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.4",
+ com.neXtep.designer.dbgm,
+ com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.logging,
+ com.neXtep.designer.sqlgen;bundle-version="1.0.4",
+ com.neXtep.designer.vcs
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.nextep.designer.dbgm.db2.helpers,
+ com.nextep.designer.dbgm.db2.impl.merge

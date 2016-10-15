@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20081124;17295500">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Creating / editing table foreign keys</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">You
+can create a table's foreign key by 4 ways :</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">From
+	any table by right-clicking and selecting the </SPAN><I>Create
+	foreign key</I> <SPAN STYLE="font-style: normal">menu item</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">From
+	a table by selecting it in the version navigator and click the
+	</SPAN><I>Create foreign key </I><SPAN STYLE="font-style: normal">icon
+	from the toolbar</SPAN></P>
+</UL>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">From
+	the </SPAN><I>Foreign</I><I> Keys</I> <SPAN STYLE="font-style: normal">typed
+	node of a table by right-clicking it and selecting the </SPAN><I>Create
+	foreign key </I><SPAN STYLE="font-style: normal">menu item</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="text-decoration: none"><SPAN STYLE="font-style: normal">From
+	a diagram by selecting the </SPAN></SPAN><SPAN STYLE="text-decoration: none"><I>Create
+	foreign key</I></SPAN><SPAN STYLE="text-decoration: none"> </SPAN><SPAN STYLE="text-decoration: none"><SPAN STYLE="font-style: normal">creation
+	tool from the diagram palette and then clicking the constrained
+	table and then clicking the remote table of this diagram</SPAN></SPAN></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">The
+foreign keys editor looks like this :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ForeignKeyEditor.png" NAME="images1" ALIGN=LEFT WIDTH=653 HEIGHT=520 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">You can edit the key
+name from the name text field. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">You can define the
+joined key (foreign key's remote constraint) by selecting the <I>remote
+table</I> and the <I>join to</I> unique key<SPAN STYLE="font-style: normal">.
+Note that when creating the foreign key from a diagram, those
+information will be automatically filled in based on the selection
+you made with the foreign key creation tool.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">The
+</SPAN><I>Enforced by index </I><SPAN STYLE="font-style: normal">is a
+non-editable field and allows you to watch whether an existing index
+/ constraint currently enforces your foreign key. When no index can
+be found to enforce your foreign key, a dialog will be displayed
+after the foreign key creation wizard finishes and will prompt you to
+create one.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">You
+must define the columns matching between your remote table and the
+current table from the columns listing. </SPAN><I>NeXtep designer
+</I><SPAN STYLE="font-style: normal">will suppose the columns will
+have the same name in the remote and current table. When the remote
+column name cannot be found in the current table, the </SPAN><I>New
+</I><SPAN STYLE="font-style: normal">column will be checked. This
+means that, if you </SPAN><I>apply</I><SPAN STYLE="font-style: normal">,
+a column identical to the remote table column will be created in your
+table. Please note that this action is not reversible and that, once
+created, you will have to manually delete the column if you cancel
+the foreign key creation.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">You
+are able to select other existing table columns through the combo box
+which appears when you click in the <I>Table columns</I> column of a
+specific foreign key column.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

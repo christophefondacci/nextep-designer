@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.core.SelectionInvoker">
+      <selectionInvoker
+            class="com.nextep.designer.sqlgen.oracle.debug.ctrl.DebugMethod"
+            name="debug">
+      </selectionInvoker>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="com.neXtep.designer.sqlgen.oracle.debug.ui.debug"
+            name="Debug">
+      </command>
+   </extension>
+
+</plugin>

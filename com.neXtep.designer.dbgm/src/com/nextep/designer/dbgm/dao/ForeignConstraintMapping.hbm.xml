@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.ForeignKeyConstraint"
+		extends="com.nextep.datadesigner.dbgm.model.IKeyConstraint"
+		table="DBGM_FOREIGN_KEYS"
+		lazy="false"
+		>
+			<key column="KEY_ID"/>
+			<!--many-to-one name="remoteConstraint" class="com.nextep.datadesigner.dbgm.model.IKeyConstraint" column="REMOTE_KEY_ID"/-->
+			<many-to-one name="remoteConstraintRef" class="com.nextep.datadesigner.impl.Reference" column="REMOTE_KEY_REFID" cascade="persist,merge,save-update"/>
+			<property name="onUpdateAction" column="ON_UPDATE_ACTION" type="com.nextep.designer.dbgm.dao.types.ForeignKeyActionType"/>
+			<property name="onDeleteAction" column="ON_DELETE_ACTION" type="com.nextep.designer.dbgm.dao.types.ForeignKeyActionType"/>
+	</joined-subclass>
+</hibernate-mapping>

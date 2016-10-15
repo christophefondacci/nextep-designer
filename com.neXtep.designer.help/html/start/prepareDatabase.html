@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090521;10480200">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Preparing the repository database</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep Designer needs a
+repository to store its data and cannot run without. The deployment
+of the repository database is fully automatized through your neXtep
+Designer client except for the database schema/user creation.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Repository database location</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">We
+advise you to start with a database server located on your local
+network for the response times to be optimal. We advise you to create
+a dedicated user for the neXtep repository for security purposes.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Repository database vendor</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">NeXtep
+designer currently supports 2 database vendors :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal">
+	<FONT FACE="Arial, sans-serif">Oracle</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal">
+	<FONT FACE="Arial, sans-serif">MySQL</FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Releases
+of neXtep designer are heavily tested against Oracle 9.2 or later and
+MySQL 5.0 or later. Note that the product may work well with previous
+releases of the database engines but we haven't tested it.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Oracle repository initialization</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Well,
+if your are a DBA, you don't need us : create a new user of your
+choice which can connect and can at least create / drop / alter
+tables and views and manipulate data.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">For
+others, either ask your DBA or create the following default user.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Log
+on to your Oracle database server (through SSH for example).</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Perform
+the actions in </SPAN></FONT><FONT FACE="Arial, sans-serif"><B>bold</B></FONT>
+<FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">:</SPAN></FONT></P>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100% VALIGN=TOP BGCOLOR="#ffff99">
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">oracle@mydomain&gt;</SPAN><B>sqlplus
+			/nolog</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">SQL*Plus:
+			Release 10.2.0.3.0 - Production on Mar. Mai 19 17:54:10 2009</SPAN></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal"><FONT SIZE=1 STYLE="font-size: 8pt">Copyright
+			(c) 1982, 2006, Oracle. All Rights Reserved.</FONT></SPAN></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal">SQL&gt;
+			</SPAN><B>conn / as sysdba</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Connect&Uacute;.</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">SQL&gt;
+			</SPAN><B>create user repos_user identified by repos_user
+			temporary tablespace temp;</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<SPAN STYLE="font-weight: normal"><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace">Utilisateur
+			cr&Uacute;&Uacute;.</FONT></FONT></SPAN></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal">SQL&gt;
+			</SPAN><B>grant connect, resource to repos_user;</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="border: none; padding: 0cm"><FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal">Autorisation
+			de privil&THORN;ges (GRANT) accept&Uacute;e.</SPAN></FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT SIZE=2><SPAN STYLE="font-weight: normal"><FONT FACE="Arial, sans-serif">That's
+it, you now have your repository user. Go on with the next section.</FONT></SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif"><FONT SIZE=4>MySQL repository
+initialization</FONT></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Well,
+if your are a DBA, you don't need us : create a new user of your
+choice which can connect and can at least create / drop / alter
+tables and views and manipulate data. If the database is not located
+on the machine on which neXtep Designer runs, please make sure the
+user can be remotely accessed.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">For
+others, either ask your DBA or create the following default user.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">You
+need your mysql root user password :</FONT></P>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100% VALIGN=TOP BGCOLOR="#ffff99">
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">&gt;</SPAN><B>mysql
+			-uroot -p</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Enter
+			password:</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Welcome
+			to the MySQL monitor. Commands end with ; or \g.</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Your
+			MySQL connection id is 59</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Server
+			version: 5.0.67-community-nt MySQL Community Edition (GPL)</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal">Type
+			'help;' or '\h' for help. Type '\c' to clear the buffer.</SPAN></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: normal">mysql&gt;
+			</SPAN><B>create user nextep_user identified by &quot;nextep_user&quot;;</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Query
+			OK, 0 rows affected (0.20 sec)</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">mysql&gt;
+			</SPAN></FONT></FONT><FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><B>create
+			database nextep_repos;</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">Query
+			OK, 1 row affected (0.00 sec)</SPAN></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">mysql&gt;
+			</SPAN><B>grant all on nextep_repos.* to nextep_user;</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Query
+			OK, 0 rows affected (0.00 sec)</FONT></FONT></P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<BR>
+			</P>
+			<P CLASS="western" STYLE="margin-bottom: 0cm; border: none; padding: 0cm">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt"><SPAN STYLE="font-weight: normal">mysql&gt;
+			</SPAN><B>grant all on nextep_repos.* to nextep_user@'%';</B></FONT></FONT></P>
+			<P CLASS="western" STYLE="border: none; padding: 0cm; font-weight: normal">
+			<FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">Query
+			OK, 0 rows affected (0.00 sec)</FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><FONT SIZE=2>That's
+it, you now have your repository user. Go on with the next section.</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

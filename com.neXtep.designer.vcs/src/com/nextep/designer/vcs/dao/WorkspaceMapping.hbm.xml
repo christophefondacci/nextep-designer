@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.vcs.model.impl.Workspace" table="REP_VERSION_VIEWS" lazy="false">
+		<id name="id" column="VIEW_ID">
+			<generator class="hilo"/>
+		</id>
+		<property name="name" column="VIEW_NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="revision" column="UPDATE_REVISION"/>
+		<property name="DBVendor" type="com.nextep.designer.core.dao.types.DBVendorType" column="DBVENDOR"/>
+		<set name="contents" table="REP_VIEW_CONTENTS" outer-join="false" lazy="false">
+			<key column="VIEW_ID"/>
+			<many-to-many class="com.nextep.designer.vcs.model.IVersionable" column="VERSION_ID"/>
+		</set>
+
+	</class>
+</hibernate-mapping>

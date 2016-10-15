@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20081124;15493100">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Merging containers</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">A version merge is
+<FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">literally
+a merge of 2 different versions of a same container. Merges are
+needed in an application lifecycle when you start to maintain several
+different versions in parallel. For example, as soon as you have a
+production release and a development release, you might need to
+perform merges if you have to publish a patch of your production
+release while developing a new release in parallel.</SPAN></SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><B>Note that you can
+only perform a merge between 2 committed container versions</B><SPAN STYLE="font-weight: normal">.
+This restriction had been made to ensure correct isolation of
+developments and merge operations.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-weight: normal">You
+can merge 2 container versions by right-clicking on the container you
+want to merge and select the </SPAN><I><SPAN STYLE="font-weight: normal">Merge
+to </SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">menu
+item. Note that the merge will always be performed in the current
+view. Though the current version of the container will be used as the
+target version of the merge.</SPAN></SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ContainersMergeTo.png" NAME="images1" ALIGN=LEFT WIDTH=251 HEIGHT=22 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">When
+you click on </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">Merge
+to</SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+menu item, a dialog will come up to prompt you for selecting the
+source version of the merge. The source version is the container
+version you want to integrate (merge) in the current view. </SPAN></SPAN>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="MergeInitDialog.png" NAME="images2" ALIGN=LEFT WIDTH=405 HEIGHT=525 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">When
+you click process the merge computation will be performed. </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">neXtep
+designer </SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">will
+try to automatically resolve the merge by picking the appropriate
+modification from one branch or another, depending on the
+modification time if the change on one branch is not conflicting with
+the other branch.</SPAN></SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">In
+most cases, the whole merge will be automatically resolved. An
+unresolved merge would leave some items in red. These items will
+require manual merge which consists in selecting the correct
+combination of changes from both source and target branches. Below is
+an example of the dialog window shown after starting a merge :</SPAN></SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="MergeResultDialog.png" NAME="images3" ALIGN=LEFT WIDTH=973 HEIGHT=349 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">This
+dialog informs us what </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">neXtep
+designer </SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">is
+about to do. It is important that the user checks if this seems to be
+correct and / or adjust the merge operations. </SPAN></SPAN>
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">The
+	left-hand tree represents elements from the source merge release
+	which have been modified on the other branch. Selected items in this
+	tree are the modifications that will be imported into the merged
+	release. </SPAN></SPAN>
+	</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">The
+	center tree represents elements from the current (target) merge
+	release which are different from the source merge release. Checked
+	items in this tree are the modifications that will be kept into the
+	new merged release.</SPAN></SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">The
+	right hand tree represents a preview of the elements if the merge is
+	confirmed. Confirmation is made by clicking the OK button of this
+	merge preview dialog.</SPAN></SPAN></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">Note
+that all other objects of the </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">Tutorial
+</SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">container
+which are not listed here have not changed in the source release and
+do not need any merge operation. You can still see them by clicking
+the </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">Show unchanged
+items </SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">button
+which will remove the unchanged items filter.</SPAN></SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">After merging, the view
+will be entirely reloaded with the new merged elements. Merged
+elements are check-outed to allow you to adjust the merge result,
+should you need to do so. Is everything is ok, you should <B>commit
+</B><SPAN STYLE="font-weight: normal">the merged version to ensure
+proper isolation between version merge and development tasks.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

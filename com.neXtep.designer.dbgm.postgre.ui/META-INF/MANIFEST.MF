@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PostgreSql specific User-Interface customization
+Bundle-SymbolicName: com.neXtep.designer.dbgm.postgre.ui;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.dbgm.postgre.ui.PostgreUIPlugin
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.neXtep.designer.ui;bundle-version="1.0.6",
+ com.neXtep.designer.dbgm.ui;bundle-version="1.0.6",
+ com.neXtep.designer.dbgm.postgre;bundle-version="1.0.7",
+ com.neXtep.designer.vcs;bundle-version="1.0.7",
+ com.neXtep.designer.dbgm;bundle-version="1.0.7",
+ com.neXtep.designer.vcs.ui;bundle-version="1.0.7",
+ com.neXtep.designer.logging;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

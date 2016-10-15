@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.datadesigner.vcs.impl.RepositoryUser"
+		table="REP_USERS"
+		lazy="false"
+		>
+			<id name="id" column="USER_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="login" column="LOGIN"/>
+			<property name="name" column="USERNAME"/>
+			<property name="password" column="PASSWORD"/>
+			<property name="securedPassword" column="SECURED_PASSWORD"/>
+			<property name="description" column="DESCRIPTION"/>
+<!--			<property name="admin" column="IS_ADMIN" type="com.nextep.designer.dbgm.dao.types.BooleanType" />-->
+			<property name="enabled" column="IS_ENABLED" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<set name="userRights" cascade="all" lazy="false" table="REP_USER_RIGHTS">
+				<key column="USER_ID"/>
+				<element column="RIGHT_NAME" type="com.nextep.designer.vcs.dao.types.UserRightType"/>
+			</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="nextep-tutorial-extension" name="NeXtep Tutorial Extension"
+		style="css/tutorial.css" path="tutorials/@">
+		<group id="nextep-tutorial-extension-group" style-id="content-group">
+			<link id="nextep-tutorial-link" style-id="content-link"
+				label="NeXtep designer tutorials" url="http://www.nextep-softwares.com/wiki/index.php/NeXtep_Designer_tutorials">
+				<text>Discover our series of online tutorials to get started.</text>
+			</link>
+			<link id="nextep-demo-link" style-id="content-link"
+				label="NeXtep designer demos" url="http://www.nextep-softwares.com/wiki/index.php/NeXtep_Designer_Demos">
+				<text>Watch the video demonstration of neXtep designer features.</text>
+			</link>
+		</group>
+	</extensionContent>
+</introContent>

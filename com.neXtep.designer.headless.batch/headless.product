@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="NeXtep headless product" uid="com.nextep.designer.headless.batch.headlessProduct" id="com.neXtep.designer.headless.batch.headlessProduct" application="com.neXtep.designer.headless.batch.application" version="1.0.7.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-nl en -console -consoleLog</programArgs>
+      <vmArgs>-Xmx256m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <launcher name="neXtep-cmd">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="com.neXtep.designer.headless.feature" version="1.0.7.qualifier"/>
+   </features>
+
+
+</product>

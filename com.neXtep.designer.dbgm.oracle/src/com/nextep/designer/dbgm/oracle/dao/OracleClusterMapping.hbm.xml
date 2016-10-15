@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleCluster"
+		extends="com.nextep.designer.dbgm.oracle.impl.OracleTable"
+		table="DBOM_TABLE_CLUSTERS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<set name="clusteredTables" table="DBOM_CLUSTER_TABLES" cascade="all" lazy="false" outer-join="false">
+				<key column="TBCL_VERSION_ID"/>
+				<one-to-many class="com.nextep.designer.dbgm.oracle.impl.OracleClusteredTable"/>
+			</set>
+			<!-- one-to-one name="physicalProperties" class="com.nextep.designer.dbgm.oracle.impl.external.OracleTablePhysicalProperties" cascade="save-update"/-->
+	</joined-subclass>
+</hibernate-mapping>

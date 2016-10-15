@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.vcs.model.impl.VersionInfo" table="REP_VERSIONS" lazy="false">
+		<id name="id" column="VERSION_ID">
+			<generator class="hilo"/>
+		</id>
+		<property name="majorRelease" column="REL_MAJOR"/>
+		<property name="minorRelease" column="REL_MINOR"/>
+		<property name="iteration" column="REL_ITERATION"/>
+		<property name="patch" column="REL_PATCH"/>
+		<property name="revision" column="REL_REVISION"/>
+		<property name="status" type="com.nextep.designer.vcs.dao.types.VersionStatusType" column="STATUS_CODE"/>
+		<property name="creationDate" column="CDATE"/>
+		<property name="updateDate" column="UDATE"/>
+		<many-to-one name="branch" class="com.nextep.datadesigner.vcs.impl.VersionBranch" not-null="true" column="BRANCH_ID" cascade="all"/>
+		<many-to-one name="previousVersion" class="com.nextep.designer.vcs.model.impl.VersionInfo" not-null="false" column="PREVIOUS_VERSION_ID" lazy="proxy"/>
+		<many-to-one name="mergedFromVersion" class="com.nextep.designer.vcs.model.impl.VersionInfo" not-null="false" column="MERGEFROM_VERSION_ID" lazy="proxy"/>
+		<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="VREF_ID" cascade="all" fetch="join"/>
+		<many-to-one name="user" class="com.nextep.datadesigner.vcs.impl.RepositoryUser" not-null="true" column="USER_ID"/>
+		<component name="activity" class="com.nextep.designer.vcs.model.impl.Activity" >
+			<property name="name" column="DESCRIPTION"/>
+		</component>
+		<property name="updateRevision" column="UPDATE_REVISION"/>
+		<property name="dropped" column="IS_DROPPED" type="com.nextep.designer.core.dao.types.BooleanType"/>
+		<property name="versionTag" column="VERSION_TAG"/>
+	</class>
+</hibernate-mapping>

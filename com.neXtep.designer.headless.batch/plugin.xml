@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="batchTask" name="BatchTask" schema="schema/batchTask.exsd"/>
+   <extension-point id="batchOption" name="BatchOption" schema="schema/batchOption.exsd"/>
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="com.nextep.designer.headless.batch.BatchApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="com.neXtep.designer.headless.batch.batchTask">
+      <batchTask
+            description="Cleanup of the target database by removing any database object"
+            optionGroups="repository,target"
+            taskClass="com.nextep.designer.headless.batch.model.impl.CleanupTask"
+            taskId="clean">
+      </batchTask>
+      <batchTask
+            description="Synchronizes a target database with a neXtep workspace"
+            optionGroups="repository,target,workspace"
+            taskClass="com.nextep.designer.headless.batch.model.impl.SynchronizationTask"
+            taskId="synch">
+      </batchTask>
+      <batchTask
+            description="Materializes a delivery, or a set of deliveries, to the filesystem"
+            optionGroups="repository,export,module"
+            taskClass="com.nextep.designer.headless.batch.model.impl.MaterializeDeliveryTask"
+            taskId="materialize">
+      </batchTask>
+      <batchTask
+            description="Deploys a set of deliveries to a target database"
+            optionGroups="repository,target,module"
+            taskClass="com.nextep.designer.headless.batch.model.impl.DeployDeliveryTask"
+            taskId="deploy">
+      </batchTask>
+      <batchTask
+            description="Synchronizes a target database with neXtep workspace data contents"
+            optionGroups="repository,target,workspace"
+            taskClass="com.nextep.designer.headless.batch.model.impl.DataSynchronizationTask"
+            taskId="datasynch">
+      </batchTask>
+      <batchTask
+            description="Executes a (list of) SQL script(s) against a target database"
+            optionGroups="repository,target,scripts"
+            taskClass="com.nextep.designer.headless.batch.model.impl.ExecTask"
+            taskId="exec">
+      </batchTask>
+   </extension>
+   <extension
+         id="headlessProduct"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.neXtep.designer.headless.batch.application"
+            name="NeXtep headless product">
+         <property
+               name="appName"
+               value="NeXtep headless product">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="com.neXtep.designer.headless.batch.batchOption">
+      <batchOption
+            code="target.user"
+            description="Username of the target database connection"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="target.password"
+            description="Password of the target database connection"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="target.database"
+            description="Target database name"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="target.server"
+            description="Name or IP address of the target database server (defaults to 127.0.0.1)"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="target.vendor"
+            description="Vendor of the target database server : ORACLE, MYSQL, POSTGRE, DB2, MSSQL"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="target.port"
+            description="Port number of the target database (defaults to vendor&apos;s default port)"
+            groupId="target">
+      </batchOption>
+      <batchOption
+            code="repository.user"
+            description="Username of the repository database connection"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="repository.password"
+            description="Password of the repository database connection"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="repository.database"
+            description="Repository database name"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="repository.server"
+            description="Name or IP address of the repository database server (defaults to 127.0.0.1)"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="repository.vendor"
+            description="Vendor of the repository database server : ORACLE, MYSQL, POSTGRE, DB2, MSSQL"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="repository.port"
+            description="Port number of the repository database (defaults to vendor&apos;s default port)"
+            groupId="repository">
+      </batchOption>
+      <batchOption
+            code="config.file"
+            description="Configuration file">
+      </batchOption>
+      <batchOption
+            code="export.directory"
+            description="Directory where files will be exported"
+            groupId="export">
+      </batchOption>
+      <batchOption
+            code="workspace.id"
+            description="Identifier of a neXtep workspace"
+            groupId="workspace">
+      </batchOption>
+      <batchOption
+            code="workspace.name"
+            description="Name of a neXtep workspace (spaces can be replaced by underscores)"
+            groupId="workspace">
+      </batchOption>
+      <batchOption
+            code="module"
+            description="Name and version pattern of a neXtep module : module=name:version "
+            groupId="module">
+      </batchOption>
+      <batchOption
+            code="module.matching"
+            description="Matching strategy for the module version : DEFAULT or STRICT"
+            groupId="module">
+      </batchOption>
+      <batchOption
+            code="verbose"
+            description="Displays more information on error messages ">
+      </batchOption>
+      <batchOption
+            code="module.ref"
+            description="Reference and version pattern of a nextep module : module.ref=reference:version"
+            groupId="module">
+      </batchOption>
+      <batchOption
+            code="scripts"
+            description="Comma-seperated list of SQL scripts to submit"
+            groupId="scripts">
+      </batchOption>
+      <batchOption
+            code="scripts.var"
+            description="defines the value of variable &quot;var&quot; for script subtitution"
+            groupId="scripts">
+      </batchOption>
+   </extension>
+
+</plugin>

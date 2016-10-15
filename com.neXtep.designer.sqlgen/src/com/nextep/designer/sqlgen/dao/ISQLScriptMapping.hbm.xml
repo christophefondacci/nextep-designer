@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.datadesigner.sqlgen.model.ISQLScript"
+		table="DBGM_SQL"
+		lazy="false"
+		>
+			<id name="id" column="SQL_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="name" column="SCRIPT_NAME"/>
+			<property name="description" column="DESCRIPTION"></property>
+			<property name="sql" column="SQL_TEXT" type="com.nextep.designer.core.dao.types.ClobStringType" />
+			<property name="scriptType" column="SCRIPT_TYPE" type="com.nextep.designer.sqlgen.dao.types.ScriptTypeType"/>
+	</class>
+</hibernate-mapping>

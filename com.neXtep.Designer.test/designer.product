@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="neXtep Designer" uid="com.neXtep.designer.test" id="com.neXtep.Designer.test.product" application="com.neXtep.Designer.test.application" version="1.0.3" useFeatures="true" includeLaunchers="false">
+
+   <aboutInfo>
+      <image path="/com.neXtep.Designer/icons/about.bmp"/>
+      <text>
+         neXtep Designer for Oracle / MySQL
+Professional designing IDE for database development. 
+
+Release 1.0.2 Enterprise Edition.
+Based on Eclipse RCP.
+
+(c) Copyright neXtep Softwares 2007-2009. All rights reserved.
+This product includes software developed by the
+Apache Software Foundation http://www.apache.org/
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xms128m
+-Xmx512m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="icons/DesignerIconTiny.ico" i32="icons/DesignerIconSmall.ico" i48="icons/DesignerIconMedium.ico" i64="icons/DesignerIconLarge.ico"/>
+
+   <splash
+      handlerType="interactive" />
+   <launcher name="neXtep">
+      <linux icon="/com.neXtep.Designer/icons/DesignerIconMedium.xpm"/>
+      <macosx icon="/com.neXtep.Designer/icons/Designer6.icns"/>
+      <solaris/>
+      <win useIco="true">
+         <ico path="/com.neXtep.Designer/icons/Designer6.ico"/>
+         <bmp
+            winSmallHigh="icons/DesignerIconTiny.ico"
+            winSmallLow="icons/DesignerIconTiny8.ico"
+            winMediumHigh="icons/DesignerIconSmall.ico"
+            winMediumLow="icons/DesignerIconSmall8.ico"
+            winLargeHigh="icons/DesignerIconMedium.ico"
+            winLargeLow="icons/DesignerIconMedium8.ico"/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="Apache_Commons"/>
+      <plugin id="Hibernate_Core" fragment=""/>
+      <plugin id="com.ibm.icu"/>
+      <plugin id="com.neXtep.Designer"/>
+      <plugin id="com.neXtep.designer.beng"/>
+      <plugin id="com.neXtep.designer.beng.ui"/>
+      <plugin id="com.neXtep.designer.core"/>
+      <plugin id="com.neXtep.designer.dbgm"/>
+      <plugin id="com.neXtep.designer.dbgm.mysql"/>
+      <plugin id="com.neXtep.designer.dbgm.mysql.ui"/>
+      <plugin id="com.neXtep.designer.dbgm.oracle"/>
+      <plugin id="com.neXtep.designer.dbgm.oracle.ui"/>
+      <plugin id="com.neXtep.designer.dbgm.ui"/>
+      <plugin id="com.neXtep.designer.help"/>
+      <plugin id="com.neXtep.designer.logging"/>
+      <plugin id="com.neXtep.designer.sqlclient.ui"/>
+      <plugin id="com.neXtep.designer.sqlgen"/>
+      <plugin id="com.neXtep.designer.sqlgen.mysql"/>
+      <plugin id="com.neXtep.designer.sqlgen.oracle"/>
+      <plugin id="com.neXtep.designer.sqlgen.oracle.debug.ui"/>
+      <plugin id="com.neXtep.designer.sqlgen.ui"/>
+      <plugin id="com.neXtep.designer.ui"/>
+      <plugin id="com.neXtep.designer.vcs"/>
+      <plugin id="com.neXtep.designer.vcs.ui"/>
+      <plugin id="javax.servlet"/>
+      <plugin id="javax.servlet.jsp"/>
+      <plugin id="org.apache.ant"/>
+      <plugin id="org.apache.commons.el"/>
+      <plugin id="org.apache.commons.logging"/>
+      <plugin id="org.apache.jasper"/>
+      <plugin id="org.apache.lucene"/>
+      <plugin id="org.apache.lucene.analysis"/>
+      <plugin id="org.eclipse.ant.core"/>
+      <plugin id="org.eclipse.core.commands"/>
+      <plugin id="org.eclipse.core.contenttype"/>
+      <plugin id="org.eclipse.core.databinding"/>
+      <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.filebuffers"/>
+      <plugin id="org.eclipse.core.filesystem"/>
+      <plugin id="org.eclipse.core.filesystem.hpux.ia64_32" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.linux.ppc" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.linux.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.macosx" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.solaris.sparc" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.jobs"/>
+      <plugin id="org.eclipse.core.net"/>
+      <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.resources"/>
+      <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
+      <plugin id="org.eclipse.core.resources.win32" fragment=""/>
+      <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.core.variables"/>
+      <plugin id="org.eclipse.draw2d"/>
+      <plugin id="org.eclipse.equinox.app"/>
+      <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.http.jetty"/>
+      <plugin id="org.eclipse.equinox.http.registry"/>
+      <plugin id="org.eclipse.equinox.http.servlet"/>
+      <plugin id="org.eclipse.equinox.jsp.jasper"/>
+      <plugin id="org.eclipse.equinox.jsp.jasper.registry"/>
+      <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.security"/>
+      <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.gef"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.help.base"/>
+      <plugin id="org.eclipse.help.ui"/>
+      <plugin id="org.eclipse.help.webapp"/>
+      <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.jface.text"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.ppc" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.solaris.sparc" fragment="true"/>
+      <plugin id="org.eclipse.swt.motif.aix.ppc" fragment="true"/>
+      <plugin id="org.eclipse.swt.motif.hpux.ia64_32" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.swt.wpf.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.text"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
+      <plugin id="org.eclipse.ui.editors"/>
+      <plugin id="org.eclipse.ui.forms"/>
+      <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.views"/>
+      <plugin id="org.eclipse.ui.win32" fragment="true"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+      <plugin id="org.eclipse.ui.workbench.texteditor"/>
+      <plugin id="org.eclipse.update.configurator"/>
+      <plugin id="org.eclipse.update.core"/>
+      <plugin id="org.eclipse.update.core.linux" fragment="true"/>
+      <plugin id="org.eclipse.update.core.win32" fragment="true"/>
+      <plugin id="org.eclipse.update.ui"/>
+      <plugin id="org.mortbay.jetty" fragment=""/>
+   </plugins>
+
+   <features>
+      <feature id="com.neXtep.designer.feature" version="1.0.3.200912311453"/>
+   </features>
+
+
+</product>

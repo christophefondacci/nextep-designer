@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.postgre.model.impl.PostgreSqlUniqueKey"
+		extends="com.nextep.datadesigner.dbgm.impl.UniqueKeyConstraint"
+		table="DBPM_UNIQUE_KEYS"
+		lazy="false"
+		>
+			<key column="KEY_ID"/>
+			<many-to-one name="physicalProperties" class="com.nextep.designer.dbgm.model.IPhysicalProperties" not-null="false" column="PHYS_ID" cascade="all" fetch="join"/>
+	</joined-subclass>
+</hibernate-mapping>

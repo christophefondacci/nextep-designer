@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.nextep.designer.sqlgen.oracle.ui.impl.OracleUserTypeEditor"
+            contributorClass="com.nextep.designer.sqlgen.ui.SQLEditorActionBarContributor"
+            default="false"
+            icon="resource/UserTypeTiny.ico"
+            id="com.neXtep.designer.sqlgen.oracle.ui.oracleTypeEditor"
+            name="Oracle User type editor">
+      </editor>
+      <editor
+            class="com.nextep.designer.sqlgen.oracle.ui.impl.OracleMaterializedViewEditor"
+            contributorClass="com.nextep.designer.sqlgen.ui.SQLEditorActionBarContributor"
+            default="false"
+            icon="resource/MaterializedViewTiny.ico"
+            id="com.neXtep.designer.sqlgen.oracle.ui.matViewEditor"
+            name="Oracle materialized view editor">
+      </editor>
+   </extension>
+   <extension
+         point="com.neXtep.designer.sqlgen.ui.proposalProvider">
+      <proposalProvider
+            class="com.nextep.designer.sqlgen.oracle.ui.impl.PackageProceduresTextProvider">
+      </proposalProvider>
+   </extension>
+
+</plugin>

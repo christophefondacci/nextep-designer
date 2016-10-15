@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Oracle SQL generation User Interface
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.oracle.ui;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.sqlgen.oracle.ui.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.neXtep.designer.sqlgen.ui;bundle-version="1.0.2",
+ com.neXtep.designer.dbgm.oracle;bundle-version="1.0.2",
+ com.neXtep.designer.ui;bundle-version="1.0.2",
+ com.neXtep.designer.dbgm.ui;bundle-version="1.0.2",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.2",
+ com.neXtep.designer.core;bundle-version="1.0.2",
+ com.neXtep.designer.dbgm;bundle-version="1.0.2",
+ com.neXtep.designer.vcs;bundle-version="1.0.2",
+ com.neXtep.designer.vcs.ui;bundle-version="1.0.2",
+ org.eclipse.ui.editors;bundle-version="3.4.0",
+ org.eclipse.ui.ide;bundle-version="3.4.0",
+ org.eclipse.jface.text;bundle-version="3.4.0",
+ com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.logging;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

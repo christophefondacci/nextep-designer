@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" deactivate="shutdown" name="com.neXtep.designer.dbgm.storageService">
+   <implementation class="com.nextep.designer.dbgm.services.impl.DerbyStorageService"/>
+   <reference bind="setConnectionService" cardinality="1..1" interface="com.nextep.designer.core.services.IConnectionService" name="IConnectionService" policy="static"/>
+   <service>
+      <provide interface="com.nextep.designer.dbgm.services.IStorageService"/>
+   </service>
+</scr:component>

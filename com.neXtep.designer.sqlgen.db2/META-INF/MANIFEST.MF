@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DB2 generation Plug-in
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.db2;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.sqlgen.db2.Db2Plugin
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jface.text;bundle-version="3.6.1",
+ com.neXtep.designer.core;bundle-version="1.0.4",
+ com.neXtep.designer.dbgm;bundle-version="1.0.4",
+ com.neXtep.designer.dbgm.db2;bundle-version="1.0.0",
+ com.neXtep.designer.jdbc.db2;bundle-version="3.58.0",
+ com.neXtep.designer.logging;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.4",
+ com.neXtep.designer.sqlgen.generic;bundle-version="1.0.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

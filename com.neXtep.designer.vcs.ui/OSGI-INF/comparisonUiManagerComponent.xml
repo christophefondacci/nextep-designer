@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.vcs.ui.componentUiManager">
+   <implementation class="com.nextep.designer.vcs.ui.services.impl.ComparisonUIManager"/>
+   <service>
+      <provide interface="com.nextep.designer.vcs.ui.services.IComparisonUIManager"/>
+   </service>
+   <reference bind="setComparisonManager" cardinality="1..1" interface="com.nextep.designer.vcs.model.IComparisonManager" name="IComparisonManager" policy="static"/>
+   <reference bind="addComparisonListener" cardinality="0..n" interface="com.nextep.designer.vcs.model.IComparisonListener" name="IComparisonListener" policy="static" unbind="removeComparisonListener"/>
+</scr:component>

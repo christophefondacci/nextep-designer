@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.sqlgen.impl.VersionedProcedure"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_PROCEDURES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="name" column="PROCEDURE_NAME"/>
+			<property name="SQLSource" column="SQL_SOURCE" type="com.nextep.designer.core.dao.types.ClobStringType" />
+			<property name="languageType" column="LANGUAGE_TYPE" type="com.nextep.designer.sqlgen.dao.types.LanguageTypeType"/>
+<!-- 			<set name="children" cascade="all" lazy="false" outer-join="false">
+				<key column="PARENT_VERSION_ID"/>
+				<one-to-many class="com.nextep.datadesigner.sqlgen.impl.SQLScript"/>
+			</set>
+-->
+	</joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="VersionableViewRCP">
+      <description>Displays information about the version history of the currently selected / edited object. Provides tools such as version comparison or version information edition.
+
+The currently selected version is red-boxed. You can compare it to its previous version by clicking the compare button. You can compare it to any other version by clicking the desired version in the tree and clicking the compare button.</description>
+      <topic href="html/vcs/versionControl.html" label="Version Control"/>
+      <topic href="html/concepts/VersionConsiderations.html" label="Versioning considerations"/>
+      <topic href="html/start/Workbench.html" label="The workbench"/>
+   </context>
+   <context id="VersionViewRCP">
+      <description>This is a navigator of your current workspace contents. A workspace is a set of modules in specific version. It should represent a &quot;versioned&quot; representation of your database developments.
+
+Within a workspace you can check-out, modify and commit changes to your developments. This navigator allows you to browse/edit any objects. A contextual popup menu always show you possible actions on the current selection. 
+
+Double-clicking any object will open an editor for this object.</description>
+      <topic href="http::/www.nextep-softwares.com/wiki/index.php/Workspaces" label="Workspaces"/>
+      <topic href="http::/www.nextep-softwares.com/wiki/index.php/Getting_started_with_version_control" label="Getting started with version control"/>
+   </context>
+   <context id="UserCreation" title="Repository users management">
+      <description>This section allows you to administrate the users who can connect to the repository. You can add new users or edit existing ones. Note that you cannot remove users after creation since some version may still be attached to it. 
+If you want to forbid the access to a specific user, you should disable it.</description>
+      <topic href="html/concepts/Introduction.html" label="Repository concepts"/>
+   </context>
+</contexts>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/comparison/" targetNamespace="http://www.example.org/comparison/">
+
+    <element name="item">
+	    <complexType>
+	    	<sequence maxOccurs="unbounded" minOccurs="0">
+	    	    <choice>
+	    	    	<element ref="tns:item"/>
+	    	    	<element ref="tns:category"/>
+	    	    </choice>
+	    	    <element ref="tns:attribute" maxOccurs="1" minOccurs="0"/>
+	    	</sequence>
+	    	<attribute name="scope" type="string"></attribute>
+	    	<attribute name="type" type="string"></attribute>
+	    	<attribute name="differenceType" type="string"></attribute>
+	    </complexType>
+	</element>
+    <element name="items">
+    	<complexType>
+    		<sequence maxOccurs="unbounded" minOccurs="1">
+    			<element ref="tns:item"></element>
+    		</sequence>
+    	</complexType>
+    </element>
+    <element name="attribute">
+	    <complexType>
+	    	<sequence>
+	    		<element name="source" type="string" ></element>
+	    		<element name="target" type="string"></element>
+	    	</sequence>
+	    	<attribute name="name" type="string"></attribute>
+    	</complexType>
+    </element>
+    <element name="category">
+    	<complexType>
+    		<sequence minOccurs="1" maxOccurs="unbounded">
+   				<element ref="tns:item"/>
+    		</sequence>
+    		<attribute name="name"/>
+    	</complexType>
+    </element>
+</schema>

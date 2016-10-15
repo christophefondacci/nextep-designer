@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SQLITE SQL generation plugin
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.sqlite;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.sqlgen.sqlite.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.sqlgen;bundle-version="1.0.7",
+ com.neXtep.designer.core;bundle-version="1.0.7",
+ com.neXtep.designer.logging;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen.generic;bundle-version="1.0.7",
+ com.neXtep.designer.jdbc.sqlite;bundle-version="3.7.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

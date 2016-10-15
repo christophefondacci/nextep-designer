@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MySQL specific model UI
+Bundle-SymbolicName: com.neXtep.designer.dbgm.mysql.ui;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.dbgm.mysql.ui.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.0",
+ com.neXtep.designer.dbgm;bundle-version="1.0.0",
+ com.neXtep.designer.dbgm.mysql;bundle-version="1.0.1",
+ com.neXtep.designer.dbgm.ui;bundle-version="1.0.0",
+ com.neXtep.designer.ui;bundle-version="1.0.0",
+ com.neXtep.designer.vcs.ui;bundle-version="1.0.0",
+ org.eclipse.core.databinding;bundle-version="1.3.100",
+ org.eclipse.core.databinding.beans;bundle-version="1.2.100",
+ org.eclipse.core.databinding.observable;bundle-version="1.3.0",
+ org.eclipse.jface.databinding;bundle-version="1.4.0",
+ org.eclipse.core.databinding.property;bundle-version="1.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+

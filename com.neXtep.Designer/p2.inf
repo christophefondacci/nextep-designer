@@ -1,0 +1,4 @@
+instructions.configure=\
+  addRepository(type:0,location:http${#58}//update.nextep-softwares.com/openupdate);\
+  addRepository(type:1,location:http${#58}//update.nextep-softwares.com/openupdate);
+  

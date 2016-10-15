@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="nextep-whatsnew-extension" name="NeXtep WhatsNew Extension"
+		style="css/whatsnew.css" path="whatsnew/@">
+		<group id="nextep-whatsnew-extension-group" style-id="content-group">
+			<link id="nextep-whatsnew-release-page-link" style-id="content-link"
+				label="NeXtep Designer 1.0.7 est disponible !"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-release-page">
+			<text>
+				Découvrez les nouvelles fonctionnalités de la dernière version majeure
+				de neXtep !&lt;br/&gt;
+				Elle inclut une refonte complète des éditeurs d'objets de base de données,
+				utilisant le nouveau Framework Forms UI d'Eclipse, ainsi que
+				de nombreuses améliorations et corrections de bugs.
+				&lt;br/&gt;&lt;b&gt;Cliquez pour plus d'informations sur cette
+				version.&lt;/b&gt;
+			</text>
+			</link>
+			<link id="nextep-whatsnew-command-page-link" style-id="content-link"
+				label="Venez découvrir une nouvelle façon d'utiliser NeXtep Designer !"
+				url="http://www.nextep-softwares.com/wiki/index.php/Command-line_NeXtep">
+				<text>
+					Vous pouvez maintenant accéder aux fonctionnalités de NeXtep Designer
+					à partir d'une ligne de commande.
+					Cliquez pour découvrir comment vous pouvez prendre le contrôle des
+					fonctionnalités de NeXtep à partir de scripts, et ainsi automatiser
+					le packaging et le déploiement de n'importe quel composant de base
+					de données.
+				</text>
+			</link>
+			<link id="nextep-whatsnew-data-page-link" style-id="content-link"
+				label="Gestion du cycle de vie de vos données de référence"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-data-page">
+				<text>Découvrez comment prendre le contrôle du cycle de vie de vos données de
+					référence
+				</text>
+			</link>
+			<link id="nextep-whatsnew-sqlclient-page-link" style-id="content-link"
+				label="Nouveau client SQL !"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-sqlclient-page">
+				<text>Découvrez les fonctionnalités du nouveau client SQL neXtep
+				</text>
+			</link>
+			<!-- link id="nextep-whatsnew-i18n-page-link" style-id="content-link"
+				label="NeXtep Designer devient multilingue"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-whatsnew-i18n-page">
+				<text>Découvrez les projets de régionalisation de l'interface de
+					NeXtep Designer
+				</text>
+			</link -->
+		</group>
+	</extensionContent>
+	<page id="nextep-whatsnew-release-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer 1.0.7 est disponible !"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer 1.0.7 est disponible !
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="release-features" style-id="page-description"
+				label="&#8226;&#160;Nouvelles fonctionnalités de la version 1.0.7">
+				<text id="entities-editors-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Refonte des éditeurs d'objets de base
+					de données :&lt;/b&gt;
+					Afin d'améliorer leur ergonomie et leur lisibilité, les éditeurs d'objets
+					de base de données ont été complètement revus pour tirer parti du
+					nouveau Framework Forms UI d'Eclipse. Nous souhaitions rendre la
+					navigation à travers les éditeurs plus simple et surtout plus fluide.
+					Nous pensons que ces nouveaux éditeurs permettront d'améliorer
+					l'expérience utilisateur pour développer avec l'environnement neXtep
+					Designer.&lt;br/&gt;
+					N'hésitez pas à nous faire part de vos commentaires à propos de ces
+					nouveaux éditeurs dans notre Forum !&lt;br/&gt;&lt;br/&gt;
+					Ci-dessous quelques captures d'écran des nouveaux éditeurs :
+				</text>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_Overview_Thumb.png" id="overview-img"
+					     alt="Onglet Vue d'ensemble de l'éditeur de table"></img>
+					<img src="img/Table_Editor_Columns_Thumb.png" id="columns-img"
+					     alt="Onglet Colonnes de l'éditeur de table"></img>
+				</group>
+				<group id="separator" style-id="page-description">
+					<text />
+				</group>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_UniqueKeys_Thumb.png" id="uniquekeys-img"
+					     alt="Onglet Clés uniques de l'éditeur de table"></img>
+					<img src="img/Table_Editor_ForeignKeys_Thumb.png" id="foreignkeys-img"
+					     alt="Onglet Clés étrangères de l'éditeur de table"></img>
+				</group>
+				<group id="separator" style-id="page-description">
+					<text />
+				</group>
+				<group id="editors-thumbs" style-id="page-description">
+					<img src="img/Table_Editor_Indexes_Thumb.png" id="indexes-img"
+					     alt="Onglet Index de l'éditeur de table"></img>
+					<img src="img/Table_Editor_Physprops_Thumb.png" id="physprops-img"
+					     alt="Onglet Propriétés physiques de l'éditeur de table"></img>
+				</group>
+				<text id="other-features-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Support d'Oracle amélioré:
+					&lt;/b&gt; Les index composites basés sur des fonctions sont maintenant
+					supportés, et les valeurs par défaut de colonnes de très grande taille
+					sont désormais correctement gérées.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Et bien sûr de nombreuses améliorations et corrections de
+					bugs!&lt;/b&gt;
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<page id="nextep-whatsnew-data-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header"
+				label="NeXtep Designer&lt;br/&gt;gère vos données de référence !"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;gère vos données de référence !
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Pourquoi cette évolution ?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Les données de référence font partie intégrante de vos applications :
+					sans elles, vos applications ne pourront probablement pas fonctionner. En tant que
+					telles, les données statiques doivent donc être complètement intégrées au cycle de
+					vie de votre application. Jusque là, neXtep proposait un support très sommaire de
+					ces données de références et il était généralement nécessaire d'opter pour un 
+					mécanisme dédié se chargeant des données.
+				</text>
+				<hr />
+			</group>
+			<group id="how-that-works" style-id="page-description"
+				label="&#8226;&#160;Comment ça marche ?">
+				<text id="how-that-works-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Nous avons étendu le concept pré-existant de lots de données
+					que vous pouvez définir sur toute table gérée par neXtep. A partir de la 1.0.5
+					vous pouvez synchroniser vos lots de données avec n'importe quelle base de données :
+					cela vous permet de comparer les données du référentiel avec le contenu d'une 
+					base de données et vous offre la possibilité de générer des scripts de ré-alignement
+					de données ou d'importer les données externes vers le référentiel pour les mettre
+					sous contrôle de version. L'approche est très similaire à une synchronisation 
+					structurelle : même perspective, même contrôles, même actions. Seule la mécanique
+					interne est nouvelle.
+					&lt;br/&gt;&lt;br/&gt; L'éditeur de lots de données a été totalement reconçu et
+					est désormais construit au dessus d'un client SQL. Vous pouvez donc requêter et
+					mettre à jour vos lots de données en utilisant du SQL standard ! Et puisque nous
+					avons largement amélioré notre client SQL, vous avez également la possibilité 
+					d'éditer vos données directement à l'intérieur de la table SQL de résultats de
+					vos select.
+				</text>
+				<hr />
+			</group>
+			<group id="limitations" style-id="page-description"
+				label="&#8226;&#160;Limitations">
+				<text id="limitations-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;
+					Nous avons commencé à construire un système capable de supporter de très larges
+					volumes de données sans consommation mémoire. Avec cette première mouture, il y a
+					tout de même certaines limitations si vous souhaitez manipuler de gros volumes 
+					de données (plus de 500k lignes). Par exemple, nous n'avons pas encore contourné
+					la limitation du driver JDBC MySQL qui charge l'ensemble des lignes de tout select
+					en mémoire (sans streaming), nous avons quelques limitations mémoire lors de la
+					génération SQL d'un dataset puisque la génération utilise toujours les scripts SQL
+					standards, systématiquement affichés dans l'environnement, et nécessitant donc
+					d'être chargés en mémoire.
+					&lt;br/&gt;&lt;br/&gt;Tous les types de données ne sont pas encore supportés : les
+					tables contenant des colonnes CLOB et BLOB ne sont pas correctement gérées, les 
+					types de données utilisateur ne sont pas supportés (Oracle, DB2).
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<page id="nextep-whatsnew-sqlclient-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer&lt;br/&gt;se dote d'un tout nouveau client SQL"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;se dote d'un tout nouveau client SQL
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Pourquoi cette évolution ?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Jusqu'à présent, le client SQL intégré à neXtep était
+					très basique, non optimisé, et peu pratique à utiliser. Avec le nouveau support
+					du cycle de vie de données de référence, la capacité de neXtep designer à requêter 
+					et manipuler les données devient stratégique. Nous avons donc décidé de ré-écrire
+					un client SQL complet qui, nous l'espérons, deviendra le socle de la manipulation 
+					de données avec neXtep. 
+				</text>
+				<hr />
+			</group>
+			<group id="features" style-id="page-description"
+				label="&#8226;&#160;Les fonctionnalités du client SQL">
+				<text id="features-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Support des transactions :&lt;/b&gt; Le nouveau 
+					client SQL propose désormais le support natif des transactions pour contrôler de 
+					manière sécurisée la validation ou le retour arrière de vos manipulations de 
+					données.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Des résultats SQL externalisés :&lt;/b&gt; Les 
+					résultats de vos requêtes SQL sont placés dans une vue indépendante que vous pouvez
+					disposez à votre convenance. Par défaut, une instance de cette vue est allouée et
+					dédiée à une connexion, mais vous avez la possibilité d'agrafer une vue pour préserver
+					son contenu.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Edition du contenu à la volée :&lt;/b&gt; Lorsque
+					vous avez requêté une table, vous pouvez désormais activer le mode édition qui
+					vous permet de modifier les données directement à partir de la table des résultats
+					SQL, sans écrire une ligne de SQL. Vous pouvez également ajouter ou supprimer 
+					des lignes dans cette même vue et toute erreur vous est remontée. Cette option
+					n'est accessible que lorsque vous sélectionnez toutes les colonnes de clé primaire
+					d'une seule table ou à partir d'une requête de type SELECT * from table.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Exports :&lt;/b&gt; Vous pouvez exporter les résultats
+					de n'importe quelle requête SQL vers un fichier CSV, personalisable via les préférences.
+					Vous pouvez également rapidement copier / coller du text au format CSV en sélectionnant
+					les lignes puis en cliquant droit sur Copier.
+					&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Amélioration des performances :&lt;/b&gt; Notre
+					principale préoccupation fut les performances. Nous pensons qu'elles sont plutôt
+					bonnes grâce à des fonctionnalités de tri très rapide ainsi qu'à un affichage lazy
+					optimisé. Transmettez nous vos impressions sur notre forum.
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+	<!-- page id="nextep-whatsnew-i18n-page" style-id="page"
+		style="$theme$/html/whatsnew.css" alt-style="$theme$/swt/whatsnew.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="whatsnew/navigation-links" />
+		<group id="page-content">
+			<group id="content-header"
+				label="NeXtep Designer&lt;br/&gt;s'ouvre à l'internationalisation !"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer&lt;br/&gt;s'ouvre à l'internationalisation !
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-this-evolution" style-id="page-description"
+				label="&#8226;&#160;Pourquoi cette évolution ?">
+				<text id="why-this-evolution-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Nous travaillons actuellement à intégrer
+					progressivement des messages et des libellés régionalisés dans
+					l'interface de NeXtep Designer. Pendant cette phase transitoire, il
+					se peut que vous découvriez des contenus qui n'ont pas encore été
+					traduits. Nous mettons tout en oeuvre pour finaliser cette
+					migration et faire en sorte que cette période soit la plus courte
+					possible.&lt;br/&gt;&lt;br/&gt;
+					Nous avons pris la décision de
+					régionaliser NeXtep Designer, car nous souhaitons mettre à votre
+					disposition un outil dont l'interface est la plus conviviale
+					possible.
+				</text>
+				<hr />
+			</group>
+			<group id="what-supported-languages" style-id="page-description"
+				label="&#8226;&#160;Quelles sont les langues supportées ?">
+				<text id="what-supported-languages-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;A ce jour, neXtep designer est en français et
+					en anglais.
+				</text>
+				<hr />
+			</group>
+			<group id="can-i-contribute" style-id="page-description"
+				label="&#8226;&#160;Puis-je contribuer ?">
+				<text id="can-i-contribute-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Si vous souhaitez contribuer à la traduction de
+					notre produit dans une autre langue, merci de nous contacter. Une
+					traduction en tchèque est par exemple en cours grâce à la
+					contribution de Ladislav. 
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page -->
+</introContent>

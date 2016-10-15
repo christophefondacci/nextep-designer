@@ -1,0 +1,181 @@
+/*******************************************************************************
+ * Copyright (c) 2011 neXtep Software and contributors.
+ * All rights reserved.
+ *
+ * This file is part of neXtep designer.
+ *
+ * NeXtep designer is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public 
+ * License as published by the Free Software Foundation, either 
+ * version 3 of the License, or any later version.
+ *
+ * NeXtep designer is distributed in the hope that it will be 
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributors:
+ *     neXtep Softwares - initial API and implementation
+ *******************************************************************************/
+package com.nextep.datadesigner.sqlgen.impl;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import com.nextep.datadesigner.dbgm.services.DBGMHelper;
+import com.nextep.datadesigner.sqlgen.model.ISQLScript;
+import com.nextep.datadesigner.sqlgen.model.ScriptType;
+import com.nextep.datadesigner.sqlgen.services.SQLGenUtil;
+
+/**
+ * A SQLScript extension for wrapper scripts which
+ * can encapsulate other scripts.<br>
+ * Wrapper scripts may not have a SQL content except
+ * comments. The SQL text of these kind of scripts
+ * are dynamically generated from the children definition unless
+ * the user explicitely modifies it.<br>
+ * Children scripts will be added in the order defined
+ * by the ScriptType enum type.
+ *
+ * @author Christophe Fondacci
+ *
+ */
+public class SQLWrapperScript extends SQLScript {
+	private Set<ISQLScript> children;
+	private Map<ScriptType,ISQLScript> typeMap;
+	private String sqlComments;
+	private boolean userDefined = false;
+	public SQLWrapperScript(String name,String description) {
+		super();
+		setName(name);
+		setDescription(description);
+		setScriptType(ScriptType.WRAPPER);
+		children = new HashSet<ISQLScript>();
+		typeMap = new HashMap<ScriptType, ISQLScript>();
+		initializeSQL();
+	}
+	public SQLWrapperScript() {
+		super();
+		setScriptType(ScriptType.WRAPPER);
+		typeMap = new HashMap<ScriptType, ISQLScript>();
+	}
+	/**
+	 * @return the child scripts Set of this SQLScript
+	 */
+	public Set<ISQLScript> getChildren() {
+		return children;
+	}
+	/**
+	 * Hibernate setter. Sets the set of SQL child scripts
+	 * @param children Set of child SQLScript
+	 */
+	protected void setChildren(Set<ISQLScript> children) {
+		this.children=children;
+		for(ISQLScript s : children) {
+			typeMap.put(s.getScriptType(), s);
+		}
+	}
+	/**
+	 * Adds a new child SQLScript to this SQLScript
+	 * @param script child SQLScript to add
+	 */
+	public void addChildScript(ISQLScript script) {
+		// Handling wrapper children
+		if(script instanceof SQLWrapperScript) {
+			addWrapperChildScript((SQLWrapperScript)script);
+		} else {
+			ISQLScript target = typeMap.get(script.getScriptType());
+			// If this is a new script type, we create our child instance
+			if(target == null) {
+				target = new SQLScript(getName(),getDescription(),"",script.getScriptType());
+				typeMap.put(script.getScriptType(), target);
+			}
+			// We concatenate the child script with our typed script instance
+			target.appendSQL(script.getSql());
+			// We add to the child list if not yet done
+			if(!children.contains(target)) {
+				children.add(target);
+			}
+		}
+
+	}
+	public void addWrapperChildScript(SQLWrapperScript script) {
+		for(ISQLScript s : script.getChildren()) {
+			addChildScript(s);
+		}
+	}
+	public void setComments(String comments) {
+		this.sqlComments=comments;
+	}
+	/**
+	 * @see com.nextep.datadesigner.sqlgen.impl.SQLScript#getSql()
+	 */
+	@Override
+	public String getSql() {
+		// A wrapper may be altered by the user, if so we do not auto-generate the SQL content
+		if(userDefined) return super.getSql();
+		// If nobody has touched our wrapper, we systematically generate the SQL contents
+		if(sqlComments == null ) initializeSQL();
+		StringBuffer sql = new StringBuffer(2000);
+		sql.append(sqlComments + "\r\n");
+		sql.append("set define off\r\n");
+		sql.append("spool " + getName() + ".lst\r\n");
+		for(ScriptType t : ScriptType.values()) {
+			for(ISQLScript s : children) {
+				if(s!=null && s.getScriptType() == t) {
+					sql.append(SQLGenUtil.getScriptCallerTag(DBGMHelper.getCurrentVendor()) + s.getFilename() + "\r\n");
+				}
+			}
+		}
+		sql.append("spool off\r\n");
+		sql.append(SQLGenUtil.getScriptExitTag() + "\r\n");
+		return sql.toString();
+	}
+	private void initializeSQL() {
+		StringBuffer b = new StringBuffer(2000);
+		b.append("--\r\n");
+		b.append("-- Generated by neXtep Designer on " + new Date(System.currentTimeMillis()) + "\r\n");
+		b.append("--\r\n");
+		b.append("--    NAME\r\n");
+		b.append("--      " + getName() + getScriptType().getFileExtension() + "\r\n");
+		b.append("--\r\n");
+		b.append("--    DESCRIPTION\r\n");
+		int offset = 0;
+		while(getDescription()!=null && offset<getDescription().length()) {
+			if(offset+60>getDescription().length()) {
+				b.append("--      " + getDescription().substring(offset) + "\r\n");
+				//offset=getDescription().length();
+				break;
+			}
+			String line = getDescription().substring(offset, offset+60);
+			int endOffset = line.lastIndexOf(" ") == -1 ? 60 : line.lastIndexOf(" ");
+			b.append("--      " + line.substring(0,endOffset) + "\r\n");
+			offset+=endOffset;
+		}
+		b.append("--\r\n");
+		b.append("--    VERSION HISTORY\r\n");
+		b.append("--\r\n\r\n");
+		setComments(b.toString());
+	}
+	/**
+	 * This extension will add the specified script as a child script.
+	 *
+	 * @see com.nextep.datadesigner.sqlgen.impl.SQLScript#appendScript(com.nextep.datadesigner.sqlgen.model.ISQLScript)
+	 */
+	@Override
+	public void appendScript(ISQLScript script) {
+		addChildScript(script);
+	}
+	@Override
+	public void setSql(String sql) {
+		// If this method is called then the user overrides the SQL content of
+		// the wrapper. We flag it as custom.
+			this.userDefined = true;
+			super.setSql(sql);
+	}
+}

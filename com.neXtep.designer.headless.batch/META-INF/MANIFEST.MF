@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Command-line neXtep runtime
+Bundle-SymbolicName: com.neXtep.designer.headless.batch;singleton:=true
+Bundle-Version: 1.0.6.qualifier
+Bundle-Activator: com.nextep.designer.headless.batch.BatchPlugin
+Bundle-Vendor: neXtep
+Eclipse-RegisterBuddy: com.neXtep.designer.hibernate
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.5",
+ com.neXtep.designer.headless;bundle-version="1.0.6",
+ com.neXtep.designer.logging;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.5",
+ com.neXtep.designer.synch;bundle-version="1.0.5",
+ com.neXtep.designer.vcs;bundle-version="1.0.5",
+ com.neXtep.designer.dbgm;bundle-version="1.0.5",
+ com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.beng;bundle-version="1.0.5",
+ com.neXtep.designer.installer;bundle-version="1.0.5",
+ com.neXtep.designer.repository;bundle-version="1.0.5"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/batchTaskServiceComponent.xml,
+ OSGI-INF/identifiableDaoComponent.xml,
+ OSGI-INF/listenerServiceComponent.xml,
+ OSGI-INF/problemSolverComponent.xml

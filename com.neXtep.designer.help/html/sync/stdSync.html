@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090403;17495900">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Repository to database synchronization</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">This is the default
+synchronization method. This synchronization will adapt your
+development database to the current view's contents.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Executing a database synchronization</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+synchronization is always available in the main toolbar of neXtep
+designer. You simply have to click this button </FONT>
+<IMG SRC="SyncDBIcon.png" NAME="images1" ALIGN=BOTTOM WIDTH=24 HEIGHT=24 BORDER=0>
+ to start a synchronization to your development environment. The
+command is always available on the main toolbar :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="SyncDBToolbar.png" NAME="images2" ALIGN=LEFT WIDTH=477 HEIGHT=74 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The synchronization preview</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">When
+you start a synchronization, the system first loads the target
+database structure and then compares it with the current view's
+contents. Once this is done, a synchronization preview dialog comes
+up to display the changes which need to be made to the target
+database.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="SynchPreview.png" NAME="images3" ALIGN=LEFT WIDTH=792 HEIGHT=346 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">In
+this dialog you can tell the SQL generator which objects to generate
+and which objects to leave in place. When you validate this dialog,
+the SQL-generation engine will generate the SQL code corresponding to
+the checked items of the preview dialog.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<BR>
+</H2>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The synchronization result</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+result of a repository to database synchronization will be a SQL
+script.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Once
+validated, the generated SQL script is not automatically submitted to
+the target database (although you can say so by editing
+synchronization properties). Instead, the SQL script is opened in a
+new SQL-editor for you to review / alter it before submitting to the
+target database. Such a script is tagged as <I>Pending</I><SPAN STYLE="font-style: normal">
+as we are about to submit it to our target database. </SPAN></FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">You
+can retrieve all pending synchronization scripts in the </SPAN><I>Pending
+Scripts </I><SPAN STYLE="font-style: normal">view at the bottom of
+your neXtep environment.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Here
+is the generated SQL script you see when you validate the above
+synchronization dialog :</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="SyncSQLScript.png" NAME="images4" ALIGN=LEFT WIDTH=791 HEIGHT=499 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">This
+is an example of an Oracle generation. The MySQL generation creates a
+single flat SQL file containing all SQL statements whereas the Oracle
+generator takes advantage of some SQL*Plus directives to split the
+resulting scripts by type and creates an entry-point wrapper script.</FONT></P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<BR>
+</H2>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Applying the changes to the target
+database</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Note
+that after the synchronization, the <I>Pending Script </I><SPAN STYLE="font-style: normal">view
+is shown with the current script listed. When you have reviewed the
+generated SQL script, you only have to check the script in the list
+and click generate selected scripts.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="SyncPendingScript.png" NAME="images5" ALIGN=LEFT WIDTH=791 HEIGHT=196 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">The
+generation console will appear to provide output from the database
+default command-line client invoked with the generated script.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+</BODY>
+</HTML>

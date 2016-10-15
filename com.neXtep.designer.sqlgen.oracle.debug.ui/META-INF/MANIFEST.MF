@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Oracle debugger UI
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.oracle.debug.ui;singleton:=true
+Bundle-Version: 1.0.4.qualifier
+Bundle-Activator: com.nextep.designer.sqlgen.oracle.debug.ui.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.neXtep.designer.sqlgen,
+ com.neXtep.designer.sqlgen.oracle,
+ com.neXtep.designer.sqlgen.ui,
+ com.neXtep.designer.ui,
+ com.neXtep.designer.vcs,
+ com.neXtep.designer.core,
+ com.neXtep.designer.dbgm,
+ com.neXtep.designer.logging,
+ com.neXtep.designer.jdbc.oracle;bundle-version="1.4.0",
+ com.neXtep.designer.dbgm.ui;bundle-version="1.0.2"
+Eclipse-LazyStart: true
+Bundle-ClassPath: .

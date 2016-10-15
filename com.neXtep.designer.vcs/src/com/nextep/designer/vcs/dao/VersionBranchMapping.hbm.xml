@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.vcs.impl.VersionBranch" table="REP_BRANCHES" lazy="false">
+		<id name="id" column="BRANCH_ID">
+			<generator class="hilo"/>
+		</id>
+		<property name="name" column="BRANCH_NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+	</class>
+</hibernate-mapping>

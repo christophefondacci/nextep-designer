@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.vcs.impl.RepositoryFile"
+		table="REP_FILES"
+		lazy="false">
+			<id name="id" column="FILE_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="name" column="FILENAME"/>
+			<property name="description" column="DESCRIPTION"/>
+			<property name="fileSizeKB" column="FILESIZE"/>
+			<property name="importDate" column="IMPORT_DATE"/>
+			<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="FILE_REFID" cascade="persist,merge,save-update"/>
+			
+	</class>
+</hibernate-mapping>

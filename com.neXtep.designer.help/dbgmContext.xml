@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="ConnectionsView">
+      <description>The connections explorer view is the place where you can define your development database connections.
+
+You can define as many connections as you want. The connections you create are defined locally in your workspace and will therefore never be visible to other neXtep users. They are attached to workspaces so that you have a different set of connections definition for every workspace you open.
+
+Once defined, a connection can be used with the integrated SQL client, or used to synchronize your workspace to / from a database connection.</description>
+      <topic label="Topic"/>
+   </context>
+   <context id="datasetEditor" title="The data set editor">
+      <description>The dataset editor is the place where you can manipulate your reference data. Basically, it is formed of a top section dedicated to data set definition (table and column definition) and of a botton section dedicated to data manipulation.
+
+The data manipulation pane is a SQL client editor as you interact with your data directly in SQL. An initial SELECT query is preconfigured to allow you to select all your data. You can enter any SQL query here to update your data (insert, update, delete) or you can select the data and interact with it from the SQL results view by toggling the edit mode.
+
+Note that any update you make on the data is not stored in the repository until you click on the save button.</description>
+   </context>
+</contexts>

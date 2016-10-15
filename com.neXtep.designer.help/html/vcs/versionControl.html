@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20081114;16422500">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Version control</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep designer is all
+about version control. Therefore everything is <I>versionable </I><SPAN STYLE="font-style: normal">within
+the environment. You can easily control versions of all objects of
+the environment via several tools.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Monitoring
+versions with the version editor view</SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Since
+versioning is everywhere, a version view is always shown in the
+environment. The view is refreshed each time you select / edit an
+object and always show you the version tree of the object you are
+currently working with. It allows you to see the version history of
+any object very quickly.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="VersionEditorView.png" NAME="images1" ALIGN=LEFT WIDTH=208 HEIGHT=338 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">This is a screenshot of
+the version editor which is always displayed at the upper left of
+your environment (note that you can change this position if you
+like). If you accidentally close this view, you can make it reappear
+by the Window &gt; Show version navigator menu. It will always be
+restored when you change the view from Repository &gt; Change view
+menu.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">In this view we can see
+that the selected / edited object version is marked by a surrounding
+red box. Other versions are shown graphically to quickly see
+inheritance. You can quickly compare the current version with another
+by the comparison tool in the upper toolbox. To do this you only have
+to select (click) any version in the tree and click the 
+<IMG SRC="CompareWithTool.png" NAME="images2" ALIGN=BOTTOM WIDTH=18 HEIGHT=17 BORDER=0>
+button. You will then see the comparison dialog which will show you
+differences between the 2 selected versions.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">For advanced users, you
+will also be able to edit the current version information (if and
+only if you are working with a modifiable version) by clicking the
+&ldquo;Edit&rdquo; button.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Creating
+/ managing versions</SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">When
+you first create any object in a view or module, this object will
+automatically have a new initial and modifiable version 1.0.0.0. This
+will be the root version of your new element. Now you will be able to
+control the versions of this element by 3 actions which will always
+be proposed for this element :</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="CheckOut.png" NAME="images3" ALIGN=LEFT WIDTH=260 HEIGHT=21 BORDER=0><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="Commit.png" NAME="images4" ALIGN=LEFT WIDTH=260 HEIGHT=22 BORDER=0><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="UndoCheckout.png" NAME="images5" ALIGN=LEFT WIDTH=260 HEIGHT=23 BORDER=0><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">These 3 actions will
+appear for any versionable element in the contextual popup menu when
+you right-click an element or in the toolbar when you are editing or
+have selected a versionable object. These 3 actions will never be
+enabled at the same time :</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">You can commit a
+	checked-out or unversioned version</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">You can checkout a
+	committed version</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">You can
+	undo-checkout a checked out version (that is to say all check-out
+	versions except the root version)</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">When you <I>Commit </I>an
+element you <B>freeze </B>the element version. That is to say nobody
+will never be able to modify this element version in the future. If
+someone wants to modify this element, he will need to <I>Check out</I><SPAN STYLE="font-style: normal">
+it to create a brand new modifiable release.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">When
+you </SPAN><I>Check out </I><SPAN STYLE="font-style: normal"> a
+committed element, you create a brand new version of this element.
+The new version will initially be exactly the same element except
+that it will be modifiable and have a different version information.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">When
+you </SPAN><I>Undo Check Out </I><SPAN STYLE="font-style: normal">a
+checked-out element, you cancel your modifications and restore the
+committed element from which this check-out had been performed. A
+confirmation message dialog will always ask you to confirm this
+operation since you will lose all non-committed changes to the
+element.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

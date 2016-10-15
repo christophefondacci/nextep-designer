@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.core.elementType">
+      <elementType
+            Id="DELIVERY_MODULE"
+            categoryIcon="resource/DeliveryIconSmall.ico"
+            categoryIcon_16x16="resource/DeliveryIconTiny.ico"
+            categoryLabel="Deliveries"
+            description="Delivery module"
+            icon="resource/DeliveryIconSmall.ico"
+            icon_16x16="resource/DeliveryIconTiny.ico"
+            name="Delivery Module"
+            parentTypeId="CONTAINER"
+            typeInterface="com.nextep.designer.beng.model.IDeliveryModule">
+      </elementType>
+   </extension>
+   <extension
+         point="com.neXtep.designer.vcs.viewLinker">
+      <viewLinker
+            class="com.nextep.designer.beng.services.BENGLinker"
+            name="Deliveries informations">
+      </viewLinker>
+   </extension>
+   <extension
+         point="com.neXtep.designer.vcs.namingVariableProvider">
+      <namingVariableProvide
+            class="com.nextep.designer.beng.providers.VersionVariableProvider">
+      </namingVariableProvide>
+      <namingVariableProvide
+            class="com.nextep.designer.beng.providers.ModuleNameProvider">
+      </namingVariableProvide>
+   </extension>
+   <extension
+         point="com.neXtep.designer.core.persistenceFile">
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/IDeliveryItemMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/DeliveryModuleMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/DeliveryFileMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/DeliveryInfoMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/ArtefactMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/ExternalFileMapping.hbm.xml">
+      </persistenceFile>
+      <persistenceFile
+            file="src/com/nextep/designer/beng/dao/DeliveryScriptMapping.hbm.xml">
+      </persistenceFile>
+   </extension>
+   <extension
+         point="com.neXtep.designer.core.factories">
+      <factory
+            class="com.nextep.designer.beng.factories.DeliveryModuleFactory"
+            typeId="DELIVERY_MODULE">
+      </factory>
+   </extension>
+
+
+</plugin>

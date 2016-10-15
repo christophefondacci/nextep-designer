@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.postgre.model.impl.PostgreSqlTable"
+		extends="com.nextep.datadesigner.dbgm.impl.VersionedTable"
+		table="DBPM_TABLES"
+		lazy="false"
+		>
+			<key column="TAB_VERSION_ID"/>
+			<many-to-one name="physicalProperties" class="com.nextep.designer.dbgm.model.impl.TablePhysicalProperties" not-null="false" column="PHYS_ID" cascade="all" fetch="join"/>
+			<set name="inheritances" table="DBPM_TABLES_INHERITANCES" outer-join="false" cascade="all" lazy="false">
+				<key column="TAB_VERSION_ID"/>
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="INHERITED_TABLE_REFID" unique="true"/>
+			</set>	
+			<set name="checkConstraints" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID"/>
+				<one-to-many class="com.nextep.designer.dbgm.model.impl.CheckConstraint"/>
+			</set>
+	</joined-subclass>
+</hibernate-mapping>

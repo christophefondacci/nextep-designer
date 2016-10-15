@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.installer.logging">
+   <implementation class="com.nextep.installer.services.impl.LoggingService"/>
+   <service>
+      <provide interface="com.nextep.installer.services.ILoggingService"/>
+   </service>
+</scr:component>

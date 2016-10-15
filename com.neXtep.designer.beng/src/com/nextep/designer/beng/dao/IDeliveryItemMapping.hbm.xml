@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.designer.beng.model.IDeliveryItem"
+
+		table="BENG_DELIVERIES"
+		lazy="false"
+		>
+			<id name="id" column="DELIVERY_ID">
+				<generator class="hilo"/>
+			</id>
+		<property name="deliveryType" column="DELIVERY_TYPE" type="com.nextep.designer.beng.dao.DeliveryTypeType"/>
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.sqlgen.impl.SQLWrapperScript"
+		extends="com.nextep.datadesigner.sqlgen.model.ISQLScript"
+		table="DBGM_SQL_WRAPPERS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+
+ 			<set name="children" table="DBGM_WRAPPER_CONTENTS" cascade="all" lazy="false" outer-join="false">
+				<key column="SQLW_ID"/>
+				<many-to-many class="com.nextep.datadesigner.sqlgen.model.ISQLScript" column="SCRIPT_ID"/>
+			</set>
+
+	</joined-subclass>
+</hibernate-mapping>

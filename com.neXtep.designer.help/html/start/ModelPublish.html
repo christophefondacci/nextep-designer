@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.3  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593725">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20080415;19114026">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21cm 29.7cm }
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: medium }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Publishing your first module</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Now that we have
+created our simple model, we need to publish it to a development
+database. Indeed, we haven't generated anything so far and our 2
+tables are not accessible by anyone, except through the <I>neXtep
+Designer</I> IDE. Everything we have created is stored in the neXtep
+Designer repository, a database schema which stores and manages your
+development and controls the versions of the developed entities.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">First, you need to tell
+designer where your development database is located. Designer will
+never create database users for you, therefore you optionally need to
+create a new user and to grant the appropriate rights. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="font-weight: medium"><FONT FACE="Arial, sans-serif">Creating
+the development connection</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm">To define a new
+development connection, you need to activate the &ldquo;Connection&rdquo;
+view at the lower right of your workbench :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ModelPublish_html_m278562da.gif" NAME="Image1" ALIGN=LEFT WIDTH=276 HEIGHT=277 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Right-click on the
+development target and select &ldquo;<I>Create connection&rdquo;</I><SPAN STYLE="font-style: normal">
+ from the popup menu. The following dialog will come up :</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ModelPublish_html_63f5d233.jpg" NAME="Image2" ALIGN=LEFT WIDTH=525 HEIGHT=441 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">This
+dialog allow you to enter the settings of your new database
+connection. Fill-in your connection properties to tell Designer how
+to connect to your development database. The following screenshot is
+an example of the settings we used for the development database of
+this tutorial. You can see that we are using a local Oracle database
+and we connect to the user </SPAN><I>tutdev</I><SPAN STYLE="font-style: normal">
+(which is empty).</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ModelPublish_html_m422ef009.jpg" NAME="Image3" ALIGN=LEFT WIDTH=525 HEIGHT=441 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Click
+finish to create the development connection. The new connection will
+appear in the </SPAN><I>Connection </I><SPAN STYLE="font-style: normal">view
+just under the </SPAN><I>Development</I><SPAN STYLE="font-style: normal">
+connection tree item.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="font-weight: medium"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Setting
+up your database client</SPAN></FONT></H2>
+<P CLASS="western"><SPAN STYLE="font-style: normal">It is important
+to know that neXtep Designer will not only generate SQL statements.
+It will generate scripts which should be run with the database client
+program since they contain comments, prompts, error handling, which
+are not &ldquo;pure&rdquo; SQL. Therefore designer need to know where
+your database command-line client is located to delegate the
+submission of a generation. It will typically correspond to the
+location of sqlplus and mysql programs respectively for Oracle and
+MySQL databases. To define the location of the executable
+command-line program, go into the </SPAN><I>Window </I><SPAN STYLE="font-style: normal">menu
+from the neXtep designer menu bar and select </SPAN><I>Preferences</I><SPAN STYLE="font-style: normal">.
+Expand the </SPAN><I>neXtep Designer </I><SPAN STYLE="font-style: normal">node
+and select </SPAN><I>Generator </I><SPAN STYLE="font-style: normal">subitem.
+</SPAN>
+</P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_29cedc28.jpg" NAME="Image4" ALIGN=LEFT WIDTH=793 HEIGHT=552 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">Edit the
+</SPAN><I>Generator binary </I><SPAN STYLE="font-style: normal">field
+by clicking on the </SPAN><I>Browse...</I><SPAN STYLE="font-style: normal">
+button and select the exectuable corresponding to your database
+vendor. You might also customize the </SPAN><I>Generator output
+directory</I><SPAN STYLE="font-style: normal"> and the </SPAN><I>Generator
+temporary directory</I><SPAN STYLE="font-style: normal"> which
+corresponds to (respectively) the directory where deliveries will be
+generated and to the temporary scripts generations. We will talk
+about deliveries in a later section of this tutorial. For now, your
+development scripts will be generated in the temporary directory.
+Click </SPAN><I>OK </I><SPAN STYLE="font-style: normal">when you have
+finished your customization.</SPAN></P>
+<H2 CLASS="western"><SPAN STYLE="font-style: normal">Generating your
+first development</SPAN></H2>
+<P CLASS="western"><SPAN STYLE="font-style: normal">You are now ready
+to generate your development to the development database. To perform
+the generation, right click on the </SPAN><I>Tutorial view </I><SPAN STYLE="font-style: normal">item
+of the view explorer, or on the </SPAN><I>Tutorial </I><SPAN STYLE="font-style: normal">container
+item and select </SPAN><I>Synchronize</I><SPAN STYLE="font-style: normal">.
+Depending on the item you click on, full or partial synchronization
+will be performed. For now, since we only have one container,
+clicking on the view or container node has exactly the same effect.
+You could also click on the synchronize icon from the tool bar which
+will synchronize the whole view.</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_m57e01ad3.gif" NAME="Image5" ALIGN=LEFT WIDTH=247 HEIGHT=34 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">A synchronization
+preview dialog window will come up to show you differences between
+your development in the IDE and the contents of your targeted
+development database.</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_2fc4ca06.jpg" NAME="Image6" ALIGN=LEFT WIDTH=800 HEIGHT=222 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">This is a 3-part
+window. The first part on the left corresponds to elements present in
+the repository. This is what you have developed and what you see in
+the view explorer. The part in the middle is the content of the
+targeted database connection. Since we have an empty user, elements
+of the repository does not exist in the database and a red cross is
+displayed to tell you that these repository elements don't exist in
+the database. Eventually, the rightest part in the preview of what
+your development database will look like after your generation. This
+is still time to cancel the generation if the generation preview does
+not satisfy your needs. </SPAN>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">Click </SPAN><I>OK</I><SPAN STYLE="font-style: normal">
+to continue with the generation process. NeXtep designer will then
+generate the scripts needed to upgrade your development database.
+Note that those scripts will be opened in an editor to let you check
+and / or edit the generation contents before submitting it to the
+development database :</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_m40727056.jpg" NAME="Image7" ALIGN=LEFT WIDTH=947 HEIGHT=583 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">You can now see
+the SQL multi editor displaying the result of the script generation.
+Note that the generation engine has generated a &ldquo;wrapper&rdquo;
+script which delegates actions to other scripts depending on the
+contents. You could therefore see a </SPAN><I>tab </I><SPAN STYLE="font-style: normal">script
+which contains tables definitions, a </SPAN><I>pk </I><SPAN STYLE="font-style: normal">script
+which contain primary keys definitions and a </SPAN><I>fk </I><SPAN STYLE="font-style: normal">script
+with foreign keys definitions. All these scripts are accessible
+through the same SQL editor by the tabs you could see at the bottom
+of the editor (PK, FK, TBL). If you click on the TBL tab, you will
+see the following script contents :</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_5fbd232b.gif" NAME="Image8" ALIGN=LEFT WIDTH=430 HEIGHT=332 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">You can review
+the script to verify the SQL which has been generated (you will do it
+for sure on your first generations, and will do it less when you will
+gain trust in the generation engine).</SPAN></P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">Note that the
+generation scripts have been created in the folder specified in the
+</SPAN><I>Generator temporary directory</I><SPAN STYLE="font-style: normal">
+which you may have customized earlier. You can see a list of all
+scripts generations from the </SPAN><I>Pending scripts </I><SPAN STYLE="font-style: normal">view
+which you can find in the upper-right section of the workbench. In
+this view you will see all scripts which you have generated and which
+have not yet been submitted to the database. </SPAN>
+</P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_m24fa5ce2.gif" NAME="Image9" ALIGN=LEFT WIDTH=947 HEIGHT=583 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">Check the script
+from the list and select </SPAN><I>Generate selection</I><SPAN STYLE="font-style: normal">
+to submit it to your development database. The workbench will focus
+on the </SPAN><I>Generation Console </I><SPAN STYLE="font-style: normal">to
+give you feedback from your script submission.</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_m7c23d108.gif" NAME="Image10" ALIGN=LEFT WIDTH=871 HEIGHT=465 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">Note that after
+generating, the corresponding script is removed from the </SPAN><I>Pending
+scripts</I><SPAN STYLE="font-style: normal"> as it is no more
+&ldquo;pending&rdquo;. You should have a look to the view explorer as
+well to notice that, after submitting the script, your table items
+have changed from this :</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_6d1976dd.gif" NAME="Image11" ALIGN=LEFT WIDTH=178 HEIGHT=135 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">to this :</SPAN></P>
+<P CLASS="western"><IMG SRC="ModelPublish_html_2165b30d.gif" NAME="Image12" ALIGN=LEFT WIDTH=185 HEIGHT=134 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><SPAN STYLE="font-style: normal">This little icon
+decorator indicates that those objects are synchronized between the
+designer repository and your development target. Only database
+objects could be synchronized with database, this is the reason why
+no decorator exists for diagrams or containers.</SPAN></P>
+</BODY>
+</HTML>

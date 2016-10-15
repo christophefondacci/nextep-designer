@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.ui.typeUIComponent">
+      <typeUIComponent
+            class="com.nextep.designer.dbgm.ui.editors.PhysicalPropertiesOverviewFormEditor"
+            typeId="TABLE"
+            vendor="POSTGRE">
+      </typeUIComponent>
+      <typeUIComponent
+            class="com.nextep.designer.dbgm.ui.editors.PhysicalPropertiesOverviewFormEditor"
+            typeId="INDEX"
+            vendor="POSTGRE">
+      </typeUIComponent>
+      <typeUIComponent
+            class="com.nextep.designer.dbgm.ui.editors.PhysicalPropertiesOverviewFormEditor"
+            typeId="UNIQUE_KEY"
+            vendor="POSTGRE">
+      </typeUIComponent>
+      <typeUIComponent
+            class="com.nextep.designer.dbgm.postgre.ui.editors.InheritedTablesFormEditor"
+            typeId="INHERITED_TABLE"
+            vendor="POSTGRE">
+      </typeUIComponent>
+   </extension>
+   <extension
+         point="com.neXtep.designer.ui.editorTypedPageContribution">
+      <editorTypedPageContribution
+            dbVendor="POSTGRE"
+            editorTypeId="TABLE"
+            pageTypeId="CHECK">
+      </editorTypedPageContribution>
+      <editorTypedPageContribution
+            dbVendor="POSTGRE"
+            editorTypeId="TABLE"
+            pageTypeId="INHERITED_TABLE">
+      </editorTypedPageContribution>
+   </extension>
+   <extension
+         point="com.neXtep.designer.ui.typeEditorPage">
+      <typeEditorPage
+            actionProvider="com.nextep.designer.dbgm.postgre.ui.actions.InheritedTablesActionProvider"
+            contentProvider="com.nextep.designer.dbgm.postgre.ui.jface.InheritedTablesContentProvider"
+            icon="resources/ClusterSmallCube.ico"
+            labelProvider="com.nextep.designer.dbgm.ui.jface.DbgmLabelProvider"
+            title="Table inheritance"
+            typeId="INHERITED_TABLE">
+      </typeEditorPage>
+   </extension>
+
+</plugin>

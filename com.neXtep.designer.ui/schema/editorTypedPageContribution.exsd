@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.neXtep.designer.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.neXtep.designer.ui" id="editorTypedPageContribution" name="EditorTypedPageContribution"/>
+      </appInfo>
+      <documentation>
+         This extension allows to bind a page type to an editor. For example, you have a table editor which is a multi-page editor. This editor will compute the pages it needs to create by analyzing this extension point for the TABLE editorType which will tell which typed page should be created.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="editorTypedPageContribution"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="editorTypedPageContribution">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="pageTypeId"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <attribute name="editorTypeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Type identifier of the editor to which this contribution is made.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pageTypeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Type identifier of the elements edited by the contributed page.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="dbVendor" type="string">
+            <annotation>
+               <documentation>
+                  A database vendor restriction, leave blank for all vendors.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="editorPageClass" type="string">
+            <annotation>
+               <documentation>
+                  The contributed editor part. This is an optional information as leaving blank will activate the default built-in master/details edition pattern whose information is defined through the typeEditorPage extension using the contributed page type Id.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.ui.forms.editor.IFormPage"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="singleEdition" type="boolean">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

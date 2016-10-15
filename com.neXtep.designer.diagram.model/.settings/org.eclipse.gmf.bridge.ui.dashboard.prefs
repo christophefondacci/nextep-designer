@@ -1,0 +1,9 @@
+#Tue Feb 01 20:24:02 CET 2011
+eclipse.preferences.version=1
+gmf_dashboard/domainGenerationModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.genmodel
+gmf_dashboard/domainModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.ecore
+gmf_dashboard/generationModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.gmfgen
+gmf_dashboard/graphicalDefinitionModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.gmfgraph
+gmf_dashboard/mappingModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.gmfmap
+gmf_dashboard/option_rcp=*
+gmf_dashboard/toolingDefinitionModel=platform\:/resource/com.neXtep.designer.diagram.model/model/dbmodel.gmftool

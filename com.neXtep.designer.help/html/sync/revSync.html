@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090411;13094100">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Database to repository synchronization</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">This is the <I>reverse
+</I>synchronization method. We know that you may use several
+different SQL-clients to develop, debug, alter your development
+databases and that your team may be so large that nobody can control
+how the changes are made to the development database structure. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">This is what reverse
+synchronization is here for : to help you integrate any change which
+would have been made directly to the development database rather than
+in a neXtep respository view.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Executing a database reverse
+synchronization</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+synchronization is always available in the main toolbar of neXtep
+designer. You simply have to click this button </FONT>
+<IMG SRC="revSyncDBIcon.png" NAME="images1" ALIGN=BOTTOM WIDTH=24 HEIGHT=24 BORDER=0>
+to start a reverse synchronization of your development environment.
+The command is always available on the main toolbar :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="revSyncDBToolbar.png" NAME="images2" ALIGN=LEFT WIDTH=477 HEIGHT=74 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The reverse synchronization wizard</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+reverse synchronization is a powerful but also a dangerous tool. It
+offers you to make your repository view synchronized with your
+current development database structure. To help you make the right
+changes to your repository objects, a wizard will come up as soon as
+you fire a reverse synchronization.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+wizard is composed of 3 parts :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Integration
+	of items which are only present in the database</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Integration
+	of items which are modified in the database (=&gt; different from
+	the repository versions)</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Removal
+	of items which are no longer present in the database</SPAN></FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Please
+keep in mind that these 3 parts will be shown in this order, only
+when there is something to display. For example, if a reverse
+synchronization only reveal updated elements, part 1 and 3 will not
+appear and the wizard will be composed of the single </SPAN></FONT><FONT FACE="Arial, sans-serif"><I><SPAN STYLE="font-weight: normal">modification</SPAN></I></FONT><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+pane.</SPAN></SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Integrating new elements</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">This
+is the first pane of the reverse synchro wizard. This pane is similar
+to the manual view creation from an existing database. You have 2
+visions of the hierarchical structure of the development database
+(left pane) and of your current repository view (right pane). You can
+integrate new items by drag / drop, or by selecting the item to
+import in the left pane, selecting the target container in the right
+pane and click the right arrow.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="revSyncWiz1.png" NAME="images6" ALIGN=LEFT WIDTH=724 HEIGHT=494 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Note
+that you can add or remove repository containers in this dialog
+through the tool buttons available above the right tree.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Also
+note that you have 2 options when integrating new elements (tools
+above the left tree) : </FONT>
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">The
+	first button is the constraint enforcement : when pushed (default)
+	all checks will be performed by the system to ensure that you will
+	not integrate an item which depends on other items outside of the
+	repository. </SPAN></FONT><FONT FACE="Arial, sans-serif"><B>You
+	should never need to disable this option</B></FONT><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">
+	except for rare cases when you might have a dependencies deadloop :
+	a table A has a foreign key to table B which has a foreign key to
+	table A.</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">The
+	second button is the dependency puller. It allows you to pull all
+	dependent objects when you add an object to the repository. So when
+	activated :</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">If
+	table A has a foreign key to table B</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">If
+	A and B are not part of the current repository view</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">If
+	the user tries to integrate B, the table A will be integrated as
+	well</SPAN></FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-left: 2cm; text-indent: -0.64cm; margin-bottom: 0cm">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Integrating updated elements </FONT>
+</H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+<I>update </I>pane of the reverse synchronization wizard look very
+similar to a classic synchronization dialog of <I>neXtep Designer</I>.
+Note that this time the database and repository sections are reversed
+: database contents are shown in the left tree whereas the repository
+contents are shown in the central part. Like a classic
+synchronization, you decide which element to <I>integrate</I><SPAN STYLE="font-style: normal">
+by checking it in the leftest tree. When you will finish the wizard,
+all checked elements will be updated.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="revSyncWiz2.png" NAME="images7" ALIGN=LEFT WIDTH=724 HEIGHT=494 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Removing non-existing elements</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Elements
+eligible for removal are listed in the last part of the <I>reverse
+synchronization wizard. </I><SPAN STYLE="font-style: normal">This
+last part is also a standard </SPAN><I>synchronization dialog</I><SPAN STYLE="font-style: normal">
+which shows elements to remove and allow you to check / uncheck the
+elements to define if you want to remove them or not, respectively. </SPAN></FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">We
+chose to isolate the &ldquo;removal list&rdquo; from the &ldquo;updated
+items list&rdquo; for you to pay much attention to the removed items.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><IMG SRC="revSyncWiz3.png" NAME="images8" ALIGN=LEFT WIDTH=690 HEIGHT=494 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</H2>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Restrictions</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Some restrictions apply
+to the reverse synchronization. Unlike the standard synchronization,
+you perform repository actions to integrate the changes from the
+database into the repository. Depending on the current versioning
+state of your view contents, you may or may not integrate the
+changes.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Here is a list of
+typical actions / restrictions: 
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">You cannot
+	integrate changes in a committed container, you must check it out
+	first</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">You cannot
+	integrate changes of a database strucutral element if it is checked
+	out. You should commit or undo your check out if you want the change
+	to be integrated.</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">All changes are
+	integrated through new dedicated versions of the elements. After the
+	synchronization, elements will stay checked out.</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><B>Undo restrictions :</B></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal">At
+the moment, the reverse synchronization engine is not capable of
+undoing all the changes it makes to the repository. As a result the
+first pane of the reverse synchronization wizard is not undoable, all
+actions you perform in this pane will be directly made to your
+current view and cancelling the wizard will not cancel your actions.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><I>We
+currently work to fix this issue as soon as possible.</I></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+</BODY>
+</HTML>

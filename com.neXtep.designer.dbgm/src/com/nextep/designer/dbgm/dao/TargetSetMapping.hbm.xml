@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.nextep.datadesigner.dbgm.impl.TargetSet"
+    table="DBGM_TARGET_SETS"
+    lazy="false">
+      <id name="id" column="TSET_ID">
+        <generator class="hilo"/>
+      </id>
+	<set name="targets" cascade ="all" outer-join="false" lazy="false">
+		<key column="TSET_ID"/>
+		<one-to-many class="com.nextep.datadesigner.dbgm.impl.Connection"/>
+	</set>
+      <many-to-one name="view" class="com.nextep.designer.vcs.model.impl.Workspace" column="VIEW_ID"/>
+
+  </class>
+</hibernate-mapping>

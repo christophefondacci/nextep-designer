@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.core.coreService">
+   <implementation class="com.nextep.designer.core.services.impl.CoreService"/>
+   <service>
+      <provide interface="com.nextep.designer.core.services.ICoreService"/>
+   </service>
+</scr:component>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="com.nextep.designer.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Database Design"
+            class="com.nextep.designer.Perspective"
+            id="com.neXtep.Designer.perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.neXtep.Designer.test.application"
+            name="neXtep Designer">
+         <property
+               name="aboutText"
+               value="neXtep Designer for Oracle / MySQL&#x0A;Professional designing IDE for database development. &#x0A;&#x0A;Release 1.0.2 Enterprise Edition.&#x0A;Based on Eclipse RCP.&#x0A;&#x0A;(c) Copyright neXtep Softwares 2007-2009. All rights reserved.&#x0A;This product includes software developed by the&#x0A;Apache Software Foundation http://www.apache.org/">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/DesignerIconTiny.ico,icons/DesignerIconSmall.ico,icons/DesignerIconMedium.ico,icons/DesignerIconLarge.ico">
+         </property>
+         <property
+               name="aboutImage"
+               value="platform:/plugin/com.neXtep.Designer/icons/about.bmp">
+         </property>
+         <property
+               name="appName"
+               value="neXtep Designer">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+
+   <extension
+         point="com.neXtep.designer.vcs.VersionableFactory">
+      <versionableFactory
+            class="com.nextep.datadesigner.dbgm.factories.TableFactory"
+            name="Table Factory"
+            versionableInterfaceName="com.nextep.datadesigner.dbgm.model.IBasicTable">
+      </versionableFactory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <separator
+               name="additions"
+               visible="false">
+         </separator>
+         <menu
+               id="com.neXtep.designer.window"
+               label="Window"
+               mnemonic="W">
+            <command
+                  commandId="org.eclipse.ui.window.showViewMenu"
+                  label="Show View">
+            </command>
+            <separator
+                  name="additions"
+                  visible="false">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences...">
+               <parameter
+                     name="preferencePageId"
+                     value="com.nextep.designer.core.preferences.CorePreferencePage">
+               </parameter>
+            </command>
+         </menu>
+         <menu
+               label="Software"
+               mnemonic="S">
+            <command
+                  commandId="org.eclipse.ui.update.findAndInstallUpdates"
+                  label="Find software updates..."
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.update.manageConfiguration"
+                  label="Edit configuration..."
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?before=additions">
+         <separator
+               name="version"
+               visible="false">
+         </separator>
+         <separator
+               name="generation"
+               visible="false">
+         </separator>
+         <separator
+               name="actions"
+               visible="false">
+         </separator>
+         <separator
+               name="graphics"
+               visible="false">
+         </separator>
+         <toolbar
+               id="com.nextep.designer.dbgm.gef.DBGMGraphicalEditor">
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="com.nextep.designer.test.splashHandlers.InteractiveSplashHandler"
+            id="com.nextep.designer.test.splashHandlers.interactive">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="com.neXtep.Designer.test.product"
+            splashId="com.nextep.designer.test.splashHandlers.interactive">
+      </splashHandlerProductBinding>
+      <splashHandler
+            class="com.nextep.designer.splashHandlers.InteractiveSplashHandler"
+            id="com.nextep.designer.splashHandlers.interactive">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="com.neXtep.Designer.product"
+            splashId="com.nextep.designer.splashHandlers.interactive">
+      </splashHandlerProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.statusHandlers">
+      <statusHandler
+            class="com.nextep.designer.handlers.NextepErrorHandler"
+            id="com.neXtep.Designer.nextepHandler">
+      </statusHandler>
+      <statusHandlerProductBinding
+            handlerId="com.neXtep.Designer.nextepHandler"
+            productId="com.neXtep.Designer.product">
+      </statusHandlerProductBinding>
+   </extension>
+
+</plugin>

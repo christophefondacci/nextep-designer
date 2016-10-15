@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.vcs.impl.VersionedDiagram"
+		table="DBGM_DIAGRAMS"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+<!--			<id name="id" column="VERSION_ID">
+				<generator class="foreign">
+					<param name="property">version</param>
+				</generator>
+			</id>
+-->
+		<property name="name" column="DIAGRAM_NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+		<set name="items" outer-join="false" lazy="false" inverse="true" cascade="all">
+			<key column="DIAGRAM_ID"/>
+			<one-to-many class="com.nextep.datadesigner.vcs.impl.DiagramItem"/>
+		</set>
+			<!-- array name="columns" inverse="true" cascade="all">
+				<key column="TAB_VERSION_ID"/>
+				<list-index><column name="COLUMN_POSITION"/></list-index>
+				<one-to-many class="com.nextep.datadesigner.dbgm.impl.BasicColumn"/>
+			</array-->
+	</joined-subclass>
+</hibernate-mapping>

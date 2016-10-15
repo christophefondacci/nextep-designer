@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SQLLITE JDBC driver Plugin
+Bundle-SymbolicName: com.neXtep.designer.jdbc.sqlite
+Bundle-Version: 3.7.2
+Bundle-Vendor: neXtep
+Export-Package: org.ibex.nestedvm,
+ org.ibex.nestedvm.util,
+ org.sqlite

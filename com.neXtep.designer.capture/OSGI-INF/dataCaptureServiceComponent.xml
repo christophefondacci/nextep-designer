@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.capture.dataCaptureService">
+   <implementation class="com.nextep.designer.capture.services.impl.DataCaptureService"/>
+   <service>
+      <provide interface="com.nextep.designer.capture.services.IDataCaptureService"/>
+   </service>
+   <reference bind="setConnectionService" cardinality="1..1" interface="com.nextep.designer.core.services.IConnectionService" name="IConnectionService" policy="static"/>
+   <reference bind="setTypedObjectFactory" cardinality="1..1" interface="com.nextep.designer.core.model.ITypedObjectFactory" name="ITypedObjectFactory" policy="static"/>
+   <reference bind="setDataService" cardinality="1..1" interface="com.nextep.designer.dbgm.services.IDataService" name="IDataService" policy="static"/>
+</scr:component>

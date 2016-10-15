@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.sqlgen.db2.captureService">
+   <implementation class="com.nextep.designer.sqlgen.services.impl.CaptureService"/>
+   <service>
+      <provide interface="com.nextep.designer.sqlgen.services.ICaptureService"/>
+   </service>
+</scr:component>

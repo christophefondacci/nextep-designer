@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Oracle SQL generator
+Eclipse-RegisterBuddy: com.neXtep.designer.hibernate,com.neXtep.designer.core
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.oracle;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Vendor: neXtep
+Require-Bundle: com.neXtep.designer.core,
+ com.neXtep.designer.dbgm,
+ com.neXtep.designer.logging,
+ com.neXtep.designer.sqlgen,
+ com.neXtep.designer.vcs,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ com.neXtep.designer.dbgm.oracle,
+ com.neXtep.designer.jdbc.oracle;bundle-version="1.4.0",
+ com.neXtep.designer.sqlgen.generic;bundle-version="1.0.2"
+Export-Package: com.nextep.datadesigner.sqlgen.impl.oracle,
+ com.nextep.designer.sqlgen.oracle.strategies,
+ com.nextep.designer.sqlgen.oracle.dao
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

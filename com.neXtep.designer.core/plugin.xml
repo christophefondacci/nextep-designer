@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension-point id="elementType" name="ElementType"
+		schema="schema/elementType.exsd" />
+	<extension-point id="typeInclusion" name="TypeInclusion"
+		schema="schema/typeInclusion.exsd" />
+	<extension-point id="SelectionInvoker" name="SelectionInvoker"
+		schema="schema/SelectionInvoker.exsd" />
+	<extension-point id="dbConnector" name="dbConnector"
+		schema="schema/dbConnector.exsd" />
+	<extension-point id="command" name="command"
+		schema="schema/command.exsd" />
+	<extension-point id="markerProvider" name="markerProvider"
+		schema="schema/markerProvider.exsd" />
+ <extension-point id="persistenceAccessors" name="PersistenceAccessors" schema="schema/persistenceAccessors.exsd"/>
+ <extension-point id="factories" name="Factories" schema="schema/factories.exsd"/>
+ <extension-point id="persistenceFile" name="PersistenceFile" schema="schema/persistenceFile.exsd"/>
+ <extension-point id="typedDao" name="TypedDao" schema="schema/typedDao.exsd"/>
+	<extension point="com.neXtep.designer.core.elementType">
+		<elementType Id="REFERENCE" categoryLabel="Referenced items"
+			icon="resource/linkSmall.ico" name="Reference"
+			typeInterface="com.nextep.datadesigner.model.IReference">
+		</elementType>
+		<elementType Id="ATTRIBUTE" categoryIcon="resource/AttribIconTiny.ico"
+			categoryLabel="Attributes" icon="resource/AttribIconTiny.ico" name="Attribute"
+			typeInterface="com.nextep.datadesigner.model.IAttribute">
+		</elementType>
+  <elementType
+        Id="CONNECTION"
+        categoryIcon="resource/DatabaseSmall.ico"
+        categoryIcon_16x16="resource/repository-middle.gif"
+        categoryLabel="Connections"
+        icon="resource/DatabaseSmall.ico"
+        icon_16x16="resource/repository-middle.gif"
+        name="Connection"
+        typeInterface="com.nextep.designer.core.model.IConnection">
+  </elementType>
+  <elementType
+        Id="Target type"
+        categoryIcon="resource/DatabaseShadowedTiny.ico"
+        categoryIcon_16x16="resource/DatabaseShadowedTiny.ico"
+        categoryLabel="Targets"
+        icon="resource/DatabaseShadowedTiny.ico"
+        icon_16x16="resource/DatabaseShadowedTiny.ico"
+        name="Target"
+        typeInterface="com.nextep.designer.core.model.TargetType">
+  </elementType>
+  <controller
+        class="com.nextep.designer.core.model.impl.ConnectionController"
+        typeId="CONNECTION">
+  </controller>
+	</extension>
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="com.nextep.designer.core.preferences.PreferenceInitializer">
+		</initializer>
+	</extension>
+ <extension
+       point="com.neXtep.designer.core.factories">
+    <factory
+          class="com.nextep.designer.core.model.impl.ConnectionFactory"
+          typeId="CONNECTION">
+    </factory>
+ </extension>
+ <extension
+       point="com.neXtep.designer.core.persistenceFile">
+    <persistenceFile
+          file="src/com/nextep/designer/core/dao/ReferenceMapping.hbm.xml">
+    </persistenceFile>
+    <persistenceFile
+          file="src/com/nextep/designer/core/dao/RepositoryPropertyMapping.hbm.xml">
+    </persistenceFile>
+ </extension>
+
+</plugin>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.dbgm.impl.BasicColumn"
+		table="DBGM_TABLE_COLUMNS"
+		lazy="false">
+			<id name="id" column="COLUMN_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="name" column="COLUMN_NAME"/>
+			<property name="description" column="DESCRIPTION"/>
+			<property name="rank" column="COLUMN_POSITION"/>
+			<property name="hibernateNotNull" column="NOT_NULL"/>
+			<property name="hibernateVirtual" column="IS_VIRTUAL"/>
+			<property name="defaultExpr" column="DEFAULT_EXPR"/>
+		    <component name="datatype" class="com.nextep.datadesigner.dbgm.impl.Datatype">
+		          <property name="name" column="DATATYPE"/>
+		          <property name="length" column="DATA_LENGTH"/>
+		          <property name="precision" column="DATA_PRECISION"/>
+		          <property name="hibernateUnsigned" column="IS_UNSIGNED"/>
+		          <property name="hibernateLengthType" column="LENGTH_TYPE"/>
+		    </component>
+			<many-to-one name="parent" class="com.nextep.datadesigner.dbgm.impl.VersionedTable" column="TAB_VERSION_ID" />
+			<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="COLUMN_REFID" cascade="persist,merge,save-update"/>
+	</class>
+</hibernate-mapping>

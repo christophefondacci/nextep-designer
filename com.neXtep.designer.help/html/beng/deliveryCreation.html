@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090324;18412400">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Creating a delivery</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Deliveries are
+connected to root modules (also called root containers). A root
+module is a module which is not embedded in another, that is to say
+which appears at the root level of a view.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">As soon as you have a
+module, you can define a delivery. As soon as you have your delivery
+ready, you can deploy your changes on another database.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western">To create a delivery on a module, right click on
+the module and select <I>Package and deliver.</I></P>
+<P CLASS="western"><IMG SRC="PackageDeliver.png" NAME="images1" ALIGN=LEFT WIDTH=372 HEIGHT=472 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="font-style: normal">A new delivery creation
+wizard will come up with the settings for your new delivery. If a
+delivery already exists for the module you clicked on, the delivery
+editor will open to edit the current module instead of the wizard.
+The delivery editor will look exactly the same as this wizard.</P>
+<P CLASS="western" STYLE="font-style: normal">As you can see below
+the delivery editor is composed of several tabs which contains
+different sections for configuring your delivery. 
+</P>
+<P CLASS="western" STYLE="font-style: normal"><IMG SRC="DeliveryOverview.png" NAME="images2" ALIGN=LEFT WIDTH=922 HEIGHT=692 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Overview tab folder</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">In the overview tab you select your
+initial and target release for this delivery. In most cases, this
+will be pre-defined when you create the delivery module but you may
+need to alter the settings.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The initial release is the release on
+which this delivery can apply. There can be one and only one initial
+release. If you try to deploy a delivery on a database which is not
+in the initial release, it will fail and will install nothing.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The target release is the release this
+delivery will install if the deployment is successful. It corresponds
+to the container's current release in your current view.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The Build Set tab folder</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">This is where you configure the
+elements to deploy. At first, the &ldquo;Items to build&rdquo; table
+will always be empty. NeXtep designer will help you compute the
+contents automatically through the first &ldquo;Compute build set&rdquo;
+button.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">You will then see something like :</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="DeliveryBuildSet.png" NAME="images3" ALIGN=LEFT WIDTH=506 HEIGHT=433 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The &ldquo;compute build set&rdquo;
+button computes differencies between the <I>initial release </I>and
+the <I>target release </I>of this delivery module to inject modified
+elements into the build set, making them listed in the table.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">You can choose to add or remove some
+items manually if you want to make <I>neXtep Designer </I>generate
+corresponding SQL scripts. When adding a <I>User</I> item, you will
+be prompted for the item through a filtering dialog containing
+buildable items :</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="BuildSetAddTo.png" NAME="images4" ALIGN=LEFT WIDTH=600 HEIGHT=400 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">And finally you will be prompted for
+the initial release you want to use :</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="BuildSetInitialRel.png" NAME="images5" ALIGN=LEFT WIDTH=488 HEIGHT=300 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Then, you can click on the &ldquo;Generate
+build scripts into module&rdquo; which will take the &ldquo;Items to
+build&rdquo; list and generate the corresponding SQL script to your
+delivery module. After clicking this button, you will see that a new
+script now appears in the deliveries view which contains the
+<I>SQL-representation</I> of the upgrade actions to perform.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="DeliveriesView.png" NAME="images6" ALIGN=LEFT WIDTH=242 HEIGHT=205 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The dependency tab folder</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Dependencies allows you to define
+relationships between different module deliveries. As you have seen
+in the <I>Build set</I> section, you can only define the contents of
+the module you deliver. But this module may need other modules to
+work correctly. These <I>other</I> modules are called <I>dependencies</I>.
+</FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">You can define the modules releases
+your module depends on through the <I>dependencies </I>tab. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">If you haven't defined any dependency
+yet, the top table will list eligible dependencies which are
+container releases which are present in your current view minus the
+container you are delivering.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">You add a dependency by clicking the
+<I>down</I> arrow under the table which will make the module release
+appear in the bottom left table. You remove a dependency by selecting
+ it in the bottom left table and clicking the <I>up </I>arrow above.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Dependencies.png" NAME="images7" ALIGN=LEFT WIDTH=602 HEIGHT=433 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Once added, your dependency may be
+resolved or not. A dependency is resolved when <I>neXtep designer </I>is
+able to find a chain of deliveries capable of upgrading this
+dependency from the initial release to the release you indicated.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">If this is your first delivery, the
+system must find deliveries which can generate the dependency module
+from nothing to the current release. This might corresponds to
+several releases. The delivery chain the system has found is listed
+in the bottom right table when you click on the dependency in the
+bottom left table. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">If this is not your first delivery,
+the system will analyze your previous delivery of the container, find
+the dependency module release in this previous delivery and will look
+for a set of deliveries capable of migrating this initial release to
+the release you indicate (generally the current view's release). </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="DependencyAdded.png" NAME="images8" ALIGN=LEFT WIDTH=601 HEIGHT=433 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">For this delivery of the &ldquo;Emp&rdquo;
+module, we can see that we defined a dependency to the Dep module in
+release 3.0.0.0. This will tell the delivery that the Dep module
+release 3.0.0.0 is required before being able to install the current
+delivery. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Now we can see in the bottom right
+table that this dependency corresponds to a chain of 3 deliveries
+which can upgrade the component Dep from release 1.0.0.0 to the
+release 3.0.0.0. This means that our previous Emp delivery had a
+dependency to the Dep module in release 1.0.0.0 and this time we need
+to upgrade it to a 3.0.0.0 before deploying our Emp module release
+2.0.0.0.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">In some cases, you might see an error
+message in the bottom right table like &ldquo;Missing delivery
+chain&rdquo;. That means that the system could not resolve a chain of
+deliveries capable of upgrading the dependency from its initial
+version to the current one. The error message will indicate which
+increment is missing in its From / Release columns. To fix the
+problem you will need to generate the deliveries (or ask other teams
+to provide the deliveries) for this version upgrade.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The compatibility tab folder</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">This folder is a bit specific as it
+does not directly impact your delivery contents. Instead, it will
+check the compatibility of the database schema you are about to
+deliver with the initial release. Many organizations require backward
+compatibility of the database structure to be able to safely upgrade
+the database and the application during distinct moments.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="Compatibility.png" NAME="images9" ALIGN=LEFT WIDTH=600 HEIGHT=432 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Here you can check this assertion by
+executing compatibility tests. You specify the release to check
+compatibility with and select a database target to check. Typically
+the database target specified in the <I>Check against</I> combo will
+be your current development database (which should be synchronized
+with your repository).</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">When you click on run tests, the
+compatibility release will be loaded and its structure will be used
+by the system to inject SQL-test statements to the targetted database
+and will show you the results in the table. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">When you have Oracle packages, tests
+will be made (in repository) against compatibility and current
+releases to check if all procedures declarations of the current
+release are compatible with previous procedures declaration. The test
+is only indicative.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="CompatibilityTestOK.png" NAME="images10" ALIGN=LEFT WIDTH=600 HEIGHT=432 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The screenshot above shows you a
+compatibility on the very simple component Emp.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">External tab folder</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">This tab folder is deprecated and will
+be removed very soon.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Properties</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">This tab folder allows you to define
+some additional properties to your delivery. Currently, there is only
+one property you can define : <I>First neXtep delivery. </I>This
+property is required when you want to install neXtep delivery
+packages to an existing database application which has not been
+created from scratch with neXtep designer. It tells the installer to
+<I>assume</I> the initial delivery indicated in this delivery is the
+one present on the target database. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">This will make the target database a
+neXtep managed database, use with care as the installer will have no
+way of knowing that the assumption is true or false.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: neXtep welcome page
+Bundle-SymbolicName: com.neXtep.designer.welcome; singleton:=true
+Bundle-Version: 1.0.5.qualifier
+Bundle-Activator: com.nextep.designer.welcome.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.intro,
+ org.eclipse.ui.intro.universal
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

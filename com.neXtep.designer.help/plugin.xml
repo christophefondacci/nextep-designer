@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="TutorialBasic.xml">
+      </toc>
+      <toc
+            file="GettingStarted.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="Concepts.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="sync.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="beng.xml"
+            primary="true">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="ContextVCS.xml"
+            plugin="com.neXtep.designer.vcs.ui">
+      </contexts>
+      <contexts
+            file="ContextBENG.xml"
+            plugin="com.neXtep.designer.beng.ui">
+      </contexts>
+      <contexts
+            file="ContextTyped.xml"
+            plugin="com.neXtep.designer.ui">
+      </contexts>
+      <contexts
+            file="ContextSynch.xml"
+            plugin="com.neXtep.designer.synch.ui">
+      </contexts>
+      <contexts
+            file="sqlclientContext.xml"
+            plugin="com.neXtep.designer.sqlclient.ui">
+      </contexts>
+      <contexts
+            file="dbgmContext.xml"
+            plugin="com.neXtep.designer.dbgm.ui">
+      </contexts>
+   </extension>
+
+</plugin>

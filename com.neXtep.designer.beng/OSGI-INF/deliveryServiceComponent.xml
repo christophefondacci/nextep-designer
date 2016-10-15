@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.beng.deliveryService">
+   <implementation class="com.nextep.designer.beng.services.impl.DeliveryService"/>
+   <service>
+      <provide interface="com.nextep.designer.beng.services.IDeliveryService"/>
+   </service>
+   <reference bind="setDeliveryDao" cardinality="1..1" interface="com.nextep.designer.beng.dao.IDeliveryDao" name="IDeliveryDao" policy="static"/>
+   <reference bind="setGenerationService" cardinality="1..1" interface="com.nextep.designer.sqlgen.services.IGenerationService" name="IGenerationService" policy="static"/>
+</scr:component>

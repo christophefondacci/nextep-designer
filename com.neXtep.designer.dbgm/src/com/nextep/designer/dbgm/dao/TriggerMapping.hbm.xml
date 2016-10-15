@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.Trigger"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_TRIGGERS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="name" column="NAME"/>
+			<property name="description" column="DESCRIPTION"></property>
+			<property name="sourceCode" column="SQL_TEXT" type="com.nextep.designer.core.dao.types.ClobStringType"/>
+			<property name="custom" column="IS_USER_DEFINED" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="onInsert" column="ON_INSERT" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="onUpdate" column="ON_UPDATE" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="onDelete" column="ON_DELETE" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<many-to-one name="triggableRef" class="com.nextep.datadesigner.impl.Reference" column="TAB_REFID" cascade="persist,merge,save-update"/>
+			<property name="time" column="TRIGGER_TIME" type="com.nextep.designer.dbgm.dao.types.TriggerTimeType"/>
+	</joined-subclass>
+</hibernate-mapping>

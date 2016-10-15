@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="3 - Database synchronization" topic="http://www.nextep-softwares.com/wiki/index.php/Synchonizing_your_databases_with_neXtep">
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Synchonizing_your_databases_with_neXtep#Repository_to_database_structural_synchronizationc" label="Repository to database structure"/>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Synchonizing_your_databases_with_neXtep#Database_to_repository_structural_reverse_synchronization" label="Database to repository structure">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Synchonizing_your_databases_with_neXtep#Repository_to_database_data_synchronization" label="Repository to database data synchronization">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Synchonizing_your_databases_with_neXtep#Database_to_repository_reverse_data_synchronization" label="Database to repository reverse data synchronization">
+   </topic>
+</toc>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.dbgm.ui">
+   <implementation class="com.nextep.designer.dbgm.ui.services.impl.DatabaseModelUIService"/>
+   <service>
+      <provide interface="com.nextep.designer.dbgm.ui.services.IDatabaseModelUIService"/>
+   </service>
+</scr:component>

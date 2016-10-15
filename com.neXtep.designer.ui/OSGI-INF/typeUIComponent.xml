@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" deactivate="dispose" name="com.neXtep.designer.ui.typeUIComponent">
+   <implementation class="com.nextep.designer.ui.services.impl.UIService"/>
+   <service>
+      <provide interface="com.nextep.designer.ui.services.IUIService"/>
+   </service>
+</scr:component>

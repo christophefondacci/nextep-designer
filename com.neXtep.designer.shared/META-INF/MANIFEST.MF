@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: neXtep shared components
+Bundle-SymbolicName: com.neXtep.designer.shared
+Bundle-Version: 1.0.7.qualifier
+Bundle-Vendor: neXtep
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.neXtep.shared.model,
+ com.neXtep.shared.parser

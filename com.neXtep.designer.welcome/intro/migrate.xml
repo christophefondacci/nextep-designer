@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="nextep-migrate-extension" name="NeXtep Migrate Extension"
+		style="css/migrate.css" path="migrate/@">
+		<group id="nextep-migrate-extension-group" style-id="content-group">
+			<link id="nextep-migrate-why-page-link" style-id="content-link"
+				label="NeXtep Designer 1.0.4 is available for download!" url="http://org.eclipse.ui.intro/showPage?id=nextep-migrate-why-page">
+				<text>
+					A new &lt;i&gt;major release of neXtep Designer&lt;/i&gt; is
+					available for download at
+					&lt;b&gt;http://www.nextep-softwares.com&lt;/b&gt;.&lt;br/&gt;
+					It
+					contains many improvements and bugfixes including performance
+					enhancements, deliveries improvements, dependency management view,
+					exportable diagram images, installer upgrade and migration to the
+					Eclipse RCP 3.6.1 base framework.&lt;br/&gt;
+					&lt;b&gt;Click for more information on this new release.&lt;/b&gt;
+				</text>
+			</link>
+			<link id="nextep-migrate-download-link" style-id="content-link"
+				label="Download NeXtep Designer 1.0.4 now!" url="http://www.nextep-softwares.com" />
+		</group>
+	</extensionContent>
+	<page id="nextep-migrate-why-page" style-id="page" style="$theme$/html/migrate.css"
+		alt-style="$theme$/swt/migrate.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="migrate/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer 1.0.4 is available for download!"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer 1.0.4 is available for download!
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-should-i-download" style-id="page-description"
+				label="&#8226;&#160;Why should I download this release?">
+				<text id="why-should-i-download-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;We need you to upgrade manually to this
+					release (&lt;i&gt;this time only&lt;/i&gt;) by downloading the full archive from our
+					servers as neXtep Designer has been fully repackaged to integrate a
+					new way of delivering updates through P2 (the eclipse provisioning
+					platform).&lt;br/&gt;&lt;br/&gt;
+					Unfortunately, the provisioning
+					framework (P2) is not compatible with already installed products
+					(which do not contain initial P2 metadata information) and could
+					therefore not be upgraded automatically.
+				</text>
+				<hr />
+			</group>
+			<group id="what-will-happen" style-id="page-description"
+				label="&#8226;&#160;What will happen if I don't install release 1.0.4?">
+				<text id="what-will-happen-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;You will not be able to update your product
+					anymore because no more update will be published to the old 1.0.3
+					branch.
+				</text>
+				<hr />
+			</group>
+			<group id="how-do-i-update" style-id="page-description"
+				label="&#8226;&#160;How do I update my neXtep Designer installation with 1.0.4?">
+				<text id="how-do-i-update-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Same as before, through the menu &lt;i&gt;Software >
+					check for neXtep updates&lt;/i&gt;. The new mechanism is completely
+					transparent and your product will be automatically updated when
+					updates are available. Users who subscribed neXtep support need to
+					enter their license key by going in the menu &lt;i&gt;Software > Edit
+					license information&lt;/i&gt;. This has to be done only once per site since
+					the license key will be shared with all users of a same neXtep
+					repository.
+				</text>
+				<hr />
+			</group>
+			<group id="will-i-need-reinstall" style-id="page-description"
+				label="&#8226;&#160;Will I need to re-install neXtep Designer in the future?">
+				<text id="will-i-need-reinstall-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Well, we hope no. But since we are relying on
+					the eclipse framework, we cannot guarantee that this will not
+					happen again. Eclipse releases one major release per year and these
+					releases &lt;i&gt;may&lt;/i&gt; require full install. For information, we have been
+					able to provide 2 major eclipse upgrades transparently (3.3 to 3.4
+					and 3.4 to 3.5) in the past 3 years...
+				</text>
+				<hr />
+			</group>
+			<group id="anything-else" style-id="page-description"
+				label="&#8226;&#160;Is there anything else I need to know?">
+				<text id="anything-else-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;We would like to thank you for using neXtep
+					and hope you will like our new release and all upcoming features.
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+</introContent>

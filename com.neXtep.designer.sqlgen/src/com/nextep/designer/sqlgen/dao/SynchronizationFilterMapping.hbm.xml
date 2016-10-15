@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.sqlgen.impl.SynchronizationFilter" table="REP_MODULE_FILTERS" lazy="false">
+		<id name="id" column="FILTER_ID">
+			<generator class="hilo"/>
+		</id>
+		<property name="type" type="com.nextep.designer.core.dao.types.ElementTypeType" column="FILTER_TYPEID"/>
+		<property name="name" column="FILTER_REGEX_PATTERN"/>
+		<many-to-one name="containerRef" class="com.nextep.datadesigner.impl.Reference" column="MODULE_REFID"/>
+	</class>
+</hibernate-mapping>

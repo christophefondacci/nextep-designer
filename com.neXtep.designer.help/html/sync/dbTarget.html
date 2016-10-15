@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090403;13553500">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Defining a development database</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Before we start with
+synchronization, you need to define a development database connection
+which will be required by the synchronization engine. You might
+already have a development database definition if you have created
+your current view by importing an existing database schema. If so,
+you can skip this step and go directly to the next topic.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The connections explorer view</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Existing connection
+definitions are listed in the <I>Connections explorer </I><SPAN STYLE="font-style: normal">view
+which should appear at the lower right corner of your environment.
+This view lists existing database connection definitions and allows
+you to create new connections.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ConnectionsExplorer.png" NAME="images1" ALIGN=LEFT WIDTH=226 HEIGHT=209 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">You
+can notice that connections are named </SPAN><I>database targets </I><SPAN STYLE="font-style: normal">and
+that these connections are typed by the environment they represent.
+For now, we will only focus on development connections as they are
+the only connections used by the synchronization engine.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">At
+the moment, you can only have 1 connection definition per target
+type.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Creating
+a new database target</SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">To
+create a new development target, right click on the development item
+and select </SPAN><I>Database connection </I><SPAN STYLE="font-style: normal">from
+the popup menu. This will make the connection wizard come up :</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ConnectionsWizard.png" NAME="images2" ALIGN=LEFT WIDTH=525 HEIGHT=445 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">This
+dialog contains all information needed to connect to a database and
+should look like what you are used to when you define a connection
+with any SQL-client tool. Define your database connection properties
+in the dialog and click finish to complete the operation.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Congratulations
+: you have created a new target connection!</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Editing
+an existing database target</SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">You
+can edit any connection listed in the </SPAN><I>Connections explorer
+</I><SPAN STYLE="font-style: normal">view by double-clicking on the
+connection you want to edit. The same </SPAN><I>Connection wizard</I><SPAN STYLE="font-style: normal">
+dialog as the </SPAN><I>Connection creation wizard</I><SPAN STYLE="font-style: normal">
+will appear initialized with the connection you clicked. </SPAN></FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Modify
+any connection property and click finish to commit changes.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Viewing
+target database contents</SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">You
+can easily list target database contents by right-clicking a
+connection and selecting the </SPAN><I>Capture target </I><SPAN STYLE="font-style: normal">item.
+It will load the database structure from the connection and lists all
+structural objects in the connection hierarchy. Note that you cannot
+edit the structure of a database target directly.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+</BODY>
+</HTML>

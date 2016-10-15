@@ -1,0 +1,6 @@
+#com.neXtep.Designer/debug=true
+#com.neXtep.designer.core/debug=true
+#com.neXtep.designer.ui/debug=true
+#com.neXtep.designer.logging/debug=true
+#com.neXtep.designer.vcs/debug=true
+#com.neXtep.designer.vcs.ui/debug=true

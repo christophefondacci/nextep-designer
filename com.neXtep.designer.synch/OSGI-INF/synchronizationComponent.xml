@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.synch">
+   <implementation class="com.nextep.designer.synch.services.impl.SynchronizationService"/>
+   <service>
+      <provide interface="com.nextep.designer.synch.services.ISynchronizationService"/>
+   </service>
+   <reference bind="setDataCaptureService" cardinality="1..1" interface="com.nextep.designer.synch.services.IDataCaptureService" name="IDataCaptureService" policy="static"/>
+   <reference bind="setDataService" cardinality="1..1" interface="com.nextep.designer.dbgm.services.IDataService" name="IDataService" policy="static"/>
+   <reference bind="setCaptureService" cardinality="1..1" interface="com.nextep.designer.sqlgen.services.ICaptureService" name="ICaptureService" policy="static"/>
+   <reference bind="setComparisonManager" cardinality="1..1" interface="com.nextep.designer.vcs.model.IComparisonManager" name="IComparisonManager" policy="static"/>
+   <reference bind="setGenerationService" cardinality="1..1" interface="com.nextep.designer.sqlgen.services.IGenerationService" name="IGenerationService" policy="static"/>
+   <reference bind="setWorkspaceService" cardinality="1..1" interface="com.nextep.designer.vcs.services.IWorkspaceService" name="IWorkspaceService" policy="static"/>
+   <reference bind="setReferenceManager" cardinality="1..1" interface="com.nextep.designer.core.model.IReferenceManager" name="IReferenceManager" policy="static"/>
+</scr:component>

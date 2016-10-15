@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="SynchView">
+      <description>This view displays all differences found between a database connection and your current workspace contents in order to synchronize your database from repository contents or to import the database structure changes back into your repository.
+
+The default synchronization method is to synch the database from the repository and to only display you the relevant changes. You can change this mode to reverse engineering synchronization by options on the view toolbar. 
+
+You can select / unselect elements to configure the elements you want to synchronize. You can show a comparion editor which will present you the relevant changes.
+
+The view toolbar commands allow you to regenerate the script corresponding to your current selection of elements to synchronize. Once you are OK with the SQL, you can ask neXtep to submit it to your database through the execute toolbar command.</description>
+      <topic label="Rubrique"/>
+   </context>
+</contexts>

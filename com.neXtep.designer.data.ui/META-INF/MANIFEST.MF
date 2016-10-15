@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Data features user interface plugin
+Bundle-SymbolicName: com.neXtep.designer.data.ui;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.data.ui.DataUiPlugin
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.neXtep.designer.dbgm;bundle-version="1.0.4",
+ com.neXtep.designer.sqlclient.ui;bundle-version="1.0.4",
+ com.neXtep.designer.sqlgen.ui;bundle-version="1.0.4",
+ com.neXtep.designer.ui;bundle-version="1.0.4",
+ com.neXtep.designer.dbgm.ui;bundle-version="1.0.4",
+ com.neXtep.designer.vcs.ui;bundle-version="1.0.4",
+ com.neXtep.designer.logging;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.4",
+ org.eclipse.ui.editors;bundle-version="3.6.1",
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.6.1",
+ org.eclipse.jface.text;bundle-version="3.6.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

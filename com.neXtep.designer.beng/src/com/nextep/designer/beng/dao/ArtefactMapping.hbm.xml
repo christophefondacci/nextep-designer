@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.designer.beng.model.impl.Artefact"
+		table="BENG_MODULE_ARTEFACTS"
+		lazy="false"
+		>
+			<id name="id" column="ARTEFACT_ID">
+				<generator class="hilo"/>
+			</id>
+		<many-to-one name="delivery" class="com.nextep.designer.beng.model.impl.DeliveryModule" column="DELIVERY_ID"/>
+		<many-to-one name="initialRelease" class="com.nextep.designer.vcs.model.impl.VersionInfo" column="INITIAL_VERSION_ID"/>
+		<many-to-one name="targetRelease" class="com.nextep.designer.vcs.model.impl.VersionInfo" column="BUILD_VERSION_ID"/>
+		<many-to-one name="underlyingReference" class="com.nextep.datadesigner.impl.Reference" column="ARTEFACT_REFID" cascade="persist,merge,save-update"/>
+		<property name="type" column="ARTEFACT_TYPE" type="com.nextep.designer.beng.dao.ArtefactTypeType"/>
+	</class>
+</hibernate-mapping>

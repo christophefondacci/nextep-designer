@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleIndex"
+		extends="com.nextep.datadesigner.dbgm.impl.BasicIndex"
+		table="DBOM_ORACLE_INDEXES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<set name="hibernatePhysicalProperties" table="DBOM_INDEX_PHYSICALS" cascade="all" lazy="false" outer-join="false">
+				<key column="IND_VERSION_ID"/>
+				<many-to-many class="com.nextep.designer.dbgm.model.IPhysicalProperties" column="PHYS_ID"/>
+			</set>
+			<!--HIBERNATE BUG!!!!! one-to-one name="physicalProperties" class="com.nextep.designer.dbgm.oracle.impl.external.IndexPhysicalProperties" cascade="save-update"/-->
+	</joined-subclass>
+</hibernate-mapping>

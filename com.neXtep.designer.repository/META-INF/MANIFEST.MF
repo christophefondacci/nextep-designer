@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Database repository synchronization
+Bundle-SymbolicName: com.neXtep.designer.repository
+Bundle-Version: 1.0.7.20160207
+Bundle-Activator: com.nextep.designer.repository.RepositoryPlugin
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.installer;bundle-version="1.0.2";visibility:=reexport,
+ com.neXtep.designer.core;bundle-version="1.0.2",
+ com.neXtep.designer.logging;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.nextep.designer.repository,
+ com.nextep.designer.repository.exception,
+ com.nextep.designer.repository.services
+Service-Component: OSGI-INF/repositoryUpdaterServiceComponent.xml

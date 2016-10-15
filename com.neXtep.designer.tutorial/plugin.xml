@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.core.elementType">
+      <elementType
+            Id="SYNONYM"
+            categoryIcon="resource/BuildTiny.ico"
+            categoryIcon_16x16="resource/BuildTiny.ico"
+            categoryLabel="Synonym definitions"
+            icon="resource/BuildTiny.ico"
+            icon_16x16="resource/BuildTiny.ico"
+            name="Synonym"
+            typeInterface="com.nextep.designer.tutorial.model.ISynonym">
+      </elementType>
+   </extension>
+   <extension
+         point="com.neXtep.designer.vcs.VersionableFactory">
+      <versionableFactory
+            class="com.nextep.designer.tutorial.factory.SynonymFactory"
+            name="Synonym factory"
+            vendor="ORACLE"
+            versionableInterfaceName="com.nextep.designer.tutorial.model.ISynonym">
+      </versionableFactory>
+   </extension>
+   <extension
+         point="com.neXtep.designer.ui.typeController">
+      <typeController
+            class="com.nextep.designer.tutorial.ui.SynonymController"
+            context="ORACLE"
+            typeId="SYNONYM">
+      </typeController>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               id="com.neXtep.designer.additions"
+               label="Add">
+            <command
+                  commandId="com.neXtep.designer.tutorial.newSynonym"
+                  icon="resource/BuildTiny.ico"
+                  label="Synonym"
+                  style="push">
+               <parameter
+                     name="com.neXtep.designer.core.typeId"
+                     value="SYNONYM">
+               </parameter>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.nextep.designer.vcs.ui.handlers.NewTypedInstanceHandler"
+            id="com.neXtep.designer.tutorial.newSynonym"
+            name="Create synonym">
+         <commandParameter
+               id="com.neXtep.designer.core.typeId"
+               name="typeId"
+               optional="true">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="com.neXtep.designer.vcs.MergerProvider">
+      <mergerProvider
+            context="ORACLE"
+            mergerClass="com.nextep.designer.tutorial.impl.merge.SynonymMerger"
+            typeId="SYNONYM">
+      </mergerProvider>
+   </extension>
+
+</plugin>

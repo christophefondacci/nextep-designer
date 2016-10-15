@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.Sequence"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_SEQUENCES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="name" column="SEQUENCE_NAME"/>
+			<property name="description" column="description"></property>
+			<property name="start" column="SEQ_START" type="big_decimal"></property>
+			<property name="increment" column="SEQ_INCREMENT" type="long"></property>
+			<property name="minValue" column="SEQ_MIN" type="big_decimal"></property>
+			<property name="maxValue" column="SEQ_MAX" type="big_decimal"></property>
+			<property name="cached" column="SEQ_CACHED" type="com.nextep.designer.core.dao.types.BooleanType"></property>
+			<property name="cacheSize" column="SEQ_CACHE_SIZE" type="integer"></property>
+			<property name="ordered" column="SEQ_ORDERED" type="com.nextep.designer.core.dao.types.BooleanType"></property>
+			<property name="cycle" column="SEQ_CYCLE" type="com.nextep.designer.core.dao.types.BooleanType"></property>
+	</joined-subclass>
+</hibernate-mapping>

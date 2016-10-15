@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.synch.ui.reverse">
+   <implementation class="com.nextep.designer.synch.ui.services.impl.ReverseSynchronizationUIService"/>
+   <service>
+      <provide interface="com.nextep.designer.synch.ui.services.IReverseSynchronizationUIService"/>
+   </service>
+   <reference bind="setReverseSynchronizationService" cardinality="1..1" interface="com.nextep.designer.synch.services.IReverseSynchronizationService" name="IReverseSynchronizationService" policy="static"/>
+   <reference bind="setSynchronizationService" cardinality="1..1" interface="com.nextep.designer.synch.ui.services.ISynchronizationUIService" name="ISynchronizationUIService" policy="static"/>
+   <reference bind="setListenerService" cardinality="1..1" interface="com.nextep.datadesigner.model.IListenerService" name="IListenerService" policy="static"/>
+</scr:component>

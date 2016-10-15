@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.neXtep.designer.feature_1.0.4.201010081744.jar" id="com.neXtep.designer.feature" version="1.0.4.201010081744">
+      <category name="com.neXtep.designer"/>
+   </feature>
+   <category-def name="com.neXtep.designer" label="Database development"/>
+</site>

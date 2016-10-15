@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Designer integrated help
+Bundle-SymbolicName: com.neXtep.designer.help; singleton:=true
+Bundle-Version: 1.0.5.201101211718
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.help

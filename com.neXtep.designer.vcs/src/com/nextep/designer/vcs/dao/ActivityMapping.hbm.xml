@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.vcs.model.impl.Activity" table="REP_ACTIVITIES" lazy="false">
+		<!--cache usage="read-write"/> -->
+		<id name="id" column="ACTIVITY_ID">
+			<generator class="hilo"/>
+		</id>
+		<property name="name" column="ACTIVITY_NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="4 - Database model" topic="html/dbgm/dbgm.html">
+   <topic href="html/dbgm/creating.html" label="Creating / editing database objects">
+   </topic>
+   <topic href="html/dbgm/creatingTables.html" label="Creating / editing tables">
+   </topic>
+   <topic href="html/dbgm/creatingUK.html" label="Creating / editing unique keys">
+   </topic>
+   <topic href="html/dbgm/creatingFK.html" label="Creating / editing foreign keys">
+   </topic>
+</toc>

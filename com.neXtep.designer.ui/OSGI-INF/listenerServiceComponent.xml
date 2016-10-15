@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.ui.listenerService">
+   <implementation class="com.nextep.datadesigner.gui.impl.UIListenerService"/>
+   <service>
+      <provide interface="com.nextep.datadesigner.model.IListenerService"/>
+   </service>
+</scr:component>

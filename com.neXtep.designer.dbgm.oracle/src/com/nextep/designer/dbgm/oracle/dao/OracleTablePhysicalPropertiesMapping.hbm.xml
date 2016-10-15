@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<subclass
+		name="com.nextep.designer.dbgm.oracle.impl.external.OracleTablePhysicalProperties"
+		extends="com.nextep.designer.dbgm.model.IPhysicalProperties"
+		lazy="false" discriminator-value="ORA_TABLE"
+		>
+			<property name="physicalOrganisation" column="PHYSICAL_ORGANIZATION" type="com.nextep.designer.dbgm.oracle.dao.PhysicalOrganisationType"/>
+			<property name="partitioningMethod" column="PARTITIONING_TYPE" type="com.nextep.designer.dbgm.dao.types.PartitioningMethodType"></property>
+			<list name="partitions" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="PHYS_ID"/>
+				<list-index><column name="POSITION"/></list-index>
+				<one-to-many class="com.nextep.designer.dbgm.oracle.impl.TablePartition"/>
+			</list>
+			<list name="partitionedColumnsRef" table="DBOM_TAB_PART_COLUMNS" cascade="all" lazy="false">
+				<key column="PHYS_ID"/>
+				<list-index><column name="POSITION"/></list-index>
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="COL_REFID" unique="true"/>
+			</list>
+	</subclass>
+</hibernate-mapping>

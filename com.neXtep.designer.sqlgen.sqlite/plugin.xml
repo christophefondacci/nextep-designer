@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.core.dbConnector">
+      <dbConnector
+            class="com.nextep.designer.sqlgen.sqlite.impl.SQLLiteDatabaseConnector"
+            dbVendor="SQLITE">
+      </dbConnector>
+   </extension>
+   <extension
+         point="com.neXtep.designer.sqlgen.sqlCapturer">
+      <sqlCapturer
+            class="com.nextep.designer.sqlgen.generic.impl.JDBCCapturer"
+            databaseVendor="SQLITE">
+      </sqlCapturer>
+   </extension>
+
+</plugin>

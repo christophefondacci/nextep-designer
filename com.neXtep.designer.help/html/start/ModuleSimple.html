@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090210;14472500">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Creating a first module</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The first concept of
+neXtep designer is the concept of containers / modules. This notion
+is used to isolate parts of your application which belong to a same
+business domain. For example you might have a module which deals with
+customers, another one which deals with sales, another one which is
+technical (logs, properties) and so on...</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">A module is a purely
+logical isolation. You will be able to deploy all modules in a single
+database schema if you want. Don't hesitate to have a look to the
+modules overview in the concepts topic to learn more on what modules
+will bring to you.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Even though you are
+free to do what you want, we advise you to always add new elements
+within a module rather than in the view. This is what we will do in
+our tutorial. So we right-click on our view in the view navigator,
+the following popup will come up :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="TutAddContainerMenu.png" NAME="images4" ALIGN=LEFT WIDTH=461 HEIGHT=339 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Note that these actions
+are also available in the workbench toolbar :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ModuleSimple_html_m3256b58f.gif" NAME="Image5" ALIGN=LEFT WIDTH=660 HEIGHT=34 BORDER=0><BR CLEAR=LEFT>And
+all the creation actions are available in the <I>Action </I><SPAN STYLE="font-style: normal">menu
+as well.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Select <I>Create child
+container</I>, you will now see the version activity dialog. This is
+because we are creating a new versioned element. Everything in neXtep
+Designer is under version control. Therefore, each time you create or
+modify an element, the version activity dialog will come up. However,
+you can adjust the properties to only show this dialog when checking
+in elements.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="TutActivity.png" NAME="images1" ALIGN=LEFT WIDTH=181 HEIGHT=77 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Click OK. The container
+creation wizard will come up to define container information.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="TutNewContainer.png" NAME="images2" ALIGN=LEFT WIDTH=568 HEIGHT=478 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Define the container
+information as above and click finish to create the new container.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The view navigator will
+now contain our new container. When you click on it you will be able
+to see a version tree in the version explorer at the upper-right of
+the workbench.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="TutContainerCreated.png" NAME="images3" ALIGN=LEFT WIDTH=1024 HEIGHT=768 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+</BODY>
+</HTML>

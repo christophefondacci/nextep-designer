@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="4 - The delivery engine" topic="html/beng/beng.html">
+   <topic href="html/beng/deliveryCreation.html" label="Creating a delivery">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Delivering_database_updates" label="Delivering database updates">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Installing_neXtep_installer" label="Installing the installer">
+   </topic>
+</toc>

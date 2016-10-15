@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.neXtep.designer.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.neXtep.designer.core" id="persistenceAccessors" name="PersistenceAccessors"/>
+      </appInfo>
+      <documentation>
+         Defines accessor to the persistance layer. Persistance accessors make the bridge between the model objects and the underlying persistance storage allowing to load, save, remove objects to or from the store.
+It creates an abstraction of the persistance management which could be file, workspace, databases or anything else, local or remote.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="persistenceAccessor" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="persistenceAccessor">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Implementation of the IPersistanceAccessor interface which provide the persistance capabilities.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":com.nextep.designer.core.model.IPersistenceAccessor"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="typeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Identifier of a valid element type which is handled by this accessor. There could be one and only one accessor per element type.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Entrez la première version dans laquelle apparaît ce point d’extension.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Entrez ici un exemple d’utilisation du point d’extension.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         [Entrez ici les informations d’API.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Entrez ici les informations relatives à l’implémentation fournie pour ce point d&apos;extension.]
+      </documentation>
+   </annotation>
+
+
+</schema>

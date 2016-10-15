@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.neXtep.Designer.application"
+            name="neXtep Designer">
+         <property
+               name="windowImages"
+               value="icons/DesignerIconTiny.ico,icons/DesignerIconSmall.ico,icons/DesignerIconMedium.ico,icons/DesignerIconLarge.ico">
+         </property>
+         <property
+               name="aboutText"
+               value="neXtep Designer for Oracle&#x0A;Professional designing IDE for database development. &#x0A;&#x0A;Release 1.0.1 Enterprise Edition.&#x0A;Based on Eclipse RCP.&#x0A;&#x0A;(c) Copyright neXtep Softwares 2008. All rights reserved.&#x0A;This product includes software developed by the&#x0A;Apache Software Foundation http://www.apache.org/">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.bmp">
+         </property>
+         <property
+               name="appName"
+               value="neXtep Designer">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="com.nextep.designer.splashHandlers.InteractiveSplashHandler"
+            id="com.nextep.designer.splashHandlers.interactive">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="com.neXtep.Designer.product"
+            splashId="com.nextep.designer.splashHandlers.interactive">
+      </splashHandlerProductBinding>
+   </extension>
+</plugin>

@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090522;14033300">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Importing an existing database</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep Designer is a
+development environment with integrated version-control based on a
+repository. In order to work with an existing database, you first
+need to import it into the repository.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The import process is
+completely automated through an import wizard and it will only take a
+few seconds.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Creating a first view</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">NeXtep designer works
+with views : views are literally a &ldquo;view&rdquo; on designated
+elements in a specific version. When you open the neXtep designer
+workbench, you open a view you have selected. In the workbench you
+will then only see the selected view contents.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">For more information on
+views, please consult : 
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><A HREF="PLUGINS_ROOT/com.neXtep.designer.help/html/vcs/start.html">Version
+	control system book</A></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><A HREF="PLUGINS_ROOT/com.neXtep.designer.help/html/vcs/views.html">Repository
+	views</A></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">When you start neXtep
+designer, a view selection dialog always prompt after you
+successfully logged in.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="defaultViewSelection.png" NAME="images1" ALIGN=LEFT WIDTH=497 HEIGHT=475 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Click on the &ldquo;Create
+a new view...&rdquo; button in the bottom right on the dialog. A view
+creation wizard dialog will come up with different view creation
+options :</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">First select the
+	target database vendor (Oracle or MySQL so far)</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Then select the
+	&ldquo;Import structure from an existing database (reverse
+	engineering)&rdquo; view creation mode. Leave the &ldquo;Import all
+	in a default container&rdquo; option checked for now. We will see
+	that later.</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="viewCreation.png" NAME="images2" ALIGN=LEFT WIDTH=692 HEIGHT=445 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Click next. A
+connection dialog will appear, asking you to define the connection to
+the database you want to import. Enter the settings of your targetted
+database and click next.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="connectionCreation.png" NAME="images3" ALIGN=LEFT WIDTH=692 HEIGHT=445 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">You will see the import
+progress monitor importing the objects from your database. Depending
+on the number of structural objects in your database this can take a
+few minutes.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="importProgress.png" NAME="images4" ALIGN=LEFT WIDTH=532 HEIGHT=199 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Congratulation your
+view is created !</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Opening the created view</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">After the import, the
+view selection dialog will come again with your new view listed.
+Select it and click OK (or double click it).</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="viewSelection.png" NAME="images5" ALIGN=LEFT WIDTH=497 HEIGHT=406 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The neXtep workbench
+will come up with your view contents. Note that everything has been
+imported in a default container named just like the view. Consider
+this container as being the &ldquo;database&rdquo; application you've
+imported. This is the way to modularize components, allowing parts of
+a database structured to be shared between different applications. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Note that all imported
+elements now have a version and that they are all checked in. This is
+to make the imported database structure a reference time point. Now
+if you like to make changes on any element, perform a checkout on it
+first. You can do this by right clicking it in the version navigator
+and select &ldquo;Check out&rdquo; or through the toolbar checkout
+icon.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The default container
+is still checked out after the import. This is to let you adjust the
+imported elements, maybe you would like to remove, add or simply
+review the elements before committing your application database
+structure.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Viewing the model</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">A
+common use-case is to display a database structure graphically to
+analyze it. NeXtep designer comes with a diagram editor which has
+been designed to quickly display instant models of existing
+application for that purpose.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Right-click
+on your default container and select Add &gt; Diagram.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+diagram editor will appear. Now 2 options :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal">
+	<FONT FACE="Arial, sans-serif">Drag / drop the tables you want to
+	display in the diagram</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal">
+	<FONT FACE="Arial, sans-serif">Right click in the diagram background
+	and select &ldquo;Add tables...&rdquo;</FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Synchronizing the model</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Since
+you created your view from an existing database, this connection had
+been attached to the view as the default synchronization connection. </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><B>Be
+careful : be sure the connection points to a development database
+otherwise this step may alter the structure</B></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="connections.png" NAME="images6" ALIGN=LEFT WIDTH=225 HEIGHT=200 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">This
+means that synchronization of your development view will affect this
+connection.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">But
+first let's explain synchronization : neXtep designer is an offline
+development environment. That means you do not work on your
+development database, you work in a repository. The repository keeps
+track of every change you make and will therefore be able to deploy
+your modifications easily. But in a development context, you often
+need to publish your developments to a database for other teams /
+colleagues.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">This
+is what synchronization does : it synchronizes your development
+database with the current repository status. To do this it loads the
+target database structure, compares each element to repository, and
+generates SQL code to transform the model.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">You
+can synchronize your environment by the CTRL+B shorcut (like a
+&ldquo;Build&rdquo; shortcut) or by clicking the toolbar icons.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">For
+more information about synchronization please go visit :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><A HREF="PLUGINS_ROOT/com.neXtep.designer.help/html/sync/sync.html"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Synchronization
+	engine book</SPAN></FONT></A></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><A HREF="PLUGINS_ROOT/com.neXtep.designer.help/html/sync/stdSync.html"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">Target
+	database synchronization</SPAN></FONT></A></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Now
+you have finished the quick start ! Now do what you want : use by
+yourself or explore more advanced topics of the help books.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Don't
+forget : we love feedbacks, so please tell us what you think of the
+product, submit suggestions, etc.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

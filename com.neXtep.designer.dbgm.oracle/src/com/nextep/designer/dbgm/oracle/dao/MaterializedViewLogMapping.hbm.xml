@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleMaterializedViewLog"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBOM_MVIEW_LOGS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+
+			<property name="primaryKey" column="PRIMARY_KEY" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="rowId" column="ROWIDS" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="sequence" column="SEQUENCE" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			<property name="includingNewValues" column="INCLUDING_NEW_VALUES" type="com.nextep.designer.core.dao.types.BooleanType"/>
+			
+			<many-to-one name="tableReference" class="com.nextep.datadesigner.impl.Reference" column="LOG_TABLE_REFID" />
+			<many-to-one name="physicalProperties" class="com.nextep.designer.dbgm.model.IPhysicalProperties" column="PHYS_ID" cascade="all"/>
+	</joined-subclass>
+</hibernate-mapping>

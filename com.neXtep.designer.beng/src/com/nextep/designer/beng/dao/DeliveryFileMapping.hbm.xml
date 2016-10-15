@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.beng.model.impl.DeliveryFile"
+		extends="com.nextep.designer.beng.model.IDeliveryItem"
+		table="BENG_FILE_DELIVERIES"
+		lazy="false"
+		>
+		<key column="DELIVERY_ID"></key>
+		<many-to-one name="content" class="com.nextep.datadesigner.vcs.impl.RepositoryFile" column="FILE_ID"/>
+		<property name="artefactType" column="DEPLOY_HANDLER" type="com.nextep.designer.beng.dao.DeployHandlerType"/>
+		<property name="fileLoader" column="FILE_LOADER"/>
+	</joined-subclass>
+</hibernate-mapping>

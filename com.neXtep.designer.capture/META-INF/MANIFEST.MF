@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Database capture engine
+Bundle-SymbolicName: com.neXtep.designer.capture
+Bundle-Version: 1.0.4.qualifier
+Bundle-Activator: com.nextep.designer.capture.CapturePlugin
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.4",
+ com.neXtep.designer.dbgm;bundle-version="1.0.4",
+ com.neXtep.designer.vcs;bundle-version="1.0.4",
+ com.neXtep.designer.logging;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/dataCaptureServiceComponent.xml
+Export-Package: com.nextep.designer.capture.services

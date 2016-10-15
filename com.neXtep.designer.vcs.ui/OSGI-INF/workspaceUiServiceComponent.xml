@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.vcs.ui.workspaceUiService">
+   <implementation class="com.nextep.designer.vcs.ui.services.impl.WorkspaceUIService"/>
+   <reference bind="setWorkspaceService" cardinality="1..1" interface="com.nextep.designer.vcs.services.IWorkspaceService" name="IWorkspaceService" policy="static"/>
+   <service>
+      <provide interface="com.nextep.designer.vcs.ui.services.IWorkspaceUIService"/>
+   </service>
+   <reference bind="setListenerService" cardinality="1..1" interface="com.nextep.datadesigner.model.IListenerService" name="IListenerService" policy="static"/>
+   <reference bind="setVersioningService" cardinality="1..1" interface="com.nextep.designer.vcs.services.IVersioningService" name="IVersioningService" policy="static"/>
+   <reference bind="setProblemSolver" cardinality="1..1" interface="com.nextep.designer.core.model.IProblemSolver" name="IProblemSolver" policy="static"/>
+   <reference bind="setCoreFactory" cardinality="1..1" interface="com.nextep.designer.core.factories.ICoreFactory" name="ICoreFactory" policy="static"/>
+   <reference bind="setCoreService" cardinality="1..1" interface="com.nextep.designer.core.services.ICoreService" name="ICoreService" policy="static"/>
+   <reference bind="setMarkerService" cardinality="1..1" interface="com.nextep.designer.core.services.IMarkerService" name="IMarkerService" policy="static"/>
+</scr:component>

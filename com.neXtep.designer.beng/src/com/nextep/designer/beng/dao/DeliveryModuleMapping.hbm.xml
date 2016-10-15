@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.beng.model.impl.DeliveryModule"
+		extends="com.nextep.designer.beng.model.IDeliveryItem"
+		table="BENG_MODULES"
+		lazy="false"
+		>
+		<key column="DELIVERY_ID"></key>
+		<property name="admin" type="com.nextep.designer.core.dao.types.BooleanType" column="IS_ADMIN"/>
+		<many-to-one name="fromRelease" class="com.nextep.designer.vcs.model.impl.VersionInfo" column="FROM_VERSION_ID"/>
+		<many-to-one name="targetRelease" class="com.nextep.designer.vcs.model.impl.VersionInfo" column="TARGET_VERSION_ID"/>
+		<!-- many-to-one name="referenceConnection" class="com.nextep.datadesigner.dbgm.impl.Connection" column="REFDB_DBCN_ID"/ -->
+		<many-to-one name="moduleRef" class="com.nextep.datadesigner.impl.Reference" column="MODULE_REFID" cascade="persist,merge,save-update"/>
+		<property name="name" column="NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="firstRelease" column="IS_FIRST" type="com.nextep.designer.core.dao.types.BooleanType"/>
+		<property name="universal" column="IS_UNIVERSAL" type="com.nextep.designer.core.dao.types.BooleanType"/>
+		<list name="deliveryItems" cascade ="all" outer-join="false" lazy="true" table="BENG_MODULE_CONTENTS">
+			<key column="DELIVERY_ID"/>
+			<list-index><column name="POSITION"/></list-index>
+			<many-to-many class="com.nextep.designer.beng.model.IDeliveryItem" column="CONTENT_ID"/>
+		</list>
+		<set name="artefacts" cascade ="all" inverse="true" outer-join="false" lazy="false">
+			<key column="DELIVERY_ID"/>
+			<one-to-many class="com.nextep.designer.beng.model.impl.Artefact"/>
+		</set>
+		<list name="hibernateDependencies" cascade ="all" outer-join="false" lazy="false" table="BENG_MODULE_DEPENDENCIES">
+			<key column="DELIVERY_ID"/>
+			<list-index><column name="POSITION"/></list-index>
+			<many-to-many class="com.nextep.designer.vcs.model.impl.VersionInfo" column="MODULE_VERSION_ID"/>
+		</list>
+		<list name="externalFiles" cascade="all" outer-join="false" inverse="true" lazy="true">
+			<key column="DELIVERY_ID"/>
+			<list-index><column name="POSITION"/></list-index>
+			<one-to-many class="com.nextep.designer.beng.model.impl.ExternalFile"/>
+		</list>
+	</joined-subclass>
+</hibernate-mapping>

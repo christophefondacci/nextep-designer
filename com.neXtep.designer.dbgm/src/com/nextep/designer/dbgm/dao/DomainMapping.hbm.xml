@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.datadesigner.dbgm.impl.Domain"
+		table="DBGM_DOMAINS"
+		lazy="false"
+		>
+			<id name="id" column="DOM_ID">
+				<generator class="hilo"/>
+			</id>
+
+			<property name="name" column="DOM_NAME"/>
+			<property name="description" column="DESCRIPTION"></property>
+			<property name="lengthExpr" column="DOM_LENGTH"></property>
+			<property name="precisionExpr" column="DOM_PRECISION"></property>			
+			<set name="vendorTypes" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="DOM_ID"/>
+				<one-to-many class="com.nextep.datadesigner.dbgm.impl.DomainVendorType"/>
+			</set>
+	</class>
+</hibernate-mapping>

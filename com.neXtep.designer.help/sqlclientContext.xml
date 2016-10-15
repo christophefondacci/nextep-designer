@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="SQLResultsView" title="The SQL results view">
+      <description>This view shows the results of a SQL query in a structured table. 
+
+You can simply read your data or perform more complex operations, such as sorting the results, switching to edit mode to modify your data, add or remove rows, etc.
+
+Note that you can only edit the data when the SQL query selected only 1 table and at least all primary key columns (or all columns for table without any PK defined).
+
+By default, the view is dedicated to a connection. If you re-issue a query from the same source (SQL client or SQL editor), it will fall in the same view instance unless you &quot;pin&quot; it.</description>
+   </context>
+   <context id="SQLClient" title="The SQL client">
+      <description>The SQL client allows you to query a database by issuing any supported SQL statement. Any SQL statement can be executed : select, update, insert, delete, alter, create, drop, etc.
+
+By default, the editor is opened on a connection and initializes a new transaction. That means that any data modification you do will be visible to others only after committing. You can switch to auto-commit mode through the client&apos;s toolbar. 
+
+Any SQL statement which returns a result will have its results displayed in an external SQL results view.</description>
+   </context>
+</contexts>

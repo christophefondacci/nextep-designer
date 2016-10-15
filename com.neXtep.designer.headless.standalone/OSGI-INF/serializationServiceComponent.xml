@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.batch.serializationServiceComponent">
+   <implementation class="com.nextep.designer.headless.standalone.services.impl.SerializationService"/>
+   <service>
+      <provide interface="com.nextep.designer.headless.standalone.services.ISerializationService"/>
+   </service>
+   <property name="service.ranking" type="Integer" value="-1000"/>
+</scr:component>

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.dbgm.model.impl.DataLine"
+		table="DBGM_DSET_ROWS"
+		lazy="false">
+			<id name="id" column="DROW_ID">
+				<generator class="hilo"/>
+			</id>
+			<many-to-one name="dataSet" class="com.nextep.designer.dbgm.model.impl.DataSet" column="DSET_VERSION_ID"/>
+			<property name="rowId" column="DSET_ROW_ID"/>
+<!--			<property name="versionTag" column="VERSION_TAG"/>-->
+<!--			<set name="columnValues" table="DBGM_DSET_ROW_VALUES" inverse="true" cascade="all" lazy="false">-->
+<!--				<key column="DROW_ID"/>-->
+<!--				<one-to-many class="com.nextep.designer.dbgm.model.impl.ColumnValue"/>-->
+<!--			</set>-->
+<!--			<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="DSET_REFID" cascade="persist,merge,save-update"/>-->
+		<!--		<composite-element class="com.nextep.datadesigner.dbgm.impl.ColumnValue">
+					<property name="stringValue" column="COLUMN_VALUE"/>
+					<many-to-one name="column" class="com.nextep.datadesigner.dbgm.impl.BasicColumn" column="TCOL_COLUMN_ID" unique="true"/>
+				</composite-element>
+			</set> -->
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.synch.reverse">
+   <implementation class="com.nextep.designer.synch.services.impl.ReverseSynchronizationService"/>
+   <service>
+      <provide interface="com.nextep.designer.synch.services.IReverseSynchronizationService"/>
+   </service>
+   <reference bind="setDependencyService" cardinality="1..1" interface="com.nextep.designer.vcs.services.IDependencyService" name="IDependencyService" policy="static" unbind="unsetDependencyService"/>
+   <reference bind="setVersioningService" cardinality="1..1" interface="com.nextep.designer.vcs.services.IVersioningService" name="IVersioningService" policy="static"/>
+   <reference bind="setDataService" cardinality="1..1" interface="com.nextep.designer.dbgm.services.IDataService" name="IDataService" policy="static"/>
+   <reference bind="setCoreService" cardinality="1..1" interface="com.nextep.designer.core.services.ICoreService" name="ICoreService" policy="static"/>
+   <reference bind="setCoreFactory" cardinality="1..1" interface="com.nextep.designer.core.factories.ICoreFactory" name="ICoreFactory" policy="static"/>
+</scr:component>

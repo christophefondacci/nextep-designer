@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:com.nextep.designer.software?after=additions">
+         <command
+               commandId="com.neXtep.designer.p2.update"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.window.preferences"
+               label="%command.editLicense"
+               style="push">
+            <parameter
+                  name="preferencePageId"
+                  value="com.neXtep.designer.p2.license">
+            </parameter>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.nextep.designer.p2.handlers.UpdateHandler"
+            id="com.neXtep.designer.p2.update"
+            name="%command.checkUpdates">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.nextep.designer.core.preferences.CorePreferencePage"
+            class="com.nextep.designer.p2.preferences.LicensePreferencePage"
+            id="com.neXtep.designer.p2.license"
+            name="%property.page.license">
+      </page>
+   </extension>
+
+</plugin>

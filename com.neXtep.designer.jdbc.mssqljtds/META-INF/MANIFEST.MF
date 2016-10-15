@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mssql_jtds JDBC driver Plug-in
+Bundle-SymbolicName: com.neXtep.designer.jdbc.mssqljtds
+Bundle-Version: 1.2.5
+Export-Package: net.sourceforge.jtds.jdbc,
+ net.sourceforge.jtds.jdbc.cache,
+ net.sourceforge.jtds.jdbcx,
+ net.sourceforge.jtds.jdbcx.proxy,
+ net.sourceforge.jtds.ssl,
+ net.sourceforge.jtds.util
+

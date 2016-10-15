@@ -1,0 +1,10 @@
+Manifest-version: 1.0
+Main-Class: oracle.i18n.util.GDKOracleMetaData
+Class-Path: orai18n-mapping.jar orai18n-utility.jar orai18n-collation.jar orai18n-translation.jar orai18n-net.jar orai18n-servlet.jar orai18n-lcsd.jar orai18n-tools.jar gdk_custom.jar
+Name: oracle/i18n
+Specification-Title: "Oracle Globalization Development Kit"
+Specification-Version: "Oracle Globalization Development Kit - 11.2.0.1.0 - Production, Build : 11"
+Specification-Vendor: "Oracle Corporation"
+Implementation-Title: "orai18n.jar archives"
+Implementation-Version: "Oracle Globalization Development Kit - 11.2.0.1.0 - Production, Build : 11"
+Implementation-Vendor: "Oracle Corporation"

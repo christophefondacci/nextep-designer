@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- JDBC connection pool (use c3p0) -->
+		<!-- Hibernate 3.3.1 bug: need to explicitly set the c3p0 connection provider -->
+		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+
+		<property name="hibernate.c3p0.min_size">2</property> <!-- Hibernate default: 1 -->
+		<property name="hibernate.c3p0.max_size">5</property> <!-- Hibernate default: 100 -->
+		<property name="hibernate.c3p0.acquire_increment">1</property> <!-- Hibernate default: 1 -->
+
+		<!-- Connections never expire and are never checked -->
+		<property name="hibernate.c3p0.timeout">0</property> <!-- Hibernate default: 0 (in seconds) -->
+		<property name="hibernate.c3p0.idle_test_period">0</property> <!-- Hibernate default: 0 (in seconds) -->
+
+		<!-- Statement caching is turned off -->
+		<property name="hibernate.c3p0.max_statements">0</property> <!-- Hibernate default: 0 -->
+
+		<!-- Sets the transaction isolation level to READ COMMITTED -->
+		<property name="connection.isolation">2</property>
+		<!-- property name="connection.pool_size">3</property -->
+		<!-- property name="connection.charSet">utf8</property -->
+
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+		<!-- property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property -->
+		<!-- property name="cache.use_second_level_cache">true</property -->
+		<!-- property name="cache.use_query_cache">true</property -->
+
+		<!-- Echo all executed SQL to stdout -->
+		<!-- property name="show_sql">false</property -->
+
+		<!-- Drop and re-create the database schema on startup -->
+		<!-- property name="hbm2ddl.auto">validate</property -->
+
+		
+	</session-factory>
+
+</hibernate-configuration>

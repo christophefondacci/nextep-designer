@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.nextep.designer.dbgm.oracle.impl.IndexPartition"
+		table="DBOM_IND_PARTITIONS"
+		lazy="false"
+		>
+			<id name="id" column="IPART_ID">
+				<generator class="hilo"/>
+			</id>
+			<property name="name" column="PARTITION_NAME"/>
+			<property name="position" column="POSITION"/>
+			<many-to-one name="reference" column="IPART_REFID" class="com.nextep.datadesigner.impl.Reference" not-null="true" cascade="persist,merge,save-update" />
+			<many-to-one name="parent" column="PHYS_ID" class="com.nextep.designer.dbgm.oracle.impl.external.OracleIndexPhysicalProperties" not-null="true" />
+			<many-to-one name="physicalProperties" column="IPART_PHYS_ID" class="com.nextep.designer.dbgm.model.IPhysicalProperties" not-null="true" cascade="all" fetch="join" />
+	</class>
+</hibernate-mapping>

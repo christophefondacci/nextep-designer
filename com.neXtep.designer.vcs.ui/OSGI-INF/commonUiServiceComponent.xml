@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.vcs.ui.commonUiService">
+   <implementation class="com.nextep.designer.vcs.ui.services.impl.CommonUIService"/>
+   <service>
+      <provide interface="com.nextep.designer.vcs.ui.services.ICommonUIService"/>
+   </service>
+   <reference bind="setCoreUIService" cardinality="1..1" interface="com.nextep.designer.ui.services.IUIService" name="IUIService" policy="static"/>
+   <reference bind="setMarkerService" cardinality="1..1" interface="com.nextep.designer.core.services.IMarkerService" name="IMarkerService" policy="static"/>
+</scr:component>

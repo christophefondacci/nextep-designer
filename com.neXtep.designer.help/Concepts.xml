@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="2 - Concepts" topic="http://www.nextep-softwares.com/wiki/index.php/NeXtep_Designer_Overview">
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Workspaces" label="Workspaces">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Version_control_with_neXtep" label="Version control with neXtep">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Versioning_considerations" label="Versioning considerations">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Database_modules" label="Database modules">
+      <topic href="html/vcs/merges.html" label="Merging modules">
+      </topic>
+   </topic>
+</toc>

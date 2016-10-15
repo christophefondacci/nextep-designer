@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: neXtep Installer Plug-in
+Bundle-SymbolicName: com.neXtep.designer.installer
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.installer.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.jdbc.mysql;bundle-version="5.1.6",
+ com.neXtep.designer.jdbc.oracle;bundle-version="1.4.0",
+ com.neXtep.designer.shared;bundle-version="1.0.0",
+ com.neXtep.designer.jdbc.postgre;bundle-version="8.3.603",
+ org.eclipse.equinox.ds;bundle-version="1.1.1",
+ org.apache.derby.core;bundle-version="10.6.2",
+ com.neXtep.designer.jdbc.db2;bundle-version="3.58.0",
+ com.neXtep.designer.jdbc.mssqljtds;bundle-version="1.2.5"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Export-Package: com.nextep.installer,
+ com.nextep.installer.exception,
+ com.nextep.installer.factories,
+ com.nextep.installer.impl.req,
+ com.nextep.installer.model,
+ com.nextep.installer.services
+Service-Component: OSGI-INF/loggingServiceComponent.xml, OSGI-INF/adminServiceComponent.xml, OSGI-INF/installerServiceComponent.xml

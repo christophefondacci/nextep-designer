@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.core.coreFactory">
+   <implementation class="com.nextep.designer.core.factories.impl.CoreFactory"/>
+   <service>
+      <provide interface="com.nextep.designer.core.factories.ICoreFactory"/>
+   </service>
+</scr:component>

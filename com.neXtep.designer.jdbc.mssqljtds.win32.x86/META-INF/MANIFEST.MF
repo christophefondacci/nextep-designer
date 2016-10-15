@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MSSQL jTDS JDBC driver native libraries for windows 32 bits
+Bundle-SymbolicName: com.neXtep.designer.jdbc.mssqljtds.win32.x86;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Vendor: neXtep
+Fragment-Host: com.neXtep.designer.jdbc.mssqljtds;bundle-version="1.2.5"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-PlatformFilter: (& (osgi.os=win32) (osgi.arch=x86))
+Bundle-NativeCode: lib/ntlmauth.dll
+Bundle-ClassPath: lib/,
+ .

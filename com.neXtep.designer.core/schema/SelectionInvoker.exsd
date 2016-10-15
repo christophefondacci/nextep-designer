@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+	<!-- Schema file written by PDE -->
+<schema targetNamespace="com.neXtep.designer.vcs">
+	<annotation>
+		<appInfo>
+			<meta.schema plugin="com.neXtep.designer.vcs" id="SelectionInvoker"
+				name="SelectionInvoker" />
+		</appInfo>
+		<documentation>
+			[Enter description of this extension point.]
+      </documentation>
+	</annotation>
+
+	<element name="extension">
+		<complexType>
+			<sequence>
+				<element ref="selectionInvoker" minOccurs="1" maxOccurs="unbounded" />
+			</sequence>
+			<attribute name="point" type="string" use="required">
+				<annotation>
+					<documentation>
+
+					</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="id" type="string">
+				<annotation>
+					<documentation>
+
+					</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="name" type="string">
+				<annotation>
+					<documentation>
+
+					</documentation>
+					<appInfo>
+						<meta.attribute translatable="true" />
+					</appInfo>
+				</annotation>
+			</attribute>
+		</complexType>
+	</element>
+
+	<element name="selectionInvoker">
+		<complexType>
+			<attribute name="name" type="string" use="required">
+				<annotation>
+					<documentation>
+						Name of the action which handles this SelectionInvoker. 2 actions
+						defined : &quot;activity&quot; and &quot;activity.container&quot;
+						which should query for version activity selection and container
+						version activity selection respectively.
+               </documentation>
+				</annotation>
+			</attribute>
+			<attribute name="class" type="string" use="required">
+				<annotation>
+					<documentation>
+						Class implementing the IInvokable interface and which will select the
+						related information (or ask the user to do so).
+               </documentation>
+					<appInfo>
+						<meta.attribute kind="java"
+							basedOn=":com.nextep.datadesigner.model.IInvokable" />
+					</appInfo>
+				</annotation>
+			</attribute>
+		</complexType>
+	</element>
+
+	<annotation>
+		<appInfo>
+			<meta.section type="since" />
+		</appInfo>
+		<documentation>
+			[Enter the first release in which this extension point appears.]
+      </documentation>
+	</annotation>
+
+	<annotation>
+		<appInfo>
+			<meta.section type="examples" />
+		</appInfo>
+		<documentation>
+			[Enter extension point usage example here.]
+      </documentation>
+	</annotation>
+
+	<annotation>
+		<appInfo>
+			<meta.section type="apiInfo" />
+		</appInfo>
+		<documentation>
+			[Enter API information here.]
+      </documentation>
+	</annotation>
+
+	<annotation>
+		<appInfo>
+			<meta.section type="implementation" />
+		</appInfo>
+		<documentation>
+			[Enter information about supplied implementation of this extension point.]
+      </documentation>
+	</annotation>
+
+	<annotation>
+		<appInfo>
+			<meta.section type="copyright" />
+		</appInfo>
+		<documentation>
+
+		</documentation>
+	</annotation>
+
+</schema>

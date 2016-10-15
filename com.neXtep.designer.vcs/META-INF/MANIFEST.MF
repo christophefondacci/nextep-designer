@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Version control system
+Bundle-SymbolicName: com.neXtep.designer.vcs;singleton:=true
+Eclipse-RegisterBuddy: com.neXtep.designer.hibernate,com.neXtep.designer.core
+Bundle-Version: 1.0.7.qualifier
+Bundle-Vendor: neXtep
+Require-Bundle: com.neXtep.designer.core,
+ com.neXtep.designer.logging,
+ org.eclipse.core.runtime,
+ org.eclipse.compare;bundle-version="3.4.0",
+ com.neXtep.designer.jdbc.mysql;bundle-version="5.1.6",
+ com.neXtep.designer.jdbc.oracle;bundle-version="1.4.0",
+ com.neXtep.designer.hibernate;bundle-version="3.3.1"
+Export-Package: com.nextep.datadesigner.vcs.command,
+ com.nextep.datadesigner.vcs.impl,
+ com.nextep.datadesigner.vcs.services,
+ com.nextep.designer.vcs,
+ com.nextep.designer.vcs.controllers.base,
+ com.nextep.designer.vcs.dao,
+ com.nextep.designer.vcs.exception,
+ com.nextep.designer.vcs.factories,
+ com.nextep.designer.vcs.marker.impl,
+ com.nextep.designer.vcs.model,
+ com.nextep.designer.vcs.model.base,
+ com.nextep.designer.vcs.model.impl;x-friends:="com.neXtep.designer.vcs.ui",
+ com.nextep.designer.vcs.policies,
+ com.nextep.designer.vcs.preferences,
+ com.nextep.designer.vcs.services
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: com.nextep.designer.vcs.VCSPlugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Service-Component: OSGI-INF/versioningServiceComponent.xml, OSGI-INF/dependencyServiceComponent.xml, OSGI-INF/workspaceServiceComponent.xml, OSGI-INF/workspaceLinkerListenerComponent.xml, OSGI-INF/workspaceMarkersListenerComponent.xml, OSGI-INF/comparisonManagerComponent.xml, OSGI-INF/userVersioningValidatorComponent.xml

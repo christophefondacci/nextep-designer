@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.UniqueKeyConstraint"
+		extends="com.nextep.datadesigner.dbgm.model.IKeyConstraint"
+		table="DBGM_UNIQUE_KEYS"
+		lazy="false"
+		>
+			<key column="KEY_ID"/>
+			<property name="constraintType" type="com.nextep.designer.dbgm.dao.types.PrimaryKeyType" column="IS_PRIMARY"/>
+
+	</joined-subclass>
+</hibernate-mapping>

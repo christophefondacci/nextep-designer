@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090403;18023400">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		TD P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Installing the <I>neXtep installer</I></H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">The
+installer is a Java 1.4-based program which is able to deploy
+deliveries generated with neXtep Designer. The installer is free and
+you don't need any specific license so feel free to install it
+wherever you need. Typically, you will need an installer on each
+target database server where you need to deploy neXtep deliveries.</SPAN></SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Download / system settings</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">These steps will guide you through the
+<I>neXtep installer </I>installation on a target machine. Note that
+those steps will be the same each time you install the <I>neXtep
+installer </I>on a target machine<I>.</I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Start by
+	downloading the latest release of the neXtep installer</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Put the archive on
+	the server you would like to use as the database server of the
+	repository.</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Unzip the
+	installer in a directory you choose. We will call this directory
+	<I>$INSTALLER_DIR</I></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">
+	Define a new global system variable <I><B>NXTP_HOME </B></I><SPAN STYLE="font-weight: normal">which
+	points to </SPAN><I><SPAN STYLE="font-weight: normal">$INSTALLER_DIR.
+	</SPAN></I><SPAN STYLE="font-weight: normal">Add this variable to
+	your global path.</SPAN></P>
+</UL>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=95% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+		<COL WIDTH=128*>
+		<COL WIDTH=128*>
+		<TR>
+			<TD WIDTH=50% HEIGHT=19 BGCOLOR="#4c4c4c">
+				<P CLASS="western" ALIGN=CENTER><FONT COLOR="#ffffff"><B>Linux /
+				Unix</B></FONT></P>
+			</TD>
+			<TD WIDTH=50% BGCOLOR="#4c4c4c">
+				<P CLASS="western" ALIGN=CENTER><FONT COLOR="#ffffff"><B>Windows</B></FONT></P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=50%>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">
+				<SPAN STYLE="font-weight: normal">export
+				NXTP_HOME=/opt/neXtep/installer (</SPAN><I><SPAN STYLE="font-weight: normal">Assuming
+				/opt/neXtep/installer is your &ldquo;$INSTALLER_DIR&rdquo;)</SPAN></I></P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				export PATH=$PATH:$NXTP_HOME</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				chmod +x $NXTP_HOME/nxtp.sh</P>
+				<P CLASS="western" STYLE="font-weight: normal"><I>And add the 2
+				export lines to the .bashrc file of the home directory of system
+				users which will use the installer for convenience.</I></P>
+			</TD>
+			<TD WIDTH=50%>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				set NXTP_HOME=c:\neXtep\installer</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				set PATH=%PATH%;%NXTP_HOME%</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				and / or right click on &ldquo;Computer&rdquo; &gt; properties</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				Click on advanced system settings</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				Click on Environment variables</P>
+				<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+				Add the NXTP_HOME variable</P>
+				<P CLASS="western" STYLE="font-style: normal; font-weight: normal">
+				Modify the PATH variable</P>
+			</TD>
+		</TR>
+	</TABLE>
+</DIV>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">Edit
+	the file </SPAN></SPAN><I><SPAN STYLE="font-weight: normal">$INSTALLER_DIR/properties/neXtep.properties
+	</SPAN></I><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">and
+	adjust the settings to define the database schema which will be used
+	as the administration schema for neXtep deployments data. </SPAN></SPAN><SPAN STYLE="font-style: normal"><B>This
+	is a very small schema used by the installer to keep track of what
+	has been deployed where and containing some deployment logs.</B></SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+	Check that you have a proper java 1.4 or higher on your machine :
+	java -version</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal"><SPAN STYLE="font-style: normal">Initialization</SPAN></SPAN></FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Everything is ready for the installer
+initialization :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Open a shell
+	window on the target machine</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Execute the
+	command &ldquo;nxtp -install&rdquo; (Windows) or &ldquo;nxtp.sh
+	-install&rdquo; (Linux / Unix)</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">The administration
+	database schema is now configured</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">Delivery
+deployment</SPAN></SPAN></FONT></H2>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm">Go to the
+	<SPAN STYLE="font-style: normal">directory</SPAN> <SPAN STYLE="font-style: normal">which
+	contains the neXtep delivery to install</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">
+	Execute the command &ldquo;nxtp&rdquo; (Windows) or &ldquo;nxtp.sh&rdquo;
+	(Linux)</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">
+	Enter the user / password / database id of the schema into which you
+	would like to install the repository (or the schema of a currently
+	installed repository for repository upgrades)</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">
+	The repository should be installed without errors on your system.</P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">Your
+delivery is installed. Note that the user / password / database
+information you provided in the installation should be the same each
+time you deploy a package to this schema.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">You
+can use a non-interactive deployment by the following command line :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal">nxtp.sh
+-user=<I>username </I>-pass=<I>password </I>-db<I>=</I><I>databasename</I></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

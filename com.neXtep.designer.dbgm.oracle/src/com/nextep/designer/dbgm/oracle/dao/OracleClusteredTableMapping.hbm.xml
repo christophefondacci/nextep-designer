@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.dbgm.oracle.impl.OracleClusteredTable" table="DBOM_CLUSTER_TABLES" lazy="false">
+		<id name="id" column="CLTA_ID">
+			<generator class="hilo"/>
+		</id>
+		<many-to-one name="cluster" class="com.nextep.designer.dbgm.oracle.impl.OracleCluster" column="TBCL_VERSION_ID" />
+		<many-to-one name="reference" class="com.nextep.datadesigner.impl.Reference" not-null="true" column="CLUSTERED_TABLE_REFID" cascade="persist,merge,save-update"/>
+		<many-to-one name="tableReference" class="com.nextep.datadesigner.impl.Reference" column="TABLE_REFID" />
+			<map name="columnMappings" table="DBOM_CLUSTER_COLUMN_MAPS" cascade="all" lazy="false" outer-join="false">
+				<key column="CLTA_ID"/>
+				<map-key-many-to-many column="CLUSTER_COLUMN_REFID" class="com.nextep.datadesigner.impl.Reference" />
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="TABLE_COLUMN_REFID" />
+			</map>
+	</class>
+</hibernate-mapping>

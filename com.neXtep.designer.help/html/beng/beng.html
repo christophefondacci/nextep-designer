@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090324;16521500">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">The delivery engine</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep Designer comes
+with a great feature : the delivery engine. This engine handles the
+&ldquo;glue&rdquo; between version information and database
+structural upgrade deliveries. In this section we will see the
+features offered by the product to help you delivering your database
+versions and automate the upgrade process.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Database deliveries considerations</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Delivering updates for
+an existing production database has specific constraints due to the
+<I>persistent</I><SPAN STYLE="font-style: normal"> aspect of a
+database. Unlike a Web or standalone application, you cannot remove
+and replace your previous release by the new one as this operation
+would loose all your persistent data. Instead you need to provide
+incremental scripts which literally upgrade your previous release to
+the new one. </SPAN>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">This
+could be very simple for small projects, but as your project grows,
+you will need to maintain several releases of your database schema in
+parallel :</SPAN></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">The
+	production release which you might need to patch</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">The
+	tested release which you also might need to patch</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Your
+	development release</SPAN></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">For
+	large projects you might also have several releases being developed
+	and tested in parallel</SPAN></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">But
+the incremental aspect of database deliveries is not fitting well
+with the development parallelism... This is why neXtep designer
+provides features for managing and deploying these deliveries : the
+delivery engine.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Database release delivery</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">The
+delivery engine intensively uses information from the <I>Version
+Control System</I><SPAN STYLE="font-style: normal"> to keep track of
+all changes you make to your schema objects and automates the
+generation of the needed incremental scripts. More, for multi-team
+projects you will be able to define dependencies in your deliveries
+which will make the delivery engine </SPAN><I>embed</I><SPAN STYLE="font-style: normal">
+external-team deliveries into your development.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The neXtep installer</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">A
+free installer is provided with neXtep designer which will be able to
+deploy your generated deliveries to any <I>neXtep-managed</I><SPAN STYLE="font-style: normal">
+database or to convert any existing database to a </SPAN><I>neXtep-managed</I><SPAN STYLE="font-style: normal">
+database.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Walk
+through this book to learn how to create a delivery, to define
+dependencies, to control compatility, to integrate external files and
+to eventually export your delivery to the filesystem.</SPAN></FONT></P>
+</BODY>
+</HTML>

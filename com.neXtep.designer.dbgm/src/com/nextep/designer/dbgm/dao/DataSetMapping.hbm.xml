@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.model.impl.DataSet"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_DATA_SETS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+
+			<property name="name" column="DATASET_NAME"/>
+			<property name="description" column="DESCRIPTION"></property>
+			<property name="hibFileGenerated" column="FILE_GENERATED"/>
+			<property name="hibOptional" column="ENCLOSED_OPTIONAL"/>
+			<property name="loadingMethod" column="LOADING_METHOD" type="com.nextep.designer.dbgm.dao.types.LoadingMethodType"/>
+			<property name="fieldsTermination" column="TERMINATED_BY"/>
+			<property name="fieldsEnclosure" column="ENCLOSED_BY"/>
+			<property name="currentRowId" column="CURRENT_ROWID"/>
+			<many-to-one name="tableReference" class="com.nextep.datadesigner.impl.Reference" column="TAB_REFID" />
+			<!--<many-to-one name="datafile" class="com.nextep.datadesigner.vcs.impl.RepositoryFile" column="FILE_ID" />-->
+			<list name="dataFiles" outer-join="false" lazy="false" table="DBGM_DATASET_FILES">
+				<key column="DSET_VERSION_ID"/>
+				<list-index><column name="POSITION"/></list-index>
+				<many-to-many class="com.nextep.datadesigner.vcs.impl.RepositoryFile" column="FILE_ID" />
+			</list>
+			<list name="columnsRef" table="DBGM_DSET_COLS" cascade="all" lazy="false">
+				<key column="DSET_VERSION_ID"/>
+				<list-index><column name="COLUMN_POSITION"/></list-index>
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="COLUMN_REFID" unique="true"/>
+			</list>
+<!-- 
+			<list name="dataLines" cascade="all" lazy="false" outer-join="false" inverse="true">
+				<key column="DSET_VERSION_ID"/>
+				<list-index><column name="LINE_NO"/></list-index>
+				<one-to-many class="com.nextep.designer.dbgm.model.impl.DataLine"/>
+			</list>
+			 -->
+			<map name="columnMasks" table="DBGM_DSET_COL_MASKS" cascade="all" lazy="false" outer-join="false">
+				<key column="DSET_VERSION_ID"/>
+				<map-key-many-to-many column="COLUMN_REFID" class="com.nextep.datadesigner.impl.Reference" />
+				<element column="COLUMN_MASK" type="string"/>
+			</map>
+<!-- 		<list name="columns" inverse="true" cascade="all"
+				outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID" />
+				<list-index>
+					<column name="COLUMN_POSITION" />
+				</list-index>
+				<one-to-many
+					class="com.nextep.datadesigner.dbgm.impl.BasicColumn" />
+			</list>
+			<set name="constraints" inverse="true" cascade="all"
+				outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID" />
+				<one-to-many
+					class="com.nextep.datadesigner.dbgm.model.IKeyConstraint" />
+			</set> -->
+	</joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.vcs.versioningService">
+   <implementation class="com.nextep.designer.vcs.services.impl.VersioningService"/>
+   <reference bind="setProblemSolver" cardinality="1..1" interface="com.nextep.designer.core.model.IProblemSolver" name="IProblemSolver" policy="static"/>
+   <service>
+      <provide interface="com.nextep.designer.vcs.services.IVersioningService"/>
+   </service>
+   <reference bind="setListenerService" cardinality="1..1" interface="com.nextep.datadesigner.model.IListenerService" name="IListenerService" policy="static"/>
+   <reference bind="addValidator" cardinality="0..n" interface="com.nextep.designer.vcs.model.IVersioningValidator" name="IVersioningValidator" policy="dynamic" unbind="removeValidator"/>
+   <reference bind="addVersioningListener" cardinality="0..n" interface="com.nextep.designer.vcs.model.IVersioningListener" name="IVersioningListener" policy="dynamic" unbind="removeVersioningListener"/>
+   <reference bind="setCoreFactory" cardinality="1..1" interface="com.nextep.designer.core.factories.ICoreFactory" name="ICoreFactory" policy="static"/>
+   <reference bind="setCoreService" cardinality="1..1" interface="com.nextep.designer.core.services.ICoreService" name="ICoreService" policy="static"/>
+</scr:component>

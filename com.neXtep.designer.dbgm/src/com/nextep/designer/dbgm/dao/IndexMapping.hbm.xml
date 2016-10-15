@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.BasicIndex"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_INDEXES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+
+			<property name="indexName" column="INDEX_NAME"/>
+			<property name="description" column="DESCRIPTION"></property>
+			<property name="indexType" column="INDEX_TYPE" type="com.nextep.designer.dbgm.dao.types.IndexTypeType"/>
+			<many-to-one name="indexedTableRef" class="com.nextep.datadesigner.impl.Reference" column="TABLE_REFID" />
+			<list name="indexedColumnsRef" table="DBGM_INDEX_COLUMNS" outer-join="false" cascade="all" lazy="false">
+				<key column="INDEX_ID"/>
+				<list-index><column name="POSITION"/></list-index>
+				<many-to-many class="com.nextep.datadesigner.impl.Reference" column="COL_REFID" unique="true"/>
+			</list>	
+			<map name="functionColRefMap" table="DBGM_INDEX_COLFUNCS" cascade="all" lazy="false" outer-join="false">
+				<key column="IND_VERSION_ID"/>
+				<map-key-many-to-many column="COL_REFID" class="com.nextep.datadesigner.impl.Reference" />
+				<element column="EXPRESSION" type="string"/>
+			</map>
+	</joined-subclass>
+</hibernate-mapping>

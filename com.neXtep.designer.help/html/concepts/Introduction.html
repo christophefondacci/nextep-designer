@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20081113;11575600">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Introduction</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep designer
+introduces a new way of designing databases and allows you to control
+the lifecycle of your database developments.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<BR>
+</H2>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The repository</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The main concept to
+understand is that when you work in the neXtep environment, you make
+your changes in a version repository instead of altering your
+development database directly. The version repository logs all
+changes made to &ldquo;objects&rdquo; of your database and creates
+versions for these modifications. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">A version is a
+&ldquo;snapshot&rdquo; of an object structure (table, index, key,
+stored package, diagram,...) at a given time.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">During development
+phase, you will be able to synchronize modifications made to your
+disconnected repository with a development database very frequently
+(when you say so).</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">When you need to
+deliver your developments to another environment / team (integration,
+production), neXtep designer will be able to compute all changes made
+to your database structure since your last delivery (or since any
+given version) and will generate all SQL statements which will
+migrate the database to your new structure.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<IMG SRC="ArchiExt1.png" NAME="images1" ALIGN=LEFT WIDTH=510 HEIGHT=199 BORDER=0><BR CLEAR=LEFT><FONT FACE="Arial, sans-serif">Repository
+versioning</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Versioning is the core of neXtep
+designer: any single element of the neXtep designer environment has
+version information. Therefore, any element has a lifecycle and any
+change made to any element can be tracked.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</H2>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">The ecosystem</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">NeXtep designer is an ecosystem of
+tools which, altogether, constitute the whole neXtep designer
+environment. This documentation will be organized by the same
+frontiers as the different modules of neXtep designer, to allow
+proper maintenance.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Here are the modules of neXtep
+designer :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Core
+	: </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	a common base for all other modules.</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Version
+	Control System : </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	all versioning features to track changes of any element of the
+	environment. </SPAN></SPAN></FONT>
+	</P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Database
+	generic model : </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	a common shared layer for representing / modeling a database
+	structure, whatever the database vendor.</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Database
+	Oracle model : </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	a layer for modeling Oracle-specific database structure</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Database
+	MySQL model :</SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">
+	provides a layer for modeling MySQL-specific database structure</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">SQL
+	generator : </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	all functionalities to generate SQL-statements from database
+	structural changes.</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal">Build
+	engine : </SPAN></FONT></B><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">provides
+	all functionalities to build exportable deployment packages.</SPAN></SPAN></FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

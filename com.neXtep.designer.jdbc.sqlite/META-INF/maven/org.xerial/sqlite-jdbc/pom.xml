@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.xerial</groupId>
+  <artifactId>sqlite-jdbc</artifactId>
+  <version>3.7.2</version>
+  <name>SQLite JDBC</name>
+  <description>SQLite JDBC library</description>
+
+  <parent>
+    <groupId>org.xerial</groupId>
+    <artifactId>xerial-project</artifactId>
+    <version>1.1</version>
+  </parent>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>native/**</include>
+          <include>org/**</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}</directory>
+        <targetPath>META-INF/maven/${groupId}/${artifactId}</targetPath>
+        <includes>
+          <include>VERSION</include>
+          <include>LICENSE*</include>
+        </includes>
+      </resource>
+    </resources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgument>
+            -Xbootclasspath/p:${basedir}/lib/jdbc-api-1.4.jar
+          </compilerArgument>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-dependency</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <excludes>META-INF,META-INF/**</excludes>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.xerial.thirdparty</groupId>
+                  <artifactId>nestedvm</artifactId>
+                  <version>1.0</version>
+                  <type>jar</type>
+                </artifactItem>
+              </artifactItems>
+              <overWrite>true</overWrite>
+              <outputDirectory>src/main/resources</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <!--  do not run site-deploy goal, included in the default settings  -->
+          <goals>deploy</goals>
+          <connectionUrl>scm:hg:https://sqlite.xerial.googlecode.com/hg/</connectionUrl>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+  <scm>
+    <connection>scm:hg:https://sqlite.xerial.googlecode.com/hg/</connection>
+    <developerConnection>scm:hg:default</developerConnection>
+    <url>scm:hg:https://sqlite.xerial.googlecode.com/hg/</url>
+  </scm>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.xerial.thirdparty</groupId>
+      <artifactId>nestedvm</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xerial.thirdparty</groupId>
+      <artifactId>jdbc-api</artifactId>
+      <version>1.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

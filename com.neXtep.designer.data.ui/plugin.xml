@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.ui.typeController">
+      <typeController
+            class="com.nextep.designer.data.ui.controllers.DataSetUIController"
+            typeId="DATASET">
+      </typeController>
+      <typeController
+            class="com.nextep.designer.data.ui.controllers.DataLineController"
+            typeId="DATALINE">
+      </typeController>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.nextep.designer.data.ui.editors.DataSetComparisonEditor"
+            default="false"
+            icon="resource/DiffTiny.ico"
+            id="com.neXtep.designer.sqlclient.ui.dataset.comparisonEditor"
+            name="Data comparison">
+      </editor>
+      <editor
+            class="com.nextep.designer.data.ui.editors.DataSetComparisonMultiEditor"
+            default="false"
+            icon="resource/DiffTiny.ico"
+            id="com.neXtep.designer.sqlclient.ui.dataset.multiComparisonEditor"
+            name="Multi Comparison">
+      </editor>
+      <editor
+            class="com.nextep.designer.data.ui.editors.DataSetSQLEditor"
+            default="false"
+            id="com.neXtep.designer.data.ui.dataSetSqlEditor"
+            name="Data set SQL editor">
+      </editor>
+      <editor
+            class="com.nextep.designer.data.ui.editors.DataSetMultiEditor"
+            default="false"
+            id="com.neXtep.designer.data.ui.dataSetMultiEditor"
+            name="Data set editor">
+      </editor>
+   </extension>
+   <extension
+         point="com.neXtep.designer.vcs.ui.comparisonEditorProvider">
+      <comparisonEditorProvider
+            class="com.nextep.designer.data.ui.editors.DataSetComparisonEditorProvider"
+            typeIdRestriction="DATASET">
+      </comparisonEditorProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:com.neXtep.designer.data.ui.dataSetSqlEditor?after=additions">
+         <command
+               commandId="com.neXtep.designer.sqlclient.ui.executeQuery"
+               icon="resource/run_exc.gif"
+               style="push">
+         </command>
+         <command
+               commandId="com.neXtep.designer.data.ui.saveDataSet"
+               icon="resource/database_save.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.nextep.designer.data.ui.handlers.SaveDataSetHandler"
+            id="com.neXtep.designer.data.ui.saveDataSet"
+            name="Commits the dataset changes to repository">
+      </command>
+   </extension>
+
+</plugin>

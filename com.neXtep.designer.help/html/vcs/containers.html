@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20081124;14521700">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Containers</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Containers elements of
+the repository allowing you to logically organize your database
+components. Typically a container should reflect a module of your
+database model / application. You can create as many containers as
+you need. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Why using containers ?</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Containers allows you
+to structure your application by defining logical modules of a
+database model. Thus, working with containers will allow you to reuse
+parts of your database model for another application. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">For example, you might
+need to develop a &ldquo;user&rdquo; module data model to handle
+authorization, logging in, rights and provide a single-sign-on
+feature to one of your application. You might also need to develop a
+logging system which will log information into your production
+database. It would be a good idea to create a container for such
+features so you will be able to reuse the exact same component in
+another application. This would save huge amount of time when
+designing new application and you will be able to capitalize your
+developments.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">If you are familiar
+with &ldquo;modular&rdquo; developments, you might already have
+top-level application modules which need a corresponding data model
+to be present in your database to work properly. Some of these
+application modules will be shared between several applications
+(mostly low-level frameworks, but not only). If you map the frontiers
+of your application modules with frontiers of your database
+containers, you will be able to quickly deploy new applications,
+reusing your previous developments. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">More, when your
+development team will grow, you will be able to affect some
+containers to team A and others to team B.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">We advise you to think
+about a container organization which will match your business goals
+(maintenance, reuseability) before creating new components. <I>neXtep
+Designer</I> <SPAN STYLE="font-style: normal">will then provide you a
+high level of flexibility to maintain, deploy and manage the
+lifecycle of your components.</SPAN></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Container versions</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Like
+every element in the <I>neXtep designer</I> environment, containers
+have a lifecycle through versioning information. The only thing
+important to retain is that a committed version of a container is
+sealed. That means that when you commit a container, the contents of
+this container will be forever frozen. The only way to modify
+contents of a container is to check-out it to create a new version.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Consequences
+are that you can only commit a container when all its content is
+committed. For convenience, trying to commit a container which has
+check-outed elements will prompt you with a list of the non-committed
+elements to &ldquo;batch-commit&rdquo; them.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ContainersCommit.png" NAME="images1" ALIGN=LEFT WIDTH=465 HEIGHT=290 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Since
+containers might be delivered, note that versions assignment are
+user-based for containers. Each time you check-out or commit a
+container, you will be asked for a version number. We advise you to
+use a business-oriented numeration.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="ContainersVersion.png" NAME="images2" ALIGN=LEFT WIDTH=355 HEIGHT=182 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Specific features for containers</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">A
+	container can be exported as a </SPAN></FONT><FONT FACE="Arial, sans-serif"><I><B>delivery
+	modules</B></I></FONT><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">.
+	Have a look to the </SPAN></SPAN></FONT><FONT FACE="Arial, sans-serif"><I><SPAN STYLE="font-weight: normal">Build
+	Engine</SPAN></I></FONT> <FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: normal">documentation
+	to learn how to create, manage and export delivery modules from
+	containers. It is important to understand that every root-level
+	containers will have their own lifecycle and though will have their
+	own deliveries.</SPAN></SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm; font-style: normal; font-weight: normal">
+	<FONT FACE="Arial, sans-serif">A container can be merged. It is
+	literally a merge of 2 different versions of a same container.
+	Merges are needed in an application lifecycle when you start to
+	maintain several different versions in parallel. For example, as
+	soon as you have a production release and a development release, you
+	might need to perform merges if you have to publish a patch of your
+	production release while developing a new release paralelly.</FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

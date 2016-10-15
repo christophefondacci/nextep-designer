@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.dbgm.impl.Connection"
+		table="DBGM_CONNECTIONS"
+		lazy="false">
+			<id name="id" column="DBCN_ID">
+				<generator class="hilo"/>
+			</id>
+			<!--<property name="name" column="CONNECTION_NAME"/>-->
+			<property name="description" column="DESCRIPTION"/>
+			<property name="login" column="DBLOGIN"/>
+			<property name="password" column="DBPASSWORD"/>
+			<property name="SID" column="DBSID"/>
+			<property name="serverIP" column="DBSERVER_IP"/>
+			<property name="serverPort" column="DBPORT"/>
+		 	<property name="targetType" type="com.nextep.designer.core.dao.types.TargetTypeType" column="TARGET_TYPE"/>
+		 	<property name="DBVendor" type="com.nextep.designer.core.dao.types.DBVendorType" column="DBVENDOR"/>
+			<property name="tnsAlias" column="TNS_ALIAS"/>
+			<property name="schema" column="DBSCHEMA"/>
+	</class>
+</hibernate-mapping>

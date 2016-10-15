@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Table of Contents">
+	<topic label="Basic tutorial"  href="html/start/TutorialBasic.html"> 
+		<topic label="The launcher" href="html/start/Launcher.html"/>
+		<topic label="The Workbench" href="html/start/Workbench.html"/>
+		<topic label="Creating a first module" href="html/start/ModuleSimple.html"/>  
+		<topic label="Creating your first model" href="html/start/ModelFirst.html"/>
+  <topic href="html/start/ModelPublish.html" label="Publishing your first module">
+  </topic>
+	</topic>
+</toc>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.View"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_SQL_VIEWS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="name" column="VIEW_NAME"/>
+			<property name="description" column="VIEW_DESCRIPTION"></property>
+			<property name="sql" column="VIEW_SQL" type="com.nextep.designer.core.dao.types.ClobStringType"/>
+			<list name="columnAliases" table="DBGM_VIEW_ALIASES" outer-join="false" lazy="false">
+				<key column="VIEW_ID"/>
+				<list-index><column name="POSITION"/></list-index>
+				<element column="ALIAS_NAME" type="string"/>
+			</list>
+	</joined-subclass>
+</hibernate-mapping>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.dbgm.mysql.mysqlModelService">
+   <implementation class="com.nextep.designer.dbgm.mysql.services.impl.MySqlModelService"/>
+   <service>
+      <provide interface="com.nextep.designer.dbgm.mysql.services.IMySqlModelService"/>
+   </service>
+</scr:component>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.datadesigner.dbgm.impl.VersionedTable"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBGM_TABLES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			
+			<property name="name" column="TABLE_NAME"/>
+			<property name="shortName" column="SHORT_NAME"/>
+			<property name="description" column="description"></property>
+			<property name="hibernateTemporary" column="IS_TEMPORARY"/>
+			<list name="columns" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID"/>
+				<list-index><column name="COLUMN_POSITION"/></list-index>
+				<one-to-many class="com.nextep.datadesigner.dbgm.impl.BasicColumn"/>
+			</list>
+			<set name="constraints" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID"/>
+				<one-to-many class="com.nextep.datadesigner.dbgm.model.IKeyConstraint"/>
+			</set>
+	</joined-subclass>
+</hibernate-mapping>

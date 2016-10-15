@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.mysql.impl.MySQLIndex"
+		extends="com.nextep.datadesigner.dbgm.impl.BasicIndex"
+		table="DBMYM_INDEXES"
+		lazy="false"
+		>
+			<key column="IND_VERSION_ID"/>
+			<map name="columnPropertiesMap" table="DBMYM_INDEX_COLPROPS" cascade="all" lazy="false" outer-join="false">
+				<key column="IND_VERSION_ID"/>
+				<map-key-many-to-many column="COL_REFID" class="com.nextep.datadesigner.impl.Reference" />
+				<composite-element class="com.nextep.designer.dbgm.mysql.impl.MySQLIndexProperties">
+					<property name="prefixLength" column="PREFIX_LENGTH"/>
+					<property name="descending" column="IS_DESCENDING" type="com.nextep.designer.core.dao.types.BooleanType"/>
+				</composite-element>
+			</map>
+	</joined-subclass>
+</hibernate-mapping>

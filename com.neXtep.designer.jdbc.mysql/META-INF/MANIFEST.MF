@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mysql JDBC Driver for NeXtep
+Bundle-SymbolicName: com.neXtep.designer.jdbc.mysql
+Bundle-Version: 5.1.35
+Bundle-Vendor: neXtep
+Export-Package: com.mysql.fabric,
+ com.mysql.fabric.hibernate,
+ com.mysql.fabric.jdbc,
+ com.mysql.fabric.proto.xmlrpc,
+ com.mysql.fabric.xmlrpc,
+ com.mysql.fabric.xmlrpc.base,
+ com.mysql.fabric.xmlrpc.exceptions,
+ com.mysql.jdbc,
+ com.mysql.jdbc.authentication,
+ com.mysql.jdbc.exceptions,
+ com.mysql.jdbc.exceptions.jdbc4,
+ com.mysql.jdbc.integration.c3p0,
+ com.mysql.jdbc.integration.jboss,
+ com.mysql.jdbc.interceptors,
+ com.mysql.jdbc.jdbc2.optional,
+ com.mysql.jdbc.jmx,
+ com.mysql.jdbc.log,
+ com.mysql.jdbc.profiler,
+ com.mysql.jdbc.util,
+ org.gjt.mm.mysql
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

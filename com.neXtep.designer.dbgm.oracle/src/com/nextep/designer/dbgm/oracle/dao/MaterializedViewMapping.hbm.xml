@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleMaterializedView"
+		extends="com.nextep.designer.dbgm.oracle.impl.OracleTable"
+		table="DBOM_MATERIALIZED_VIEWS"
+		lazy="false"
+		>
+			<key column="TAB_VERSION_ID"/>
+			<property name="refreshTime" column="REFRESH_TIME" type="com.nextep.designer.dbgm.oracle.dao.RefreshTimeType"/>
+			<property name="refreshMethod" column="REFRESH_METHOD" type="com.nextep.designer.dbgm.oracle.dao.RefreshMethodType"/>
+			<property name="viewType" column="VIEW_TYPE" type="com.nextep.designer.dbgm.oracle.dao.ViewTypeType"/>
+			<property name="startExpr" column="START_EXPR"/>
+			<property name="nextExpr" column="NEXT_EXPR"/>
+			<!--<property name="name" column="VIEW_NAME"/>-->
+			<!--<property name="description" column="VIEW_DESC"/>-->
+			<property name="buildType" column="BUILD_TYPE" type="com.nextep.designer.dbgm.oracle.dao.BuildTypeType"/>
+			<property name="sql" column="SQL_QUERY" type="com.nextep.designer.core.dao.types.ClobStringType"/>
+			<property name="queryRewriteEnabled" column="QUERY_REWRITE_ENABLED" type="com.nextep.designer.core.dao.types.BooleanType"/>
+	</joined-subclass>
+</hibernate-mapping>

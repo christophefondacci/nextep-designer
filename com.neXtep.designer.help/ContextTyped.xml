@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="TABLE" title="About the table editor">
+      <description>This is the table editor. 
+You can define the current table structure by defining its name, attributes, columns, keys, indexes, etc.
+You always work on a given version of a table. You may be able to modify the table properties only on non-versioned or checked out tables.</description>
+      <topic href="html/dbgm/creatingTables.html" label="Creating tables"/>
+   </context>
+   <context id="INDEX" title="About the index editor">
+      <description>This is the index editor.
+You can alter the index properties such as type, name and index columns here. Note that indexes are versioned independently from their table and that you can only modify indexes which are not versioned or checked out.</description>
+      <topic href="html/dbgm/creatingIndexes.html" label="Creating indexes"/>
+   </context>
+</contexts>

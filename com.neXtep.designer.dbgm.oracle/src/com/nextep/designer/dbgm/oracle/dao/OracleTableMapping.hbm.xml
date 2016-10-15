@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleTable"
+		extends="com.nextep.datadesigner.dbgm.impl.VersionedTable"
+		table="DBOM_ORACLE_TABLES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<many-to-one name="physicalProperties" class="com.nextep.designer.dbgm.oracle.impl.external.OracleTablePhysicalProperties" not-null="false" column="PHYS_ID" cascade="all" fetch="join"/>
+			<set name="checkConstraints" inverse="true" cascade ="all" outer-join="false" lazy="false">
+				<key column="TAB_VERSION_ID"/>
+				<one-to-many class="com.nextep.designer.dbgm.model.impl.CheckConstraint"/>
+			</set>
+			<!-- one-to-one name="physicalProperties" class="com.nextep.designer.dbgm.oracle.impl.external.OracleTablePhysicalProperties" cascade="save-update"/-->
+	</joined-subclass>
+</hibernate-mapping>

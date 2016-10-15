@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="com.neXtep.designer.vcs">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="com.neXtep.designer.vcs" id="VersionableFactory" name="VersionableFactory"/>
+      </appInfo>
+      <documentation>
+         Versionable factory definitions. A versionable factory provides root methods for creating and copying Versionable objects. Factories are facilities which provide a versionable implementation of the specified interface
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="versionableFactory" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="versionableFactory">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the versionable factory (used only for user display)
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The factory class to instantiate which is an extension of VersionableFactory abstract class.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="com.nextep.designer.vcs.model.VersionableFactory:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="versionableInterfaceName" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The interface name for which this factory provide an versionable implementation.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":com.nextep.designer.vcs.model.IVersionable"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="vendor" type="string">
+            <annotation>
+               <documentation>
+                  The vendor for which this factory is designed. If multiple factories are defined for a same interface, an extension with a non-null vendor attribute will be chosen.
+There should be only one factory per interface per vendor and one with a null vendor (default factory always provided by the nextep platform).
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         1.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+           &lt;extension
+         point=&quot;com.neXtep.designer.vcs.VersionableFactory&quot;&gt;
+      &lt;versionableFactory
+            class=&quot;com.nextep.datadesigner.vcs.factories.ContainerFactory&quot;
+            name=&quot;Container Factory&quot;
+            versionableInterfaceName=&quot;com.nextep.designer.vcs.model.IVersionContainer&quot;&gt;
+      &lt;/versionableFactory&gt;
+      &lt;versionableFactory
+            class=&quot;com.nextep.datadesigner.vcs.factories.DiagramFactory&quot;
+            name=&quot;IDiagram Factory&quot;
+            versionableInterfaceName=&quot;com.nextep.designer.vcs.model.IDiagram&quot;&gt;
+      &lt;/versionableFactory&gt;
+   &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         neXtep Softwares
+      </documentation>
+   </annotation>
+
+</schema>

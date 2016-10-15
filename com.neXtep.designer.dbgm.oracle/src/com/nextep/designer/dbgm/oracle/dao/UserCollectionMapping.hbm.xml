@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.UserCollection"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBOM_COLLECTION_TYPES"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="name" column="COLLECTION_NAME"/>
+			<property name="description" column="DESCRIPTION"/>
+			<property name="collectionType" column="COLLECTION_TYPE" type="com.nextep.designer.dbgm.oracle.dao.CollectionTypeType"/>
+			<property name="size" column="COLLECTION_SIZE"/>
+			<component name="datatype" class="com.nextep.datadesigner.dbgm.impl.Datatype">
+		          <property name="name" column="DATATYPE_NAME"/>
+		          <property name="length" column="DATATYPE_LENGTH"/>
+		          <property name="precision" column="DATATYPE_PRECISION"/>
+		    </component>
+	</joined-subclass>
+</hibernate-mapping>

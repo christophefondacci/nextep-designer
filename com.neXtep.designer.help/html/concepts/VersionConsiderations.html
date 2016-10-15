@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
+	<META NAME="AUTHOR" CONTENT="Christophe Fondacci">
+	<META NAME="CREATED" CONTENT="20080407;15593800">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGED" CONTENT="20090210;16040900">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<META NAME="CHANGEDBY" CONTENT="Christophe Fondacci">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Arial", sans-serif; font-size: 20pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt }
+		H2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: normal }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H1 CLASS="western">Versioning considerations</H1>
+<P CLASS="western" STYLE="margin-bottom: 0cm">neXtep Designer gives
+you the control over the lifecycle of your database developments. But
+you are still responsible of how you want to manage this lifecycle
+depending on your organization. Here, we will browse a few common
+use-cases and suggest you different ways of managing your
+developments' versions.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">The following is only
+suggestions of &ldquo;best-practices&rdquo; to allow you to
+anticipate the growth of your development teams. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Branches</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">Every
+version belongs to a branch. When you start to work with designer,
+you will work on the initial MAIN branch (also called the &ldquo;root&rdquo;
+versioning branch). You can see branches as isolation of the
+lifecycle of your application on a given environment. Therefore, as
+long as you only have one release to maintain, you will be fine with
+the initial MAIN branch.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">As
+soon as you deliver your application to other environments or to
+other teams, you may need new branches because you may need to </SPAN></FONT><FONT FACE="Arial, sans-serif"><B>patch
+the delivered release</B></FONT><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">
+while your are still developing the next release.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">This
+is what branches do, they isolate flows of versions on specific
+environments.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<H2 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm; font-weight: normal">
+<FONT FACE="Arial, sans-serif">Single developer per project</FONT></H2>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial, sans-serif">If
+you are the only developer to work on a project, you have to keep in
+mind that you might have several versions to maintain :</FONT></P>
+<UL>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">The
+	current production release</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">The
+	currently tested release (the last you have delivered)</SPAN></FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">The
+	current development release</SPAN></FONT></P>
+</UL>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: normal">If
+you start your project from scratch, you will start to develop on the
+first MAIN branch. As soon as you have finished your development, you
+will need to deliver it. After having delivered your new database,
+you will continue to implement new features for your application.</SPAN></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">A few weeks after your
+delivery, the test team get back to you with a major bug which
+prevent them from testing the entire application. Problem is : your
+next delivery is in one week and your current developments cannot be
+delivered yet. You need to deliver an urgent patch of your previous
+delivery.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="VersioningSingle1.png" NAME="images2" ALIGN=LEFT WIDTH=237 HEIGHT=237 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">In order to patch the
+previously delivered release, the best way would be to create a
+parallel release of your delivered module in a dedicated branch. You
+will first need to create a new versioning view of the delivered
+0.0.1.1 release on which you will make the patch. You will then
+commit your changes on a branch called &ldquo;INTEG&rdquo; (short for
+integration environment) which means the branch is dedicated to the
+integration deliveries.</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="VersioningSingle2.png" NAME="images1" ALIGN=LEFT WIDTH=237 HEIGHT=321 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">You can then safely
+continue your work and will be able to patch your previously
+delivered developments, should you need to. But the most important
+thing is to integrate the patch you sent to the integration team into
+your current developments, without developing the same patch twice.
+With this way of doing things, you will be able to <B>merge</B> the
+&ldquo;patch&rdquo; release (0.0.2.1) with your current developments.
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="VersioningSingle3.png" NAME="images3" ALIGN=LEFT WIDTH=274 HEIGHT=475 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">After having merged
+your patch with your current developments (release 0.0.4.0), you can
+go on with your developments (0.0.5.0). The way of managing your
+release is especially important when working with databases because
+your deliveries are incremental : one applies on another and
+&ldquo;migrates&rdquo; a given release to another one. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">Now we consider that
+you have finished with your current developments and you want to
+deliver it to the integration team. You will be able to build a
+delivery for the integration platform by merging your developments
+back to the INTEG branch which now represents the integration
+&ldquo;delivery&rdquo; flow. Differencies between the previous
+release from this branch and your new release will make your new
+delivery delta, as shown in the following diagram :</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><IMG SRC="VersioningSingle4.png" NAME="images4" ALIGN=LEFT WIDTH=346 HEIGHT=526 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">We have seen the main
+process which is extensible indefinitely. When your developments are
+deployed on a production platform, you will need a production branch
+thus allowing you to deliver patch for this platform. Any of this
+patches will be merged to your development branch and integration
+branch and so on. 
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0cm">This is the main
+concept to understand. All other considerations are an extension of
+this root concept.  
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.beng.model.impl.DeliverySQLScript"
+		extends="com.nextep.designer.beng.model.IDeliveryItem"
+		table="BENG_SQL_DELIVERIES"
+		lazy="true"
+		>
+		<key column="DELIVERY_ID"></key>
+		<many-to-one name="content" class="com.nextep.datadesigner.sqlgen.model.ISQLScript" column="SQL_ID"/>
+		<property name="DBVendor" type="com.nextep.designer.core.dao.types.DBVendorType" column="DBVENDOR"/>
+	</joined-subclass>
+</hibernate-mapping>

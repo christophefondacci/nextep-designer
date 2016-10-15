@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="nextep-migrate-extension" name="NeXtep Migrate Extension"
+		style="css/migrate.css" path="migrate/@">
+		<group id="nextep-migrate-extension-group" style-id="content-group">
+			<link id="nextep-migrate-why-page-link" style-id="content-link"
+				label="NeXtep Designer 1.0.4 est disponible !"
+				url="http://org.eclipse.ui.intro/showPage?id=nextep-migrate-why-page">
+				<text>
+					Une nouvelle &lt;i&gt;version majeure de neXtep
+					Designer&lt;/i&gt; est disponible au téléchargement à partir du
+					site &lt;b&gt;http://www.nextep-softwares.com&lt;/b&gt;.&lt;br/&gt;
+					Elle inclut de nombreuses améliorations et corrections de bugs,
+					ainsi
+					que des optimisations des performances, des améliorations des
+					livrables générés, une nouvelle vue de gestion des dépendances, la
+					possibilité d'exporter les diagrammes sous forme d'images, une mise
+					à jour de l'installateur, et enfin la migration du socle technique
+					au nouveau Framework Eclipse RCP 3.6.1.
+				</text>
+			</link>
+			<link id="nextep-migrate-download-link" style-id="content-link"
+				label="Téléchargez NeXtep Designer 1.0.4 maintenant!" url="http://www.nextep-softwares.com" />
+		</group>
+	</extensionContent>
+	<page id="nextep-migrate-why-page" style-id="page" style="$theme$/html/migrate.css"
+		alt-style="$theme$/swt/migrate.properties">
+		<title style-id="intro-header">$introTitle$</title>
+		<group id="extra-group1" filteredFrom="swt" />
+		<include path="migrate/navigation-links" />
+		<group id="page-content">
+			<group id="content-header" label="NeXtep Designer 1.0.4 est disponible !"
+				filteredFrom="swt" />
+			<text id="page-title" style-id="page-title" filteredFrom="html">NeXtep
+				Designer 1.0.4 est disponible !
+			</text>
+			<group id="separator" style-id="page-description">
+				<hr />
+			</group>
+			<group id="why-should-i-download" style-id="page-description"
+				label="&#8226;&#160;Pourquoi dois-je télécharger cette nouvelle version ?">
+				<text id="why-should-i-download-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Il est nécessaire d'installer &lt;i&gt;manuellement&lt;/i&gt;
+					cette nouvelle version en téléchargeant l'archive complète à partir
+					de nos serveurs car neXtep Designer a été entièrement repackagé pour
+					pouvoir implémenter une nouvelle façon de faire la mise à jour automatique
+					de l'environnement via P2 (la nouvelle plateforme de provisionnement
+					d'Eclipse).&lt;br/&gt;&lt;br/&gt;
+					Malheureusement, ce nouveau Framework n'est pas compatible avec les
+					produits préalablement installés (qui ne contiennent pas les méta-données
+					P2 initiales) et qui ne peuvent par conséquent pas être mis à jour
+					automatiquement via cette nouvelle plateforme.
+				</text>
+				<hr />
+			</group>
+			<group id="what-will-happen" style-id="page-description"
+				label="&#8226;&#160;Que se passera-t-il si je n'installe pas la version 1.0.4 ?">
+				<text id="what-will-happen-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Vous ne serez plus en mesure de mettre à jour votre
+					environnement car plus aucune mise à jour ne sera publiée pour les
+					anciennes versions 1.0.3.x de neXtep Designer.
+				</text>
+				<hr />
+			</group>
+			<group id="how-do-i-update" style-id="page-description"
+				label="&#8226;&#160;Comment mettre à jour mon environnement une fois installée la version 1.0.4 ?">
+				<text id="how-do-i-update-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Le mode opératoire de mise à jour ne change
+					pas par rapport à la version précédente, vous pouvez continuer d'utiliser
+					le menu &lt;i&gt;Logiciel > Rechercher les mises à jour...&lt;/i&gt;.
+					Le nouveau mécanisme est complètement transparent et votre environnement
+					sera automatiquement mis à jour lorsque des mises à jour sont disponibles.
+					Les utilisateurs qui ont souscrit une licence de support neXtep
+					doivent saisir leur clé de licence en utilisant le menu
+					&lt;i&gt;Logiciel > Modifier la clé de licence...&lt;/i&gt;.
+					Il n'est pas nécessaire d'effectuer cette action sur chaque poste,
+					car une fois saisie, la clé sera partagée par tous les utilisateurs
+					se connectant à un même repository neXtep.
+				</text>
+				<hr />
+			</group>
+			<group id="will-i-need-reinstall" style-id="page-description"
+				label="&#8226;&#160;Dois-je m'attendre à devoir réinstaller de nouveau neXtep Designer à l'avenir ?">
+				<text id="will-i-need-reinstall-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Nous faisons tout notre possible pour que ce ne soit
+					pas le cas. Mais considérant que nous utilisons comme socle technique le
+					Framework Eclipse, nous ne pouvons garantir que cela ne se reproduira pas.
+					La fondation Eclipse livre une version majeure tous les ans, et chaque
+					livraison majeure &lt;i&gt;peut impliquer&lt;/i&gt; une réinstallation complète.
+					Au cours des trois dernières années, nous avons toutefois réussi à intégrer
+					deux mises à jour majeures (des versions 3.3 à 3.4 et 3.4 à 3.5 d'Eclipse RCP)
+					de façon transparente dans neXtep Designer...
+				</text>
+				<hr />
+			</group>
+			<group id="anything-else" style-id="page-description"
+				label="&#8226;&#160;Y-a-t-il autre chose à savoir sur cette nouvelle version ?">
+				<text id="anything-else-description" style-id="page-description">
+					&lt;br/&gt;&lt;br/&gt;Vous pouvez consulter le Wiki neXtep disponible
+					à partir du site &lt;b&gt;http://www.nextep-softwares.com&lt;/b&gt;
+					pour de plus amples informations sur les fonctionnalités de neXtep Designer,
+					accéder à des tutoriaux, des démos, etc.&lt;br/&gt;&lt;br/&gt;
+					Nous vous remercions de votre confiance, et espérons que vous apprécierez
+					les nombreuses nouvelles fonctionnalités à venir dans les prochaines
+					versions de neXtep Designer.
+				</text>
+				<hr />
+			</group>
+		</group>
+	</page>
+</introContent>

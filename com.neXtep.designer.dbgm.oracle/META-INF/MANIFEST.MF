@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Oracle specific model
+Eclipse-RegisterBuddy: com.neXtep.designer.hibernate,com.neXtep.designer.core
+Bundle-SymbolicName: com.neXtep.designer.dbgm.oracle;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.dbgm.oracle.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.dbgm,
+ com.neXtep.designer.vcs,
+ com.neXtep.designer.logging,
+ com.neXtep.designer.core;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.2",
+ com.neXtep.designer.hibernate;bundle-version="3.3.1"
+Bundle-ActivationPolicy: lazy
+Export-Package: com.nextep.designer.dbgm.oracle.dao,
+ com.nextep.designer.dbgm.oracle.impl,
+ com.nextep.designer.dbgm.oracle.impl.external,
+ com.nextep.designer.dbgm.oracle.impl.merge,
+ com.nextep.designer.dbgm.oracle.model,
+ com.nextep.designer.dbgm.oracle.model.base,
+ com.nextep.designer.dbgm.oracle.services,
+ com.nextep.designer.dbgm.oracle.sql.impl
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

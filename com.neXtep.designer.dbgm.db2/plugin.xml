@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="com.neXtep.designer.vcs.MergerProvider">
+      <mergerProvider
+            context="DB2"
+            mergerClass="com.nextep.designer.dbgm.db2.impl.merge.DB2SequenceMerger"
+            typeId="SEQUENCE">
+      </mergerProvider>
+   </extension>
+
+</plugin>

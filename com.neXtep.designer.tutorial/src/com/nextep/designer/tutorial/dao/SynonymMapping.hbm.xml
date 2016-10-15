@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<joined-subclass
+		name="com.nextep.designer.tutorial.impl.Synonym"
+		extends="com.nextep.designer.vcs.model.IVersionable"
+		table="DBOM_SYNONYMS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+
+			<property name="name" column="SYNONYM_NAME"/>
+			<property name="synonymedObject" column="SYNONYM_FOR"/>
+	</joined-subclass>
+</hibernate-mapping>

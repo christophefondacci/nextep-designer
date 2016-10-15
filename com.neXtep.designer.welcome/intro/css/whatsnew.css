@@ -1,0 +1,17 @@
+
+a#nextep-whatsnew-why-page-link img { background-image : url(graphics/migrate_why.png); }
+a#nextep-whatsnew-why-page-link:hover img { background-image : url(graphics/migrate_why_hov.png); }
+a#nextep-whatsnew-security-page-link img { background-image : url(graphics/whatsnew_security.png); }
+a#nextep-whatsnew-security-page-link:hover img { background-image : url(graphics/whatsnew_security_hov.png); }
+a#nextep-whatsnew-i18n-page-link img { background-image : url(graphics/whatsnew_i18n.png); }
+a#nextep-whatsnew-i18n-page-link:hover img { background-image : url(graphics/whatsnew_i18n_hov.png); }
+a#nextep-whatsnew-synchro-page-link img { background-image : url(graphics/whatsnew_synchro.png); }
+a#nextep-whatsnew-synchro-page-link:hover img { background-image : url(graphics/whatsnew_synchro_hov.png); }
+a#nextep-whatsnew-data-page-link img { background-image : url(graphics/whatsnew_synchro.png); }
+a#nextep-whatsnew-data-page-link:hover img { background-image : url(graphics/whatsnew_synchro_hov.png); }
+a#nextep-whatsnew-sqlclient-page-link img { background-image : url(graphics/table.png); }
+a#nextep-whatsnew-sqlclient-page-link:hover img { background-image : url(graphics/table_hov.png); }
+a#nextep-whatsnew-release-page-link img { background-image : url(graphics/whatsnew_release.png); }
+a#nextep-whatsnew-release-page-link:hover img { background-image : url(graphics/whatsnew_release_hov.png); }
+a#nextep-whatsnew-command-page-link img { background-image : url(graphics/whatsnew_command.png); }
+a#nextep-whatsnew-command-page-link:hover img { background-image : url(graphics/whatsnew_command_hov.png); }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.beng.deliveryExportService">
+   <implementation class="com.nextep.designer.beng.services.impl.DeliveryExportService"/>
+   <service>
+      <provide interface="com.nextep.designer.beng.services.IDeliveryExportService"/>
+   </service>
+   <reference bind="setDeliveryService" cardinality="1..1" interface="com.nextep.designer.beng.services.IDeliveryService" name="IDeliveryService" policy="static"/>
+</scr:component>

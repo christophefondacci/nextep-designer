@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Database testing features Plug-in
+Bundle-SymbolicName: com.neXtep.designer.testing
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.testing.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.2",
+ com.neXtep.designer.dbgm;bundle-version="1.0.2",
+ com.neXtep.designer.vcs;bundle-version="1.0.2",
+ org.eclipse.ui;bundle-version="3.4.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.2",
+ com.neXtep.designer.hibernate;bundle-version="3.3.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.nextep.designer.testing.model,
+ com.nextep.designer.testing.services

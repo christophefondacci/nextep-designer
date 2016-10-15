@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Microsoft SQL Server generation Plugin
+Bundle-SymbolicName: com.neXtep.designer.sqlgen.mssql;singleton:=true
+Bundle-Version: 1.0.7.qualifier
+Bundle-Activator: com.nextep.designer.sqlgen.mssql.Activator
+Bundle-Vendor: neXtep
+Require-Bundle: org.eclipse.core.runtime,
+ com.neXtep.designer.core;bundle-version="1.0.0",
+ com.neXtep.designer.dbgm;bundle-version="1.0.0",
+ com.neXtep.designer.logging;bundle-version="1.0.0",
+ com.neXtep.designer.sqlgen;bundle-version="1.0.0",
+ com.neXtep.designer.vcs;bundle-version="1.0.0",
+ org.eclipse.jface.text,
+ com.neXtep.designer.sqlgen.generic;bundle-version="1.0.2",
+ com.neXtep.designer.jdbc.mssqljtds;bundle-version="1.2.5"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-LazyStart: true
+Bundle-ClassPath: .

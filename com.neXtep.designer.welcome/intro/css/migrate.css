@@ -1,0 +1,5 @@
+
+a#nextep-migrate-why-page-link img { background-image : url(graphics/migrate_why.png); }
+a#nextep-migrate-why-page-link:hover img { background-image : url(graphics/migrate_why_hov.png); }
+a#nextep-migrate-download-link img { background-image : url(graphics/migrate_download.png); }
+a#nextep-migrate-download-link:hover img { background-image : url(graphics/migrate_download_hov.png); }

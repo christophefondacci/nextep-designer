@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="3 - Version Control System" topic="html/vcs/start.html">
+   <topic href="html/vcs/authentication.html" label="Authentication">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Workspaces" label="Workspaces">
+   </topic>
+   <topic href="html/vcs/versionControl.html" label="Version control">
+   </topic>
+   <topic href="http://www.nextep-softwares.com/wiki/index.php/Database_modules" label="Database modules">
+      <topic href="html/vcs/merges.html" label="Merging containers">
+      </topic>
+   </topic>
+</toc>

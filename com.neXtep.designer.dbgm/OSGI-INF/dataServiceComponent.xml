@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="com.neXtep.designer.dbgm.dataService">
+   <implementation class="com.nextep.designer.dbgm.services.impl.DataService"/>
+   <service>
+      <provide interface="com.nextep.designer.dbgm.services.IDataService"/>
+   </service>
+   <reference bind="setTypedObjectFactory" cardinality="1..1" interface="com.nextep.designer.core.model.ITypedObjectFactory" name="ITypedObjectFactory" policy="static"/>
+   <reference bind="setRepositoryService" cardinality="1..1" interface="com.nextep.designer.core.services.IRepositoryService" name="IRepositoryService" policy="static"/>
+   <reference bind="setStorageService" cardinality="1..1" interface="com.nextep.designer.dbgm.services.IStorageService" name="IStorageService" policy="static"/>
+</scr:component>

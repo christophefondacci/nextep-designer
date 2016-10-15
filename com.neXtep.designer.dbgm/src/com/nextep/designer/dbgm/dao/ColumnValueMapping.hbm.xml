@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.designer.dbgm.model.impl.ColumnValue"
+		table="DBGM_DSET_ROW_VALUES"
+		lazy="false">
+<!--			<id name="id" column="LVAL_ID">-->
+<!--				<generator class="hilo"/>-->
+<!--			</id>-->
+
+			<many-to-one name="dataLine" class="com.nextep.designer.dbgm.model.impl.DataLine" column="DROW_ID"/>
+			<many-to-one name="columnRef" class="com.nextep.datadesigner.impl.Reference" column="COLUMN_REFID"/> 
+			<property name="stringValue" column="COLUMN_VALUE"/>
+	</class>
+</hibernate-mapping>
