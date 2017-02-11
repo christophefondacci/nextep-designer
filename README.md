@@ -10,6 +10,21 @@ Windows, linux, macOS.
 
 Oracle, mySQL, PostgreSQL, DB2, SQL Server.
 
+## Download latest binaries
+
+* Linux 32 bits: 
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-linux.gtk.x86.zip
+* Linus 64 bits:
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-linux.gtk.x86_64.zip
+* Mac OS X 32 bits:
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-macosx.cocoa.x86.zip
+* Mac OS X 64 bits:
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-macosx.cocoa.x86_64.zip
+* MS Windows 32 bits:
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-win32.win32.x86.zip
+* MS Windows 64 bits:
+    * https://github.com/christophefondacci/nextep-designer/releases/download/1.0.7.201610130739/neXtep.1.0.7-win32.win32.x86_64.zip
+
 ## NeXtep code organization
 
 NeXtep designer is an Eclipse RCP product. As such, it consists in a stack of plugins which contributes to the environment. Every plugin is represented as an eclipse project. A special plugin is ''com.neXtep.Designer'' which is the top-level entry-point which defines the ''product''. 
