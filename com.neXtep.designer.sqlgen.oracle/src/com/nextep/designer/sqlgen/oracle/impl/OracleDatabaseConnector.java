@@ -93,10 +93,16 @@ public class OracleDatabaseConnector extends AbstractDatabaseConnector {
 
 	@Override
 	public String getConnectionURL(IConnection conn) {
-		final String host = conn.getServerIP();
-		final String port = conn.getServerPort();
-		final String database = conn.getDatabase();
-		return "jdbc:oracle:thin:@" + host + ":" + port + ":" + database; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$;
+		final String alias = conn.getTnsAlias();
+
+		StringBuilder sb = new StringBuilder("jdbc:oracle:thin:@"); //$NON-NLS-1$
+		sb.append("//") //$NON-NLS-1$
+				.append(conn.getServerIP()).append(":") //$NON-NLS-1$
+				.append(conn.getServerPort()).append("/"); //$NON-NLS-1$
+
+		sb.append((alias != null && !"".equals(alias.trim()) ? alias : conn.getDatabase())); //$NON-NLS-1$
+
+		return sb.toString();
 	}
 
 	/**

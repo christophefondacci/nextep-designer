@@ -36,16 +36,22 @@ import com.nextep.installer.model.base.AbstractVendorRequirement;
  * DBVendor enumeration used by the installer.
  * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public enum DBVendor {
 
-	ORACLE("Oracle", "orcl", 1521, new SQLPlusRequirement(), new OracleDeployHandler(), "oracle.jdbc.driver.OracleDriver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	MYSQL("MySQL", "mysql", 3306, new MySQLRequirement(), new MySQLDeployHandler(), "com.mysql.jdbc.Driver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	POSTGRE("PostgreSQL", "psql", 5432, new PostgreSqlRequirement(), new PostgreSqlDeployHandler(), "org.postgresql.Driver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	DERBY("Derby", null, 1111, null, new JdbcDeployHandler(), "org.apache.derby.jdbc.EmbeddedDriver"), //$NON-NLS-1$ //$NON-NLS-2$
+	ORACLE(
+			"Oracle", "orcl", 1521, new SQLPlusRequirement(), new OracleDeployHandler(), "oracle.jdbc.driver.OracleDriver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	MYSQL(
+			"MySQL", "mysql", 3306, new MySQLRequirement(), new MySQLDeployHandler(), "com.mysql.jdbc.Driver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	POSTGRE(
+			"PostgreSQL", "psql", 5432, new PostgreSqlRequirement(), new PostgreSqlDeployHandler(), "org.postgresql.Driver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	DERBY(
+			"Derby", null, 1111, null, new JdbcDeployHandler(), "org.apache.derby.jdbc.EmbeddedDriver"), //$NON-NLS-1$ //$NON-NLS-2$
 	JDBC("Generic JDBC", "jdbc", -1, null, new JdbcDeployHandler(), null), //$NON-NLS-1$ //$NON-NLS-2$
 	DB2("DB2", "db2", 50000, null, new JdbcDeployHandler(), "com.ibm.db2.jcc.DB2Driver"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	MSSQL("Microsoft SQL Server", "", 1433, new MSSQLRequirement(), new JdbcDeployHandler(), "net.sourceforge.jtds.jdbc.Driver"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	MSSQL(
+			"Microsoft SQL Server", "", 1433, new MSSQLRequirement(), new JdbcDeployHandler(), "net.sourceforge.jtds.jdbc.Driver"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	private String label;
 	private int defaultPort;
@@ -112,16 +118,21 @@ public enum DBVendor {
 	}
 
 	/**
-	 * Builds the proper connection URL for this vendor
+	 * Builds the proper connection URL for this vendor.
 	 * 
 	 * @param server
 	 * @param port
 	 * @param database
-	 * @return
+	 * @param serviceName TNS alias name of the database. Only relevant for Oracle databases,
+	 *        specify <code>null</code> for other databases.
+	 * @return a JDBC connection string for the current database vendor
 	 */
-	public String buildConnectionURL(String server, String port, String database) {
+	public String buildConnectionURL(String server, String port, String database, String serviceName) {
 		if (this == ORACLE) {
-			return "jdbc:oracle:thin:@" + server + ":" + port + ":" + database; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			StringBuilder sb = new StringBuilder("jdbc:oracle:thin:@"); //$NON-NLS-1$
+			sb.append("//").append(server).append(":").append(port).append("/"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sb.append((serviceName != null && !"".equals(serviceName.trim()) ? serviceName : database)); //$NON-NLS-1$
+			return sb.toString();
 		} else if (this == MYSQL) {
 			return "jdbc:mysql://" + server + ":" + port + "/" + database //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"; //$NON-NLS-1$
@@ -151,4 +162,5 @@ public enum DBVendor {
 	public int getDefaultPort() {
 		return defaultPort;
 	}
+
 }

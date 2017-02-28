@@ -33,10 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
@@ -81,36 +79,29 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 	private IAdminService adminService;
 
 	/**
-	 * Indicates if the specified release of the given module has already been
-	 * installed.
+	 * Returns the release number of the specified module in the specified repository.
 	 * 
-	 * @param moduleId
-	 *            id of the module to check release
-	 * @param rel
-	 *            minimum release to have
-	 * @param user
-	 *            owner of the installation
-	 * @param database
-	 *            database of the installation
-	 * @param vendor
-	 *            database vendor
-	 * @return true if installed release is equals or above the specified
-	 *         release
+	 * @param moduleId id of the module for which we need to retrieve the release number
+	 * @param repoConnection a connection to the repository
+	 * @return a {@link IRelease} object representing the release number of the specified module
 	 */
 	public IRelease getRelease(long moduleId, IConnection repoConnection)
 			throws NoRepositoryConnectionException {
-		// Building installer configurator
-		IInstallConfigurator conf = InstallerFactory.createConfigurator();
 		// Defining target
 		final String user = repoConnection.getLogin();
 		final String password = repoConnection.getPassword();
 		final String database = repoConnection.getDatabase();
 		final String host = repoConnection.getServerIP();
 		final String port = String.valueOf(repoConnection.getServerPort());
-		IDatabaseTarget target = InstallerFactory.createTarget(user, password, database, host,
-				port, DBVendor.valueOf(repoConnection.getDBVendor().name()));
+		final String serviceName = repoConnection.getTnsAlias();
+		final IDatabaseTarget target = InstallerFactory.createTarget(user, password, database,
+				host, port, DBVendor.valueOf(repoConnection.getDBVendor().name()), serviceName);
+
+		// Building installer configurator
+		IInstallConfigurator conf = InstallerFactory.createConfigurator();
 		conf.setTarget(target);
 		conf.setAdminInTarget(true);
+
 		// Preparing database connection
 		IDatabaseConnector connector = CorePlugin.getConnectionService().getDatabaseConnector(
 				repoConnection.getDBVendor());
@@ -167,8 +158,7 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 
 			@Override
 			public void run() {
-				// Otherwise we enter a deadlock (Maybe a RCP bug within startup
-				// / splashscreen
+				// Otherwise we enter a deadlock (Maybe a RCP bug within startup / splashscreen)
 				// UISynchronizer.overrideThread.set(Boolean.TRUE);
 				NextepInstaller.printLaunchHeader();
 				IInstallConfigurator configurator = InstallerFactory.createConfigurator();
@@ -179,6 +169,7 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 					configurator.setOption(InstallerOption.DATABASE, repoConn.getDatabase());
 					configurator.setOption(InstallerOption.HOST, repoConn.getServerIP());
 					configurator.setOption(InstallerOption.PORT, repoConn.getServerPort());
+					configurator.setOption(InstallerOption.TNS, repoConn.getTnsAlias());
 					configurator.setOption(InstallerOption.VENDOR, repoConn.getDBVendor().name());
 					configurator.defineOption(InstallerOption.FULL_INSTALL);
 					List<IRequirement> requirements = new ArrayList<IRequirement>();
@@ -195,10 +186,9 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 					// but we should let him
 					// try to connect to repository...
 				} catch (Throwable e) {
-					LOGGER.error("Unexpected installer exception raised", e); //$NON-NLS-1$
+					LOGGER.error("Unexpected installer exception raised", e);
 					monitor.log(RepositoryMessages
-							.getString("repositoryUpdater.unexpectedException") //$NON-NLS-1$
-							+ e.getMessage());
+							.getString("repositoryUpdater.unexpectedException") + e.getMessage()); //$NON-NLS-1$
 					monitor.mainWork(RepositoryMessages
 							.getString("repositoryUpdater.installationFailed")); //$NON-NLS-1$
 					monitor.done();
@@ -208,19 +198,12 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 							installerService.release(configurator);
 						} catch (InstallerException e) {
 							LOGGER.error(
-									"Unable to release installator resources: " + e.getMessage(), //$NON-NLS-1$
-									e);
+									"Unable to release installator resources: " + e.getMessage(), e);
 						}
 					}
 				}
 			}
 		}).start();
-
-		// while(!s.isDisposed()) {
-		// if(!s.getDisplay().readAndDispatch()) {
-		// s.getDisplay().sleep();
-		// }
-		// }
 	}
 
 	@Override
@@ -230,7 +213,8 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 
 	private void submitDelivery(String dlv, IInstallerMonitor monitor,
 			IInstallConfigurator configurator) throws InstallerException {
-		monitor.mainWork(RepositoryMessages.getString("repositoryUpdater.submittingDelivery") + dlv.substring(dlv.lastIndexOf('/') + 1) + "..."); //$NON-NLS-1$ //$NON-NLS-2$
+		monitor.mainWork(RepositoryMessages.getString("repositoryUpdater.submittingDelivery") //$NON-NLS-1$
+				+ dlv.substring(dlv.lastIndexOf('/') + 1) + "..."); //$NON-NLS-1$
 
 		try {
 			String tempDlvLoc = createTempDelivery(dlv);
@@ -240,35 +224,21 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 		} catch (RuntimeException e) {
 			monitor.log(RepositoryMessages.getString("repositoryUpdater.unableToLoadDelivery") //$NON-NLS-1$
 					+ dlv + RepositoryMessages.getString("repositoryUpdater.pleaseContactNextep")); //$NON-NLS-1$
-			LOGGER.error("Exception occurred", e); //$NON-NLS-1$
+			LOGGER.error("Exception occurred", e);
 			monitor.done();
 			throw e;
 		}
-		monitor.mainWork(RepositoryMessages.getString("repositoryUpdater.delivery") + dlv.substring(dlv.lastIndexOf('/') + 1) + RepositoryMessages.getString("repositoryUpdater.installed")); //$NON-NLS-1$ //$NON-NLS-2$
+		monitor.mainWork(RepositoryMessages.getString("repositoryUpdater.delivery") //$NON-NLS-1$
+				+ dlv.substring(dlv.lastIndexOf('/') + 1)
+				+ RepositoryMessages.getString("repositoryUpdater.installed")); //$NON-NLS-1$
 	}
 
-	// private static void test(String s) {
-	// LOGGER.info("Testing " + s);
-	// InputStream is = RepositoryUpdater.class.getResourceAsStream(s);
-	// if(is!=null) {
-	// LOGGER.info(">>>>>>>>>>>>>>>>> FOUND <<<<<<<<<<<<<<<<");
-	// LOGGER.info(s);
-	// }
-	// URL url = RepositoryUpdater.class.getClassLoader().getResource(s);
-	// if(url!=null) {
-	// LOGGER.info(">>>>>>>>>>>>>>>>> FOUND <<<<<<<<<<<<<<<<");
-	// LOGGER.info(url.toString());
-	// LOGGER.info(s);
-	// }
-	// }
 	/**
-	 * Creates the specified delivery (ZIP resource file) on the temporary
-	 * directory of the local file system.
+	 * Creates the specified delivery (ZIP resource file) on the temporary directory of the local
+	 * file system.
 	 * 
-	 * @param deliveryResource
-	 *            java resource zip file
-	 * @return a <code>String</code> representing the absolute path to the
-	 *         delivery root directory.
+	 * @param deliveryResource java resource zip file
+	 * @return a <code>String</code> representing the absolute path to the delivery root directory.
 	 */
 	private static String createTempDelivery(String deliveryResource) {
 		InputStream is = RepositoryUpdaterService.class.getResourceAsStream(deliveryResource);
@@ -285,9 +255,10 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 				File targetFile = new File(exportLoc, entry.getName());
 
 				if (rootDeliveryDir == null) {
-					// Initialize the delivery root directory value by searching
-					// recursively for
-					// the shallowest directory in the path.
+					/*
+					 * Initialize the delivery root directory value by searching recursively for the
+					 * shallowest directory in the path.
+					 */
 					rootDeliveryDir = getDeliveryRootPath(targetFile, new File(exportLoc));
 				}
 
@@ -296,9 +267,10 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 				} else {
 					File targetDir = targetFile.getParentFile();
 					if (!targetDir.exists()) {
-						// Creates the directory including any necessary but
-						// nonexistent parent
-						// directories.
+						/*
+						 * Creates the directory including any necessary but nonexistent parent
+						 * directories.
+						 */
 						targetDir.mkdirs();
 					}
 
@@ -321,16 +293,12 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 	}
 
 	/**
-	 * Recursively search for the directory whose parent is the specified export
-	 * directory in the absolute path of the specified archive file. If no such
-	 * directory is found, return the parent directory of the specified archive
-	 * file.
+	 * Recursively search for the directory whose parent is the specified export directory in the
+	 * absolute path of the specified archive file. If no such directory is found, return the parent
+	 * directory of the specified archive file.
 	 * 
-	 * @param archiveFile
-	 *            the delivery file for which we need to find the delivery root
-	 *            directory
-	 * @param exportDir
-	 *            the directory in which the delivery is exported
+	 * @param archiveFile the delivery file for which we need to find the delivery root directory
+	 * @param exportDir the directory in which the delivery is exported
 	 * @return the root path of the delivery
 	 */
 	private static String getDeliveryRootPath(File archiveFile, File exportDir) {

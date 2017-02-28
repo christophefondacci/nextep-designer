@@ -23,7 +23,7 @@
 package com.nextep.designer.core.preferences;
 
 /**
- * Constant definitions for plug-in preferences
+ * Constant definitions for plug-in preferences.
  * 
  * @author Christophe Fondacci
  * @author Bruno Gautier
@@ -47,7 +47,8 @@ public class DesignerCoreConstants {
 	public static final String REP_DATABASE_PROPERTY = "repository.instance.name"; //$NON-NLS-1$
 	public static final String REP_INSTANCE_PROPERTY = "repository.sid.name"; //$NON-NLS-1$
 	public static final String REP_SCHEMA_PROPERTY = "repository.schema"; //$NON-NLS-1$
-	public static final String REP_DATABASE_VENDOR = "repository.db.vendor"; //$NON-NLS-1$
+	public static final String REP_DB_VENDOR_PROPERTY = "repository.db.vendor"; //$NON-NLS-1$
+	public static final String REP_TNS_PROPERTY = "repository.tns.name"; //$NON-NLS-1$
 
 	public static final String ICON_TINY = "com.neXtep.designer.ui.icon.tiny"; //$NON-NLS-1$
 

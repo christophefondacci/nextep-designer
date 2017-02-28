@@ -43,21 +43,21 @@ public abstract class AbstractJDBCRequirement implements IRequirement {
 	 */
 	protected Connection getConnectionFor(IDatabaseTarget target) throws InstallerException {
 		final DBVendor vendor = target.getVendor();
-		String connectionUrl = vendor.buildConnectionURL(target.getHost(), target.getPort(), target
-				.getDatabase());
+		String connectionUrl = vendor.buildConnectionURL(target.getHost(), target.getPort(),
+				target.getDatabase(), target.getTnsAlias());
 		try {
 			Driver driver = (Driver) Class.forName(target.getVendor().getDriverClass())
 					.newInstance();
 			Properties connectionInfo = new Properties();
-			connectionInfo.put("user", target.getUser());
-			if (target.getPassword() != null && !"".equals(target.getPassword())) {
-				connectionInfo.put("password", target.getPassword());
+			connectionInfo.put("user", target.getUser()); //$NON-NLS-1$
+			if (target.getPassword() != null && !"".equals(target.getPassword())) { //$NON-NLS-1$
+				connectionInfo.put("password", getEscapedPassword(target)); //$NON-NLS-1$
 			}
 			Connection connection = driver.connect(connectionUrl, connectionInfo);
 			return connection;
 		} catch (SQLException e) {
 			throw new InstallerException("Unable to connect to database URL [" + connectionUrl
-					+ "]", e);
+					+ "]", e); //$NON-NLS-1$
 		} catch (ClassNotFoundException e) {
 			throw new InstallerException("Unable to load JDBC driver, verify your classpath.", e);
 		} catch (InstantiationException e) {
@@ -66,4 +66,24 @@ public abstract class AbstractJDBCRequirement implements IRequirement {
 			throw new InstallerException("Illegal access.", e);
 		}
 	}
+
+	/**
+	 * Returns the password of the specified target with reserved characters escaped when necessary.
+	 * 
+	 * @param target the database target for which we need to return an escaped password
+	 * @return the escaped password
+	 */
+	private String getEscapedPassword(IDatabaseTarget target) {
+		final DBVendor vendor = target.getVendor();
+		String escapedPassword = target.getPassword();
+
+		switch (vendor) {
+		case ORACLE:
+			escapedPassword = "\"" + escapedPassword + "\""; //$NON-NLS-1$ //$NON-NLS-2$
+			break;
+		}
+
+		return escapedPassword;
+	}
+
 }

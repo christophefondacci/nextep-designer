@@ -79,7 +79,7 @@ public final class InstallerFactory {
 	}
 
 	/**
-	 * Builds a new release with the provided version information
+	 * Builds a new release with the provided version information.
 	 * 
 	 * @param major major number of the version
 	 * @param minor minor number of the version
@@ -102,7 +102,7 @@ public final class InstallerFactory {
 	}
 
 	/**
-	 * Creates a new database target from the provided information
+	 * Creates a new database target from the provided information.
 	 * 
 	 * @param user
 	 * @param password
@@ -110,10 +110,13 @@ public final class InstallerFactory {
 	 * @param host
 	 * @param port
 	 * @param vendor
+	 * @param serviceName TNS alias name of the database. Only relevant for Oracle databases,
+	 *        specify <code>null</code> for other databases.
 	 * @return a {@link IDatabaseTarget} filled with provided information
 	 */
 	public static IDatabaseTarget createTarget(String user, String password, String database,
-			String host, String port, DBVendor vendor) {
-		return new DatabaseTarget(user, password, database, host, port, vendor);
+			String host, String port, DBVendor vendor, String serviceName) {
+		return new DatabaseTarget(user, password, database, host, port, vendor, serviceName);
 	}
+
 }

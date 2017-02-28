@@ -36,6 +36,8 @@ import com.nextep.installer.model.impl.Status;
 
 public class TargetUserRequirement extends AbstractJDBCRequirement {
 
+	private static final String DEFAULT_SERVER = "127.0.0.1"; //$NON-NLS-1$
+
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
 		try {
 			final String user = configurator.getOption(InstallerOption.USER);
@@ -49,7 +51,7 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 			Assert.notNull(user, "No username defined");
 			Assert.notNull(database, "No database identifier defined");
 			if (host == null) {
-				host = "127.0.0.1";
+				host = DEFAULT_SERVER;
 			}
 			DBVendor dbVendor;
 			if (vendor == null) {
@@ -70,11 +72,9 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 			}
 
 			IDatabaseTarget target = new DatabaseTarget(user, password, database, host, port,
-					dbVendor);
-			if (tns != null) {
-				target.setTnsAlias(tns);
-			}
+					dbVendor, tns);
 			configurator.setTarget(target);
+
 			// Establishing connection
 			Connection targetConnection = getConnectionFor(target);
 			configurator.setTargetConnection(targetConnection);
@@ -85,7 +85,7 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 				if (configurator.isOptionDefined(InstallerOption.VERBOSE)) {
 					e.printStackTrace();
 				}
-				return new Status(true, "Skipped [Failed with: " + e.getMessage() + "]");
+				return new Status(true, "Skipped [Failed with: " + e.getMessage() + "]"); //$NON-NLS-2$
 			} else {
 				throw new InstallerException(
 						"Cannot connect to target database: " + e.getMessage(), e);
@@ -96,4 +96,5 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 	public String getName() {
 		return "Target JDBC connection";
 	}
+
 }

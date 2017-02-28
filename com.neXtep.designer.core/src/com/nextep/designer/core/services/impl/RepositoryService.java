@@ -106,7 +106,7 @@ public class RepositoryService implements IRepositoryService {
 	@Override
 	public DBVendor getRepositoryVendor() {
 		IEclipsePreferences store = new InstanceScope().getNode(CorePlugin.PLUGIN_ID);
-		final String dbVendor = store.get(DesignerCoreConstants.REP_DATABASE_VENDOR, DBVendor
+		final String dbVendor = store.get(DesignerCoreConstants.REP_DB_VENDOR_PROPERTY, DBVendor
 				.getDefaultVendor().name());
 		return DBVendor.valueOf(dbVendor);
 	}
@@ -179,11 +179,9 @@ public class RepositoryService implements IRepositoryService {
 
 	@Override
 	public IConnection getRepositoryConnection() {
-		if (repositoryConnection == null) {
-			repositoryConnection = CorePlugin.getTypedObjectFactory().create(IConnection.class);
-		}
-		IEclipsePreferences store = new InstanceScope().getNode(CorePlugin.PLUGIN_ID);
-		final String vendor = store.get(DesignerCoreConstants.REP_DATABASE_VENDOR, DBVendor
+		final IEclipsePreferences store = new InstanceScope().getNode(CorePlugin.PLUGIN_ID);
+
+		final String vendor = store.get(DesignerCoreConstants.REP_DB_VENDOR_PROPERTY, DBVendor
 				.getDefaultVendor().name());
 		final String login = store.get(DesignerCoreConstants.REP_USER_PROPERTY, ""); //$NON-NLS-1$
 		final String server = store.get(DesignerCoreConstants.REP_SERVER_PROPERTY, ""); //$NON-NLS-1$
@@ -191,6 +189,7 @@ public class RepositoryService implements IRepositoryService {
 		final String port = store.get(DesignerCoreConstants.REP_PORT_PROPERTY, ""); //$NON-NLS-1$
 		final String instance = store.get(DesignerCoreConstants.REP_INSTANCE_PROPERTY, ""); //$NON-NLS-1$
 		final String database = store.get(DesignerCoreConstants.REP_DATABASE_PROPERTY, ""); //$NON-NLS-1$
+		final String serviceName = store.get(DesignerCoreConstants.REP_TNS_PROPERTY, ""); //$NON-NLS-1$
 		final boolean savedPassword = store.getBoolean(
 				DesignerCoreConstants.REP_PASSWORD_SAVED_PROPERTY, true);
 		String password = store.get(DesignerCoreConstants.REP_PASSWORD_PROPERTY, ""); //$NON-NLS-1$
@@ -207,9 +206,13 @@ public class RepositoryService implements IRepositoryService {
 			}
 		}
 		final boolean isSso = store.getBoolean(DesignerCoreConstants.REP_SSO_PROPERTY, false);
-		// No longer using equinox security here as it contains too many bugs when used in a
-		// Splash screen context (i.e. before workbench is opened).
-		// Uncomment this once equinox security will become safe.
+
+		/*
+		 * No longer using equinox security here as it contains too many bugs when used in a Splash
+		 * screen context (i.e. before workbench is opened). Uncomment this once equinox security
+		 * will become safe.
+		 */
+
 		// final ISecurePreferences root = SecurePreferencesFactory.getDefault();
 		//		final ISecurePreferences connectionNode = root.node("repository/connection"); //$NON-NLS-1$
 		// String password = null;
@@ -219,6 +222,10 @@ public class RepositoryService implements IRepositoryService {
 		// throw new ErrorException(CoreMessages
 		//					.getString("connection.editor.passwordStorageError"), e); //$NON-NLS-1$
 		// }
+
+		if (repositoryConnection == null) {
+			repositoryConnection = CorePlugin.getTypedObjectFactory().create(IConnection.class);
+		}
 		if (vendor != null && !"".equals(vendor.trim())) { //$NON-NLS-1$
 			repositoryConnection.setDBVendor(DBVendor.valueOf(vendor));
 		}
@@ -233,6 +240,7 @@ public class RepositoryService implements IRepositoryService {
 		repositoryConnection.setServerPort(port);
 		repositoryConnection.setInstance(instance);
 		repositoryConnection.setDatabase(database);
+		repositoryConnection.setTnsAlias(serviceName);
 
 		return repositoryConnection;
 	}
@@ -243,7 +251,7 @@ public class RepositoryService implements IRepositoryService {
 
 		store.put(DesignerCoreConstants.REP_SSO_PROPERTY,
 				String.valueOf(conn.isSsoAuthentication()));
-		store.put(DesignerCoreConstants.REP_DATABASE_VENDOR, conn.getDBVendor().name());
+		store.put(DesignerCoreConstants.REP_DB_VENDOR_PROPERTY, conn.getDBVendor().name());
 		store.put(DesignerCoreConstants.REP_USER_PROPERTY, conn.getLogin());
 		store.put(DesignerCoreConstants.REP_PASSWORD_SAVED_PROPERTY,
 				String.valueOf(conn.isPasswordSaved()));
@@ -251,17 +259,22 @@ public class RepositoryService implements IRepositoryService {
 		store.put(DesignerCoreConstants.REP_PORT_PROPERTY, conn.getServerPort());
 		store.put(DesignerCoreConstants.REP_INSTANCE_PROPERTY, notNull(conn.getInstance()));
 		store.put(DesignerCoreConstants.REP_DATABASE_PROPERTY, conn.getDatabase());
+		store.put(DesignerCoreConstants.REP_TNS_PROPERTY, notNull(conn.getTnsAlias()));
 		store.put(DesignerCoreConstants.REP_SCHEMA_PROPERTY, notNull(conn.getSchema()));
 		store.put(DesignerCoreConstants.REP_PASSWORD_PROPERTY,
 				conn.isPasswordSaved() ? encryptPassword(notNull(conn.getPassword())) : ""); //$NON-NLS-1$
+
 		try {
 			store.flush();
 		} catch (BackingStoreException e) {
 			throw new ErrorException(e);
 		}
-		// No longer using equinox security here as it contains too many bugs when used in a
-		// Splash screen context (i.e. before workbench is opened).
-		// Uncomment this once equinox security will become safe.
+
+		/*
+		 * No longer using equinox security here as it contains too many bugs when used in a Splash
+		 * screen context (i.e. before workbench is opened). Uncomment this once equinox security
+		 * will become safe.
+		 */
 
 		// // Always saving as even when isPasswordSaved() returns false we should
 		// // blank the password in our secured store

@@ -40,15 +40,17 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		IEclipsePreferences store = new DefaultScope().getNode(CorePlugin.PLUGIN_ID);
 		store.putBoolean(DesignerCoreConstants.FORCE_DELETE, false);
-		store.put(DesignerCoreConstants.REP_PORT_PROPERTY, ""); //$NON-NLS-1$
+		store.put(DesignerCoreConstants.REP_SSO_PROPERTY, "false"); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_USER_PROPERTY, ""); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_PASSWORD_SAVED_PROPERTY, "true"); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_PASSWORD_PROPERTY, ""); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_SERVER_PROPERTY, ""); //$NON-NLS-1$
+		store.put(DesignerCoreConstants.REP_PORT_PROPERTY, ""); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_DATABASE_PROPERTY, ""); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_INSTANCE_PROPERTY, ""); //$NON-NLS-1$
 		store.put(DesignerCoreConstants.REP_SCHEMA_PROPERTY, ""); //$NON-NLS-1$
-		store.put(DesignerCoreConstants.REP_DATABASE_VENDOR, DBVendor.getDefaultVendor().name());
+		store.put(DesignerCoreConstants.REP_DB_VENDOR_PROPERTY, DBVendor.getDefaultVendor().name());
+		store.put(DesignerCoreConstants.REP_TNS_PROPERTY, ""); //$NON-NLS-1$
 		store.putBoolean(DesignerCoreConstants.ICON_TINY, false);
 		try {
 			store.flush();

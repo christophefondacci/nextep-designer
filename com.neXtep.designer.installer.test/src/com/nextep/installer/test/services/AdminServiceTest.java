@@ -104,7 +104,7 @@ public class AdminServiceTest {
 
 		// Building fake target
 		IDatabaseTarget fakeTarget = new DatabaseTarget("invalidTarget", "password", "db",
-				"127.0.0.1", "3306", DBVendor.MYSQL);
+				"127.0.0.1", "3306", DBVendor.MYSQL, null);
 		configurator.setTarget(fakeTarget);
 		List<IRequirement> reqs = new ArrayList<IRequirement>();
 		reqs.add(new NextepAdminRequirement());
