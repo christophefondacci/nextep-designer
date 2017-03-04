@@ -53,31 +53,21 @@ Every layer is split between UI and non-UI part. The non-UI part provides the mo
 
 ### Configuring Eclipse
 
-The current release neXtep is based on is Eclipse 3.6.1. For development, we advise you use the ''Eclipse for RCP and RAP Developers'' which will contain the appropriate tools and source code for properly debugging an RCP application. Download this distribution from http://www.eclipse.org/downloads/
+The current release neXtep is based on is Eclipse 4.6. For development, we advise you use the ''Eclipse for RCP and RAP Developers'' which will contain the appropriate tools and source code for properly debugging an RCP application. Download this distribution from http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/neon2
 
-#### SVN connector
+### Setting up the workspace
 
-Now you will need a SVN connector so that you will be able to checkout neXtep source code. Run eclipse and go into ''Help > Install new software...'' and :
-* Add the following update site : http://subclipse.tigris.org/update_1.6.x
-* Install the svn connector integration
+Checkout our sources:
 
-#### Nebula composite table
+`
+git checkout https://github.com/christophefondacci/nextep-designer
+`
 
-NeXtep needs a specific SWT component (used in the problem wizard), called the Nebula composite table widget. If you don't have it, neXtep won't compile. The version of this component seems to be no longer available on the internet so we added the required jar to our SVN. You can checkout :
+Create a new Eclipse workspace and select file / import then choose "General / Existing projects into workspace" and select the directory where you checked out the sources. All projects should be listed, click finish.
 
-http://www.nextep-softwares.com/svn/neXtep-repo...able/branches/1.0.0/
+### Running Nextep in debug mode
 
-
-And get the JAR, then install this JAR to your eclipse installation through your drop-ins folder of the eclipse install directory.
-
-#### Apache derby plugin
-
-NeXtep uses a derby database internally for some advanced features like data manipulation. You will therefore need the derby plugin. You can find derby's download here :
-* http://archive.apache.org/dist/db/derby/db-derby-10.6.2.1/derby_core_plugin_10.6.2.999685.zip
-* Alternately, you can download a later release http://db.apache.org/derby/derby_downloads.html#Latest+Official+Release (choose the derby_core_plugin)
-* Installation instructions available here : http://db.apache.org/derby/integrate/plugin_howto.html
-http://db.apache.org/derby/releases/release-10.6.2.1.cgi : 10.6.2.1 is the release used by neXtep, but using any later release will be fine. 
-
+To create a working debug configuration locate the file com.neXtep.Designer/designer.product in the Eclipse project explorer and open it. In the "Testing" section of the page that will open, click on "Launch an Eclipse application in Debug mode". You're all set!
 
 ## Translating neXtep
 
