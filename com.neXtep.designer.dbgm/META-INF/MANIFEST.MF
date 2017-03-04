@@ -12,7 +12,7 @@ Require-Bundle: com.neXtep.designer.logging,
  com.neXtep.designer.core,
  org.eclipse.core.runtime,
  com.neXtep.designer.hibernate;bundle-version="3.3.1",
- org.apache.derby.core;bundle-version="10.6.2"
+ org.apache.db.derby;bundle-version="10.6.2"
 Export-Package: com.nextep.datadesigner.dbgm.impl;
   uses:="org.eclipse.core.runtime,
    com.nextep.datadesigner.impl,

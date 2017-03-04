@@ -11,8 +11,8 @@ Bundle-Vendor: neXtep
 Require-Bundle: org.eclipse.core.runtime,
  com.neXtep.designer.logging,
  com.neXtep.designer.hibernate;bundle-version="3.3.1",
- Apache_Commons;bundle-version="3.2.0";visibility:=reexport,
- com.neXtep.designer.jdbc.oracle;bundle-version="11.2.0"
+ com.neXtep.designer.jdbc.oracle;bundle-version="11.2.0",
+ Apache_Commons;bundle-version="3.2.0";visibility:=reexport
 Export-Package: com.nextep.datadesigner;
   uses:="org.eclipse.core.runtime,
    org.hibernate,

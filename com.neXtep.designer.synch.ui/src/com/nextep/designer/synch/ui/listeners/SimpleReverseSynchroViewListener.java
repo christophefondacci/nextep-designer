@@ -37,6 +37,7 @@ import com.nextep.datadesigner.hibernate.HibernateUtil;
 import com.nextep.datadesigner.model.IElementType;
 import com.nextep.datadesigner.sqlgen.services.SQLGenUtil;
 import com.nextep.datadesigner.vcs.services.VersionHelper;
+import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
 import com.nextep.designer.dbgm.ui.services.DBGMUIHelper;
 import com.nextep.designer.synch.model.IReverseSynchronizationContext;
@@ -54,11 +55,10 @@ import com.nextep.designer.vcs.ui.navigators.VersionNavigator;
 
 public class SimpleReverseSynchroViewListener extends AbstractWorkspaceListener {
 
-	private IReverseSynchronizationService reverseService;
-	private ISynchronizationService synchService;
-
 	@Override
 	public void workspaceChanged(IWorkspace oldView, IWorkspace newView, IProgressMonitor monitor) {
+		final IReverseSynchronizationService reverseService = CorePlugin
+				.getService(IReverseSynchronizationService.class);
 		if (newView.isImportOnOpenNeeded()) {
 			IVersionContainer targetContainer = null;
 			// Checking if initial root container exists
@@ -68,9 +68,9 @@ public class SimpleReverseSynchroViewListener extends AbstractWorkspaceListener 
 				targetContainer = (IVersionContainer) containers.get(0).getVersionnedObject()
 						.getModel();
 			} else {
-				targetContainer = (IVersionContainer) UIControllerFactory.getController(
-						IElementType.getInstance(IVersionContainer.TYPE_ID)).emptyInstance(
-						newView.getName(), newView);
+				targetContainer = (IVersionContainer) UIControllerFactory
+						.getController(IElementType.getInstance(IVersionContainer.TYPE_ID))
+						.emptyInstance(newView.getName(), newView);
 			}
 			final IVersionContainer module = targetContainer;
 			Job j = new Job(SynchUIMessages.getString("synch.simpleReverse.job")) { //$NON-NLS-1$
@@ -88,15 +88,16 @@ public class SimpleReverseSynchroViewListener extends AbstractWorkspaceListener 
 					try {
 						reverseService.setNewElementsTargetModule(module);
 						monitor.worked(10);
-						final ISynchronizationResult result = synchService
+						final ISynchronizationResult result = CorePlugin
+								.getService(ISynchronizationService.class)
 								.buildSynchronizationResult(newView, conn,
 										ComparisonScope.DB_TO_REPOSITORY, monitor.newChild(50));
 						// Flushing session
 						HibernateUtil.getInstance().clearAllSessions();
 						final IReverseSynchronizationContext context = reverseService
 								.createContext(result);
-						monitor.subTask(SynchUIMessages
-								.getString("synch.simpleReverse.reverseSynch")); //$NON-NLS-1$
+						monitor.subTask(
+								SynchUIMessages.getString("synch.simpleReverse.reverseSynch")); //$NON-NLS-1$
 						reverseService.reverseSynchronize(context, monitor.newChild(40));
 						newView.setImportOnOpenNeeded(false);
 						// Workaround a display bug, we force the full refresh of our navigation
@@ -105,8 +106,8 @@ public class SimpleReverseSynchroViewListener extends AbstractWorkspaceListener 
 
 							@Override
 							public void run() {
-								if (PlatformUI.isWorkbenchRunning()
-										&& PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+								if (PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow() != null) {
 									IViewPart view = PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow().getActivePage()
 											.findView(VersionNavigator.VIEW_ID);
@@ -164,13 +165,4 @@ public class SimpleReverseSynchroViewListener extends AbstractWorkspaceListener 
 	public int getPriority() {
 		return 5;
 	}
-
-	public void setReverseSynchronizationService(IReverseSynchronizationService service) {
-		this.reverseService = service;
-	}
-
-	public void setSynchronizationService(ISynchronizationService service) {
-		this.synchService = service;
-	}
-
 }

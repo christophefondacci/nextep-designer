@@ -370,7 +370,7 @@
          </menu>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=version">
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
                id="com.neXtep.designer.vcs.ui.toolbars.version">
             <command

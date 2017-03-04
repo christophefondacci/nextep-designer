@@ -28,29 +28,7 @@
             name="neXtep Designer">
          <property
                name="aboutText"
-               value="neXtep Designer for Oracle / MySQL / PostgreSQL
-Professional designing IDE for database development. 
-
-Release 1.0.7 Enterprise Edition.
-Based on Eclipse RCP.
-
-(c) Copyright neXtep Softwares 2007-2012. All rights reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
-
-This product includes software developed by the
-Apache Software Foundation http://www.apache.org/">
+               value="neXtep Designer for Oracle / MySQL / PostgreSQL&#x0A;Professional designing IDE for database development. &#x0A;&#x0A;Release 1.0.7 Enterprise Edition.&#x0A;Based on Eclipse RCP.&#x0A;&#x0A;(c) Copyright neXtep Softwares 2007-2012. All rights reserved.&#x0A;&#x0A;    This program is free software: you can redistribute it and/or modify&#x0A;    it under the terms of the GNU General Public License as published by&#x0A;    the Free Software Foundation, either version 3 of the License, or&#x0A;    (at your option) any later version.&#x0A;&#x0A;    This program is distributed in the hope that it will be useful,&#x0A;    but WITHOUT ANY WARRANTY; without even the implied warranty of&#x0A;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#x0A;    GNU General Public License for more details.&#x0A;&#x0A;    You should have received a copy of the GNU General Public License&#x0A;    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.&#x0A;&#x0A;This product includes software developed by the&#x0A;Apache Software Foundation http://www.apache.org/">
          </property>
          <property
                name="windowImages"
@@ -63,10 +41,6 @@ Apache Software Foundation http://www.apache.org/">
          <property
                name="appName"
                value="neXtep Designer">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
          </property>
          <property
                name="introTitle"

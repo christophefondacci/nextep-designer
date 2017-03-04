@@ -86,7 +86,7 @@ public class Perspective implements IPerspectiveFactory {
 		layout.addShowViewShortcut("com.neXtep.designer.ui.properties"); //$NON-NLS-1$
 		layout.addShowViewShortcut("com.nextep.datadesigner.vcs.gui.rcp.VersionableViewRCP"); //$NON-NLS-1$
 
-		layout.getViewLayout("com.neXtep.datadesigner.vcs.gui.rcp.VersionViewRCP").setCloseable(false); //$NON-NLS-1$
+//		layout.getViewLayout("com.neXtep.datadesigner.vcs.gui.rcp.VersionViewRCP").setCloseable(false); //$NON-NLS-1$
 	}
 
 }

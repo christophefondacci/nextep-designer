@@ -38,6 +38,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.part.AbstractMultiEditor;
@@ -50,27 +51,36 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 	private SashForm sashForm;
 	private Composite leftEditor;
 	private Composite rightEditor;
-	private final Map<IEditorReference, Composite> containerMaps = new HashMap<IEditorReference, Composite>();
+	private final Map<IEditorInput, Composite> containerMaps = new HashMap<IEditorInput, Composite>();
 
 	@Override
 	public Composite getInnerEditorContainer(IEditorReference innerEditorReference) {
-		final Composite container = containerMaps.get(innerEditorReference);
-		if (container != null) {
-			return container;
-		} else if (containerMaps.entrySet().size() == 0) {
-			containerMaps.put(innerEditorReference, leftEditor);
-			return leftEditor;
-		} else if (containerMaps.entrySet().size() == 1) {
-			containerMaps.put(innerEditorReference, rightEditor);
-			return rightEditor;
-		}
+		// final Composite container = containerMaps.get(innerEditorReference);
+		// if (container != null) {
+		// return container;
+		// } else if (containerMaps.entrySet().size() == 0) {
+		// containerMaps.put(innerEditorReference, leftEditor);
+		// return leftEditor;
+		// } else if (containerMaps.entrySet().size() == 1) {
+		// containerMaps.put(innerEditorReference, rightEditor);
+		// return rightEditor;
+		// }
 		return null;
 	}
 
 	@Override
 	protected void innerEditorsCreated() {
 		for (IEditorPart e : getInnerEditors()) {
-			final Control c = (Control) e.getAdapter(Control.class);
+			Composite container = containerMaps.get(e.getEditorInput());
+			if (container == null && containerMaps.entrySet().size() == 0) {
+				containerMaps.put(e.getEditorInput(), leftEditor);
+				container = leftEditor;
+			} else if (container == null && containerMaps.entrySet().size() == 1) {
+				containerMaps.put(e.getEditorInput(), rightEditor);
+				container = rightEditor;
+			}
+			e.createPartControl(container);
+			final Control c = e.getAdapter(Control.class);
 			if (c instanceof StyledText) {
 				final StyledText styledText = (StyledText) c;
 				styledText.getVerticalBar().addSelectionListener(new SelectionListener() {
@@ -79,7 +89,7 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 					public void widgetSelected(SelectionEvent evt) {
 						// Aligning all editors top position
 						for (IEditorPart e : getInnerEditors()) {
-							Control partControl = (Control) e.getAdapter(Control.class);
+							Control partControl = e.getAdapter(Control.class);
 							if (partControl instanceof StyledText && partControl != styledText) {
 								((StyledText) partControl).setTopIndex(styledText.getTopIndex());
 							}
@@ -95,10 +105,10 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 					@Override
 					public void widgetSelected(SelectionEvent evt) {
 						for (IEditorPart e : getInnerEditors()) {
-							Control partControl = (Control) e.getAdapter(Control.class);
+							Control partControl = e.getAdapter(Control.class);
 							if (partControl instanceof StyledText && partControl != styledText) {
-								((StyledText) partControl).setHorizontalPixel(styledText
-										.getHorizontalPixel());
+								((StyledText) partControl)
+										.setHorizontalPixel(styledText.getHorizontalPixel());
 							}
 						}
 					}
@@ -108,7 +118,7 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 					@Override
 					public void caretMoved(CaretEvent event) {
 						for (IEditorPart e : getInnerEditors()) {
-							Control partControl = (Control) e.getAdapter(Control.class);
+							Control partControl = e.getAdapter(Control.class);
 							if (partControl instanceof StyledText && partControl != styledText) {
 								((StyledText) partControl).setTopIndex(styledText.getTopIndex());
 							}
@@ -126,7 +136,7 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 		sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		// Left sash container for heading label and left editor
 		Composite leftContainer = new Composite(sashForm, SWT.BORDER);
-		leftContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		leftContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout gl = new GridLayout(1, false);
 		gl.marginBottom = gl.marginHeight = gl.marginLeft = gl.marginRight = gl.marginTop = gl.marginWidth = 0;
 		leftContainer.setLayout(gl);
@@ -150,7 +160,7 @@ public class ComparisonSideToSideEditor extends AbstractMultiEditor {
 		if (input.getEditors().length > 1) {
 			// Right sash container for heading label and right editor
 			Composite rightContainer = new Composite(sashForm, SWT.BORDER);
-			rightContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+			rightContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			GridLayout rightLayout = new GridLayout(1, false);
 			rightLayout.marginBottom = rightLayout.marginHeight = rightLayout.marginLeft = rightLayout.marginRight = rightLayout.marginTop = rightLayout.marginWidth = 0;
 			rightContainer.setLayout(rightLayout);

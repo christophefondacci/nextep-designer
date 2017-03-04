@@ -4,6 +4,4 @@
    <service>
       <provide interface="com.nextep.designer.vcs.model.IWorkspaceListener"/>
    </service>
-   <reference bind="setReverseSynchronizationService" cardinality="1..1" interface="com.nextep.designer.synch.services.IReverseSynchronizationService" name="IReverseSynchronizationService" policy="static"/>
-   <reference bind="setSynchronizationService" cardinality="1..1" interface="com.nextep.designer.synch.services.ISynchronizationService" name="ISynchronizationService" policy="static"/>
 </scr:component>

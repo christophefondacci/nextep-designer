@@ -35,15 +35,15 @@ public class SynchronizationPerspective implements IPerspectiveFactory {
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		layout.setEditorAreaVisible(true);
-		layout.addStandaloneView(ComparisonNavigator.VIEW_ID, true, IPageLayout.LEFT, 0.35f, layout
-				.getEditorArea());
+		layout.addStandaloneView(ComparisonNavigator.VIEW_ID, true, IPageLayout.LEFT, 0.35f,
+				layout.getEditorArea());
 
 		// IFolderLayout synchFolder = layout.createFolder("synch", IPageLayout.LEFT, 0.25f,
 		// layout.getEditorArea());
 		// synchFolder.addView(ComparisonNavigator.VIEW_ID);
 
-		IFolderLayout toolFolder = layout.createFolder("ToolBar", IPageLayout.BOTTOM, 0.7f, layout
-				.getEditorArea());
+		IFolderLayout toolFolder = layout.createFolder("ToolBar", IPageLayout.BOTTOM, 0.7f,
+				layout.getEditorArea());
 		toolFolder.addView("org.eclipse.ui.console.ConsoleView");
 		toolFolder.addView(DiffPreviewView.VIEW_ID);
 		toolFolder.addView("com.neXtep.designer.dbgm.ui.connections");

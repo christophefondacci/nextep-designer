@@ -286,7 +286,7 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:com.nextep.designer.dbgm.gef.DBGMGraphicalEditor?after=additions">
+            locationURI="toolbar:com.nextep.designer.dbgm.gef.DBGMGraphicalEditor">
          <command
                commandId="com.neXtep.designer.dbgm.ui.autoLayout"
                icon="resource/AutoLayoutTiny.ico"

@@ -86,7 +86,7 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?before=version">
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
                id="com.neXtep.designer.synch.ui">
             <command
