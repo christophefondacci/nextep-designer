@@ -79,6 +79,7 @@ public final class TestConfiguration {
 		final String db = getProperty(prefix + PROP_DB);
 		final String host = getProperty(prefix + PROP_HOST);
 		final String port = getProperty(prefix + PROP_PORT);
-		return new DatabaseTarget(user, pass, db, host, port, vendor);
+		return new DatabaseTarget(user, pass, db, host, port, vendor, null);
 	}
+
 }
