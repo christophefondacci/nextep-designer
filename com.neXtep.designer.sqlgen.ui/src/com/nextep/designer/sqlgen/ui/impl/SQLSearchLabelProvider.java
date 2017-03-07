@@ -22,11 +22,8 @@
  *******************************************************************************/
 package com.nextep.designer.sqlgen.ui.impl;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
@@ -41,7 +38,27 @@ import com.nextep.datadesigner.model.INamedObject;
 import com.nextep.datadesigner.model.ITypedObject;
 import com.nextep.designer.ui.factories.ImageFactory;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyledLabelProvider {
+
+	// Maximum size of a search result label provided by this IStyledLabelProvider.
+	private static final int FRAME_MAX_SIZE = 80;
+
+	// Minimum number of characters around the matching text.
+	private static final int FRAME_MIN_SIZE = 10;
+
+	// Minimum number of characters around the matching text.
+	private static final Styler MATCH_STYLER = new Styler() {
+
+		@Override
+		public void applyStyles(TextStyle textStyle) {
+			textStyle.font = FontFactory.FONT_BOLD;
+			textStyle.background = FontFactory.SHADOW_GRAPH3_COLOR;
+		}
+	};
 
 	SQLSearchViewPage page;
 
@@ -57,78 +74,149 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 		return null;
 	}
 
-	// @Override
 	public String getText(Object element) {
-		if (element instanceof INamedObject) {
-			return ((INamedObject) element).getName();
-		} else if (element instanceof Match) {
-			Match match = (Match) element;
+		return getBasicText(element).getText();
+	}
+
+	private BasicString getBasicText(Object element) {
+		BasicString bString = null;
+
+		if (element instanceof Match) {
+			final Match match = (Match) element;
+
 			if (match.getElement() instanceof ISqlBased) {
-				ISqlBased sqlBased = (ISqlBased) match.getElement();
+				final ISqlBased sqlBased = (ISqlBased) match.getElement();
 				final String sql = sqlBased.getSql();
-				return "..."
-						+ sql.substring(Math.max(0, match.getOffset() - 10),
-								Math.min(match.getOffset() + match.getLength() + 10, sql.length()))
-								.replaceAll("(\n|\r)", "") + "...";
+
+				/*
+				 * ISSUE GH-18: We fetch the entire line that contains the match, with a limit of
+				 * FRAME_MAX_SIZE characters.
+				 */
+
+				/*
+				 * We search for the newline character to find the beginning and the end of the line
+				 * that contains the match. This way we will be able to find the line boundaries
+				 * whatever the format of the input string (Windows CRLF or Linux/OSX LF).
+				 */
+				// +1 to exclude the newline character from the selection
+				int lineStart = sql.lastIndexOf('\n', match.getOffset()) + 1;
+				int lineEnd = sql.indexOf('\n', match.getOffset() + match.getLength());
+
+				/*
+				 * If no newline character has been found after the end of the match, we set the end
+				 * of the selection at the end of the input string.
+				 */
+				if (lineEnd < 0) {
+					lineEnd = sql.length();
+				}
+
+				/*
+				 * Now that we have found the position of the line containing the match, we try to
+				 * define a selection window of FRAME_MAX_SIZE characters, with a minimum of
+				 * FRAME_MIN_SIZE characters before and after the match.
+				 */
+				int minSelectionIndex = match.getOffset() + match.getLength() + FRAME_MIN_SIZE
+						- FRAME_MAX_SIZE;
+				int selectionStart = Math.max(minSelectionIndex, lineStart);
+				int selectionEnd = Math.min(selectionStart + FRAME_MAX_SIZE, lineEnd);
+
+				/*
+				 * If the last character of the selection window is a carriage return character or a
+				 * newline character then we remove it from the selection.
+				 */
+				while (sql.charAt(selectionEnd - 1) == '\r'
+						|| sql.charAt(selectionEnd - 1) == '\n') {
+					selectionEnd--;
+				}
+
+				bString = new BasicString(sql.substring(selectionStart, selectionEnd),
+						selectionStart);
 			}
+		} else if (element instanceof INamedObject) {
+			bString = new BasicString(((INamedObject) element).getName(), 0);
+		} else {
+			String unknown = "Unknown"; //$NON-NLS-1$
+			bString = new BasicString(unknown, 0);
 		}
-		return "Unknown";
+
+		return bString;
 	}
 
 	@Override
 	public StyledString getStyledText(Object element) {
-		// Retrieving text to display
-		final String txt = getText(element);
-		// Retrieving search result for match computation
-		final SQLSearchResult result = (SQLSearchResult) page.getInput();
-		// Specific match case, simply highlight the matched elements
+		StyledString sString = null;
+
 		if (element instanceof Match) {
-			return highlightMatches((Match) element, txt,
-					((SQLSearchQuery) result.getQuery()).getSearchedText());
+			final Match match = (Match) element;
+			final BasicString bString = getBasicText(element);
+			final String text = bString.getText();
+
+			// We compute the start and end positions of the match inside the match text
+			int matchStart = match.getOffset() - bString.getOffset();
+			int matchEnd = matchStart + match.getLength();
+
+			sString = new StyledString("... "); //$NON-NLS-1$
+			sString.append(text.substring(0, matchStart));
+			sString.append(text.substring(matchStart, matchEnd), MATCH_STYLER);
+			sString.append(text.substring(matchEnd));
+			sString.append(" ..."); //$NON-NLS-1$
+
+			if (match.getElement() instanceof ISqlBased) {
+				final String sql = ((ISqlBased) match.getElement()).getSql();
+				final IDocument d = new Document(sql);
+
+				try {
+					/*
+					 * ISSUE GH-17: Line numbers as returned by the IDocument#getLineOfOffset(int)
+					 * method are numbered from 0. So we add 1 to match the line number displayed in
+					 * the SQL code editor.
+					 */
+					int line = d.getLineOfOffset(match.getOffset()) + 1;
+					sString.append(" (line " + line + ")", StyledString.COUNTER_STYLER); //$NON-NLS-1$ //$NON-NLS-2$
+				} catch (BadLocationException e) {
+					// Nothing to do here, we forget line addition
+				}
+			}
+		} else if (element instanceof INamedObject) {
+			sString = new StyledString(getText(element));
+
+			// Retrieving search result for match computation
+			final SQLSearchResult result = (SQLSearchResult) page.getInput();
+			final int matchCount = result.getMatches(element).length;
+
+			if (matchCount > 0) {
+				sString.append(" (" + matchCount + " match", StyledString.COUNTER_STYLER) //$NON-NLS-1$ //$NON-NLS-2$
+						.append((matchCount > 1 ? "es)" : ")"), StyledString.COUNTER_STYLER); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		} else {
+			sString = new StyledString(getText(element));
 		}
-		// Else we append a match suffix with match count
-		StyledString s = new StyledString(txt);
-		Match[] matches = result.getMatches(element);
-		if (matches != null && matches.length > 0) {
-			s.append(" (" + matches.length + " matches)", StyledString.COUNTER_STYLER);
-		}
-		return s;
+
+		return sString;
 	}
 
-	private StyledString highlightMatches(Match match, String text, String searchedText) {
-		Pattern p = Pattern.compile(FindReplaceDocumentAdapter.escapeForRegExPattern(searchedText
-				.toUpperCase()));
-		Matcher m = p.matcher(text.toUpperCase());
-		int offset = 0;
-		StyledString styled = new StyledString();
-		while (m.find()) {
-			styled.append(text.substring(offset, m.start()));
-			styled.append(searchedText, new Styler() {
+	/*
+	 * Convenience class used to hold the text of a textual match and its position in the element in
+	 * which the match is reported against.
+	 */
+	private final class BasicString {
 
-				@Override
-				public void applyStyles(TextStyle textStyle) {
-					textStyle.font = FontFactory.FONT_BOLD;
-					textStyle.background = FontFactory.SHADOW_GRAPH3_COLOR;
-				}
-			});
-			offset = m.end();
-		}
-		if (text.length() > offset) {
-			styled.append(text.substring(offset, text.length()));
-		}
-		if (match.getElement() instanceof ISqlBased) {
-			final String s = ((ISqlBased) match.getElement()).getSql();
-			final IDocument d = new Document();
-			d.set(s);
-			try {
-				int line = d.getLineOfOffset(match.getOffset());
-				styled.append(" (line " + line + ")", StyledString.COUNTER_STYLER);
-			} catch (BadLocationException e) {
-				// Nothing to do here, we forget line addition
-			}
+		private String text;
+		private int offset;
+
+		public BasicString(String text, int offset) {
+			this.text = text;
+			this.offset = offset;
 		}
 
-		return styled;
+		public String getText() {
+			return text;
+		}
+
+		public int getOffset() {
+			return offset;
+		}
+
 	}
 
 }
