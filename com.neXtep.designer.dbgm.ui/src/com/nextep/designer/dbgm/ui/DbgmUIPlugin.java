@@ -46,24 +46,28 @@ public class DbgmUIPlugin extends AbstractUIPlugin {
 	public DbgmUIPlugin() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		plugin.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				plugin.getWorkbench().getDisplay().disposeExec(new Runnable() {
+					@Override
+					public void run() {
+						if (formColors != null) {
+							formColors.dispose();
+						}
+						DBGMImages.dispose();
+					}
+				});
+			}
+		});
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		if (formColors != null) {
-			formColors.dispose();
-		}
-		DBGMImages.dispose();
 		plugin = null;
 		super.stop(context);
 	}

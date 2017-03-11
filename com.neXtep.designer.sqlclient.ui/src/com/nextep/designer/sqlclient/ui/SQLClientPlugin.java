@@ -27,6 +27,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
 import com.nextep.datadesigner.Designer;
 import com.nextep.datadesigner.gui.impl.rcp.PageTracker;
 import com.nextep.designer.sqlclient.ui.model.impl.SQLClientEditorTracker;
@@ -50,11 +51,25 @@ public class SQLClientPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
+	 * BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		plugin.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				plugin.getWorkbench().getDisplay().disposeExec(new Runnable() {
+					@Override
+					public void run() {
+						SQLClientImages.dispose();
+					}
+				});
+			}
+		});
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -78,10 +93,12 @@ public class SQLClientPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
+	 * BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		SQLClientImages.dispose();
 		plugin = null;
 		super.stop(context);
 	}

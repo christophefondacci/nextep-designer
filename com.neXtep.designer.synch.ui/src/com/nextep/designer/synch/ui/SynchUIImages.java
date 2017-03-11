@@ -24,57 +24,75 @@ package com.nextep.designer.synch.ui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 public class SynchUIImages {
 
-	public static final Image NOT_IN_TARGET = getImageDescriptor("/resource/notInTarget.png")
-			.createImage();
-	public static final Image TO_REPO = getImageDescriptor("/resource/toRepoTiny.gif")
-			.createImage();
-	public static final Image DIFF = getImageDescriptor("/resource/differ.png").createImage();
-	public static final Image NOT_IN_SOURCE = getImageDescriptor("/resource/notInSource.png")
-			.createImage();
-	public static final Image UNCHECKED = getImageDescriptor("/resource/task-inactive.gif")
-			.createImage();
-	public static final Image CHECKED = getImageDescriptor("/resource/task-active.gif")
-			.createImage();
-	public static final Image CHECK_GRAYED = getImageDescriptor("/resource/task-gray.gif")
-			.createImage();
+	public static Image NOT_IN_TARGET;
+	public static Image TO_REPO;
+	public static Image DIFF;
+	public static Image NOT_IN_SOURCE;
+	public static Image UNCHECKED;
+	public static Image CHECKED;
+	public static Image CHECK_GRAYED;
 
-	public static final Image NOT_IN_TARGET_DIS = getImageDescriptor(
-			"/resource/notInTarget_dis.png").createImage();
-	public static final Image DIFF_DIS = getImageDescriptor("/resource/differ_dis.png")
-			.createImage();
-	public static final Image NOT_IN_SOURCE_DIS = getImageDescriptor(
-			"/resource/notInSource_dis.png").createImage();
-	public static final Image SELECT_ALL = getImageDescriptor("/resource/selectAll.png")
-			.createImage();
-	public static final Image UNSELECT_ALL = getImageDescriptor("/resource/unselectAll.png")
-			.createImage();
+	public static Image NOT_IN_TARGET_DIS;
+	public static Image DIFF_DIS;
+	public static Image NOT_IN_SOURCE_DIS;
+	public static Image SELECT_ALL;
+	public static Image UNSELECT_ALL;
 
 	public static void dispose() {
-		NOT_IN_TARGET.dispose();
-		TO_REPO.dispose();
-		DIFF.dispose();
-		NOT_IN_SOURCE.dispose();
-		UNCHECKED.dispose();
-		CHECKED.dispose();
-		CHECK_GRAYED.dispose();
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				NOT_IN_TARGET.dispose();
+				TO_REPO.dispose();
+				DIFF.dispose();
+				NOT_IN_SOURCE.dispose();
+				UNCHECKED.dispose();
+				CHECKED.dispose();
+				CHECK_GRAYED.dispose();
 
-		NOT_IN_TARGET_DIS.dispose();
-		DIFF_DIS.dispose();
-		NOT_IN_SOURCE_DIS.dispose();
-		SELECT_ALL.dispose();
-		UNSELECT_ALL.dispose();
+				NOT_IN_TARGET_DIS.dispose();
+				DIFF_DIS.dispose();
+				NOT_IN_SOURCE_DIS.dispose();
+				SELECT_ALL.dispose();
+				UNSELECT_ALL.dispose();
+			}
+		});
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given plug-in relative path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path
 	 * 
-	 * @param path the path
+	 * @param path
+	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return SynchUIPlugin.imageDescriptorFromPlugin(SynchUIPlugin.PLUGIN_ID, path);
+	}
+
+	public static void loadImages() {
+		Display.getCurrent().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				NOT_IN_TARGET = getImageDescriptor("/resource/notInTarget.png").createImage();
+				TO_REPO = getImageDescriptor("/resource/toRepoTiny.gif").createImage();
+				DIFF = getImageDescriptor("/resource/differ.png").createImage();
+				NOT_IN_SOURCE = getImageDescriptor("/resource/notInSource.png").createImage();
+				UNCHECKED = getImageDescriptor("/resource/task-inactive.gif").createImage();
+				CHECKED = getImageDescriptor("/resource/task-active.gif").createImage();
+				CHECK_GRAYED = getImageDescriptor("/resource/task-gray.gif").createImage();
+
+				NOT_IN_TARGET_DIS = getImageDescriptor("/resource/notInTarget_dis.png").createImage();
+				DIFF_DIS = getImageDescriptor("/resource/differ_dis.png").createImage();
+				NOT_IN_SOURCE_DIS = getImageDescriptor("/resource/notInSource_dis.png").createImage();
+				SELECT_ALL = getImageDescriptor("/resource/selectAll.png").createImage();
+				UNSELECT_ALL = getImageDescriptor("/resource/unselectAll.png").createImage();
+			}
+		});
 	}
 }

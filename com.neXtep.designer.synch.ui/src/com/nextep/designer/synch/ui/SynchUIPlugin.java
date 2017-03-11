@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+
 import com.nextep.datadesigner.exception.ErrorException;
 
 /**
@@ -48,19 +49,36 @@ public class SynchUIPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
+	 * BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		SynchUIImages.loadImages();
+		plugin.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				plugin.getWorkbench().getDisplay().disposeExec(new Runnable() {
+					@Override
+					public void run() {
+						SynchUIImages.loadImages();
+					}
+				});
+			}
+		});
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
+	 * BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		SynchUIImages.dispose();
 		plugin = null;
 		super.stop(context);
 	}
