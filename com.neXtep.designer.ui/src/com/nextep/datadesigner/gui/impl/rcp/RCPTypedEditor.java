@@ -39,11 +39,11 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
+
 import com.nextep.datadesigner.Designer;
 import com.nextep.datadesigner.gui.impl.FontFactory;
 import com.nextep.datadesigner.gui.impl.editors.TypedEditorInput;
 import com.nextep.datadesigner.gui.model.IDisplayConnector;
-import com.nextep.datadesigner.model.IObservable;
 import com.nextep.datadesigner.model.ITypedObject;
 import com.nextep.designer.ui.CoreUiPlugin;
 import com.nextep.designer.ui.editors.DesignerSelectionProvider;
@@ -51,9 +51,9 @@ import com.nextep.designer.ui.factories.ImageFactory;
 import com.nextep.designer.ui.factories.UIControllerFactory;
 
 /**
- * A generic RCP editor which handles {@link ITypedObject} and wraps the underlying internal display
- * connector. This editor delegates to generic factories / controllers the task of loading /
- * persisting the object model.
+ * A generic RCP editor which handles {@link ITypedObject} and wraps the
+ * underlying internal display connector. This editor delegates to generic
+ * factories / controllers the task of loading / persisting the object model.
  * 
  * @author Christophe Fondacci
  */
@@ -155,27 +155,25 @@ public class RCPTypedEditor extends EditorPart {
 			gui.refreshConnector();
 			setPartName(gui.getTitle());
 			setTitleImage(ImageFactory.getImage(model.getType().getIcon()));
-			// Initializing a provider which will always provide the same selection
-			selProvider = new DesignerSelectionProvider(c, (IObservable) model);
-			// selProvider.setSelection(new StructuredSelection(gui.getModel()));
+			// Initializing a provider which will always provide the same
+			// selection
+			selProvider = new DesignerSelectionProvider(c, model);
+			// selProvider.setSelection(new
+			// StructuredSelection(gui.getModel()));
 			this.getSite().setSelectionProvider(selProvider);
-			PlatformUI
-					.getWorkbench()
-					.getHelpSystem()
-					.setHelp(
-							gui.getSWTConnector(),
-							"com.neXtep.designer.ui."
-									+ (model != null ? model.getType().getId() : "null"));
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(gui.getSWTConnector(),
+					"com.neXtep.designer.ui." + (model != null ? model.getType().getId() : "null"));
 		} else {
 			log.debug("RCPViewWrapper: No GUI found");
 		}
 	}
 
 	/**
-	 * Creates the GUI corresponding to this typed object. Subclasses may override the default
-	 * controller generated editor
+	 * Creates the GUI corresponding to this typed object. Subclasses may
+	 * override the default controller generated editor
 	 * 
-	 * @param model typed object model
+	 * @param model
+	 *            typed object model
 	 * @return the {@link IDisplayConnector} instance
 	 */
 	protected IDisplayConnector createGUI(ITypedObject model) {
@@ -187,13 +185,11 @@ public class RCPTypedEditor extends EditorPart {
 	 */
 	@Override
 	public void setFocus() {
-		gui.getSWTConnector().setFocus();
-		final TypedEditorInput input = (TypedEditorInput) getEditorInput();
-		// if( input.getModel()!=gui.getModel()) {
-		selProvider.setSelection(new StructuredSelection(gui.getModel()));
-		// setInput(new TypedEditorInput((ITypedObject)gui.getModel()));
-		// }
-
+		if (gui != null) {
+			gui.getSWTConnector().setFocus();
+			final TypedEditorInput input = (TypedEditorInput) getEditorInput();
+			selProvider.setSelection(new StructuredSelection(gui.getModel()));
+		}
 	}
 
 }
