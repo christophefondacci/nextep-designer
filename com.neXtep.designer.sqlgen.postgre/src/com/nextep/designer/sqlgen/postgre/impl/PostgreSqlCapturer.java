@@ -36,12 +36,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-
 import com.nextep.datadesigner.dbgm.impl.UniqueKeyConstraint;
 import com.nextep.datadesigner.dbgm.model.IBasicColumn;
 import com.nextep.datadesigner.dbgm.model.IBasicTable;
@@ -116,8 +114,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 		datatypeConversionMap.put("serial4", "serial"); //$NON-NLS-1$ //$NON-NLS-2$
 		datatypeConversionMap.put("bpchar", "character"); //$NON-NLS-1$ //$NON-NLS-2$
 		datatypeConversionMap.put("_numeric", "numeric[]"); //$NON-NLS-1$ //$NON-NLS-2$
-		parameteredTypes = Arrays.asList("bit", "varbit", "varchar", "char", "character", "character varying", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-				"interval", "numeric", "decimal", "time", "timestamp"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		parameteredTypes = Arrays.asList("bit", "varbit", "varchar", "char", "character", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"character varying", "interval", "numeric", "decimal", "time", "timestamp"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		NEWLINE = CorePlugin.getService(IGenerationService.class).getNewLine();
 	}
 
@@ -127,7 +125,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 		super.initialize(conn, context);
 	}
 
-	boolean isInherited(IBasicColumn col, IBasicTable t, Map<IReference, IBasicTable> tablesRefMap) {
+	boolean isInherited(IBasicColumn col, IBasicTable t,
+			Map<IReference, IBasicTable> tablesRefMap) {
 		IVersionable<?> v = (IVersionable<?>) t;
 		if (v == null) {
 			return false;
@@ -170,7 +169,9 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 		try {
 			stmt = conn.createStatement();
-			rset = stmt.executeQuery("SELECT c.relname AS name, p.relname AS parent " //$NON-NLS-1$
+			rset = stmt.executeQuery("SELECT " //$NON-NLS-1$
+					+ "    c.relname AS name " //$NON-NLS-1$
+					+ "  , p.relname AS parent " //$NON-NLS-1$
 					+ "FROM pg_inherits " //$NON-NLS-1$
 					+ "  JOIN pg_class AS c ON (inhrelid=c.oid) " //$NON-NLS-1$
 					+ "  JOIN pg_class as p ON (inhparent=p.oid) " //$NON-NLS-1$
@@ -183,14 +184,14 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 				IVersionable<?> v = (IVersionable<?>) tablesMap.get(tabName);
 				if (v == null) {
-					LOGGER.warn("Skipping inherits constraint '" + inheritsFrom + "' on table " + tabName
-							+ ": child table not in the imported set.");
+					LOGGER.warn("Skipping inherits constraint '" + inheritsFrom + "' on table "
+							+ tabName + ": child table not in the imported set.");
 					continue;
 				}
 				IVersionable<?> vi = (IVersionable<?>) tablesMap.get(inheritsFrom);
 				if (vi == null) {
-					LOGGER.warn("Skipping inherits constraint '" + inheritsFrom + "' on table " + tabName
-							+ ": parent table not in the imported set.");
+					LOGGER.warn("Skipping inherits constraint '" + inheritsFrom + "' on table "
+							+ tabName + ": parent table not in the imported set.");
 					continue;
 				}
 				IPostgreSqlTable t = (IPostgreSqlTable) v.getVersionnedObject().getModel();
@@ -200,7 +201,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, null);
@@ -247,7 +249,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 					c.setDatatype(d);
 				} else {
 					ir.add(c);
-					LOGGER.warn("Not adding column '" + c.getName() + "' on table " + table.getName() + ": inherited.");
+					LOGGER.warn("Not adding column '" + c.getName() + "' on table "
+							+ table.getName() + ": inherited.");
 				}
 			}
 			for (IBasicColumn c : ir) {
@@ -286,7 +289,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				final String tableName = rset.getString(3);
 				final String columnName = rset.getString(4);
 				if (currentUk == null || !name.equals(currentUk.getName())) {
-					currentUk = CorePlugin.getTypedObjectFactory().create(UniqueKeyConstraint.class);
+					currentUk = CorePlugin.getTypedObjectFactory()
+							.create(UniqueKeyConstraint.class);
 					currentUk.setName(name);
 					final IBasicTable table = tablesMap.get(tableName);
 					if (table != null) {
@@ -297,16 +301,20 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 						continue;
 					}
 				}
-				final IBasicColumn column = columnsMap.get(CaptureHelper.getUniqueObjectName(tableName, columnName));
+				final IBasicColumn column = columnsMap
+						.get(CaptureHelper.getUniqueObjectName(tableName, columnName));
 				if (column != null) {
 					currentUk.addColumn(column);
 				} else {
-					LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.columnNotFound"), //$NON-NLS-1$
-							CaptureHelper.getUniqueObjectName(currentUk.getName(), columnName), tableName));
+					LOGGER.warn(MessageFormat.format(
+							SQLGenMessages.getString("capturer.columnNotFound"), //$NON-NLS-1$
+							CaptureHelper.getUniqueObjectName(currentUk.getName(), columnName),
+							tableName));
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, stmt);
@@ -340,12 +348,13 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 				IVersionable<?> v = (IVersionable<?>) tablesMap.get(tabName);
 				if (v == null) {
-					LOGGER.warn("Skipping check constraint '" + constraintName + "' on table " + tabName
-							+ ": table not in the imported set.");
+					LOGGER.warn("Skipping check constraint '" + constraintName + "' on table "
+							+ tabName + ": table not in the imported set.");
 					continue;
 				}
 				IPostgreSqlTable t = (IPostgreSqlTable) v.getVersionnedObject().getModel();
-				ICheckConstraint c = CorePlugin.getTypedObjectFactory().create(ICheckConstraint.class);
+				ICheckConstraint c = CorePlugin.getTypedObjectFactory()
+						.create(ICheckConstraint.class);
 				c.setConstrainedTable(t);
 				c.setName(constraintName);
 				c.setCondition(conditionName);
@@ -353,7 +362,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 			}
 
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, null);
@@ -375,20 +385,15 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 	}
 
 	/**
-	 * Fills the tablespace information for the given relation type. This
-	 * generic method takes a relation type which is used while querying
-	 * postgresql schema table. The objects map is the index of the objects that
-	 * should be filled hashed by their name.
+	 * Fills the tablespace information for the given relation type. This generic method takes a
+	 * relation type which is used while querying postgresql schema table. The objects map is the
+	 * index of the objects that should be filled hashed by their name.
 	 * 
-	 * @param relType
-	 *            the postgresql relation type to query in the dictionary
-	 * @param context
-	 *            the current {@link ICaptureContext}
-	 * @param objectsMap
-	 *            map of objects to fill
-	 * @param physicalClass
-	 *            class of the {@link IPhysicalProperties} of the implementation
-	 *            interface to instantiate
+	 * @param relType the postgresql relation type to query in the dictionary
+	 * @param context the current {@link ICaptureContext}
+	 * @param objectsMap map of objects to fill
+	 * @param physicalClass class of the {@link IPhysicalProperties} of the implementation interface
+	 *        to instantiate
 	 */
 	private void fillTablespaces(String relType, ICaptureContext context, Map<String, ?> objectsMap,
 			Class<? extends IPhysicalProperties> physicalClass) {
@@ -415,13 +420,15 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				final Object obj = objectsMap.get(objectName);
 				if (obj != null && obj instanceof IPhysicalObject) {
 					final IPhysicalObject physTable = (IPhysicalObject) obj;
-					final IPhysicalProperties tablePhysicals = CorePlugin.getTypedObjectFactory().create(physicalClass);
+					final IPhysicalProperties tablePhysicals = CorePlugin.getTypedObjectFactory()
+							.create(physicalClass);
 					tablePhysicals.setTablespaceName(tablespaceName);
 					physTable.setPhysicalProperties(tablePhysicals);
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, prepStmt);
@@ -429,13 +436,11 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 	}
 
 	/**
-	 * Retrieves the column reference used in the expression. When multiple
-	 * column are referenced, the first one is returned.
+	 * Retrieves the column reference used in the expression. When multiple column are referenced,
+	 * the first one is returned.
 	 * 
-	 * @param t
-	 *            table scope
-	 * @param expression
-	 *            expression referencing a column
+	 * @param t table scope
+	 * @param expression expression referencing a column
 	 * @return the table column reference
 	 */
 	private IBasicColumn getColumnReference(IBasicTable t, String expression) {
@@ -455,7 +460,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 	 * @return a collection of postgresql indexes
 	 * @author madmattla
 	 */
-	private Collection<IIndex> getPostgresIndexes(ICaptureContext context, IProgressMonitor monitor) {
+	private Collection<IIndex> getPostgresIndexes(ICaptureContext context,
+			IProgressMonitor monitor) {
 		final Map<String, IIndex> indexMap = new HashMap<String, IIndex>();
 		final Collection<IIndex> indexes = new ArrayList<IIndex>();
 		final Map<String, IIndex> indexesMap = new HashMap<String, IIndex>();
@@ -565,12 +571,13 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				if (c == null) {
 					// only warn if non function based
 					if (!isFunctionIndex) { // $NON-NLS-1$ //$NON-NLS-2$
-						LOGGER.warn("Index <" + lastIndex.getName() + "> references an unknown table column '" + col
+						LOGGER.warn("Index <" + lastIndex.getName()
+								+ "> references an unknown table column '" + col
 								+ "', skipping column.");
 					} else {
 						final IVersionable<?> table = (IVersionable<?>) context.getTable(tableName);
-						final IBasicColumn ic = getColumnReference((IBasicTable) table.getVersionnedObject().getModel(),
-								indexdef);
+						final IBasicColumn ic = getColumnReference(
+								(IBasicTable) table.getVersionnedObject().getModel(), indexdef);
 						if (ic != null) {
 							final IReference colRef = ic.getReference();
 							if (!lastIndex.getIndexedColumnsRef().contains(colRef)) {
@@ -585,7 +592,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 			}
 			if (LOGGER.isDebugEnabled())
-				LOGGER.debug("[Tables][Indexes] fetching time: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-2$
+				LOGGER.debug("[Tables][Indexes] fetching time: "
+						+ (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$
 
 		} catch (SQLException sqle) {
 			LOGGER.info(SQLGenMessages.getString("capturer.costInfoNotAvailable")); //$NON-NLS-1$
@@ -604,12 +612,13 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 		// Processing indexes to remove PK or UK indexes (DES-694)
 		/*
-		 * FIXME [BGA] Now that indexes are captured by a PostgreSQL specific
-		 * implementation, PK or UK indexes can be filtered out upstream, so
-		 * this block of code should not be necessary anymore.
+		 * FIXME [BGA] Now that indexes are captured by a PostgreSQL specific implementation, PK or
+		 * UK indexes can be filtered out upstream, so this block of code should not be necessary
+		 * anymore.
 		 */
 		for (IIndex index : new ArrayList<IIndex>(indexes)) {
-			final Object obj = context.getCapturedObject(IElementType.getInstance(UniqueKeyConstraint.TYPE_ID),
+			final Object obj = context.getCapturedObject(
+					IElementType.getInstance(UniqueKeyConstraint.TYPE_ID),
 					CaptureHelper.getUniqueIndexName(index));
 			if (obj != null) {
 				indexes.remove(index);
@@ -624,7 +633,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 	@Override
 	public Collection<ISequence> getSequences(ICaptureContext context, IProgressMonitor m) {
-		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 500), PROGRESS_RANGE);
+		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 500),
+				PROGRESS_RANGE);
 		final Connection conn = (Connection) context.getConnectionObject();
 		final Collection<ISequence> sequences = new ArrayList<ISequence>();
 		final String seqSql = "SELECT min_value, max_value, increment_by, is_cycled, cache_value, last_value FROM "; //$NON-NLS-1$
@@ -646,7 +656,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 			while (rset.next()) {
 				final String name = rset.getString("TABLE_NAME"); //$NON-NLS-1$
 				final String desc = rset.getString("REMARKS"); //$NON-NLS-1$
-				final IVersionable<ISequence> seqV = VersionableFactory.createVersionable(ISequence.class);
+				final IVersionable<ISequence> seqV = VersionableFactory
+						.createVersionable(ISequence.class);
 				final ISequence seq = seqV.getVersionnedObject().getModel();
 
 				seq.setName(name);
@@ -678,7 +689,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 						sequences.add(seq);
 					}
 				} catch (SQLException e) {
-					LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+					LOGGER.warn(MessageFormat.format(
+							SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 							DBVendor.POSTGRE) + e.getMessage(), e);
 				} finally {
 					CaptureHelper.safeClose(rsetInfo, null);
@@ -688,7 +700,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				LOGGER.debug("[Sequences] fetching time: " + (System.currentTimeMillis() - start) //$NON-NLS-1$
 						+ "ms"); //$NON-NLS-1$
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					DBVendor.POSTGRE) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, stmt);
@@ -701,8 +714,7 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 	 * Ugly postgresql datatype conversion.<br>
 	 * FIXME need a common clean way of converting datatypes for all vendors
 	 * 
-	 * @param datatype
-	 *            original vendor datatype
+	 * @param datatype original vendor datatype
 	 * @return a converted datatype
 	 */
 	private String convertType(String type) {
@@ -726,7 +738,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 	@Override
 	public Collection<IView> getViews(ICaptureContext context, IProgressMonitor m) {
-		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 500), PROGRESS_RANGE);
+		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 500),
+				PROGRESS_RANGE);
 		final Connection conn = (Connection) context.getConnectionObject();
 		final Collection<IView> views = new ArrayList<IView>();
 		PreparedStatement prepStmt = null;
@@ -765,7 +778,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 						+ "ms"); //$NON-NLS-1$
 			}
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, prepStmt);
@@ -778,8 +792,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 	public Collection<ITrigger> getTriggers(ICaptureContext context, IProgressMonitor m) {
 		final Collection<Object> tableObjects = context
 				.getCapturedObjects(IElementType.getInstance(IBasicTable.TYPE_ID));
-		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, tableObjects.size()),
-				PROGRESS_RANGE);
+		final IProgressMonitor monitor = new CustomProgressMonitor(
+				SubMonitor.convert(m, tableObjects.size()), PROGRESS_RANGE);
 		final Connection conn = (Connection) context.getConnectionObject();
 		final Collection<ITrigger> triggers = new ArrayList<ITrigger>();
 
@@ -788,41 +802,71 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 		ResultSet rset = null;
 		long start = 0;
 		try {
-			prepStmt = conn.prepareStatement("SELECT trg.tgname AS trigger_name, " //$NON-NLS-1$
-					+ "  CASE trg.tgtype & CAST(28 AS INT2) " //$NON-NLS-1$
-					+ "    WHEN 16 THEN 'UPDATE' " //$NON-NLS-1$
-					+ "    WHEN  8 THEN 'DELETE' " //$NON-NLS-1$
-					+ "    WHEN  4 THEN 'INSERT' " //$NON-NLS-1$
-					+ "    WHEN 20 THEN 'INSERT UPDATE' " //$NON-NLS-1$
-					+ "    WHEN 28 THEN 'INSERT UPDATE DELETE' "//$NON-NLS-1$
-					+ "    WHEN 24 THEN 'UPDATE DELETE' " //$NON-NLS-1$
-					+ "    WHEN 12 THEN 'INSERT DELETE' " //$NON-NLS-1$
-					+ "  END AS event_manipulation, " //$NON-NLS-1$
-					+ "  tbl.relname AS event_object_table, " //$NON-NLS-1$
-					+ "  prc.proname AS function_name, " //$NON-NLS-1$
-					+ "  CASE trg.tgtype & CAST(2 AS INT2) " //$NON-NLS-1$
-					+ "    WHEN 0 THEN 'AFTER' " //$NON-NLS-1$
-					+ "    ELSE 'BEFORE' " //$NON-NLS-1$
-					+ "  END AS trigger_time, " //$NON-NLS-1$
-					+ "  CASE trg.tgtype & CAST(1 AS INT2) " //$NON-NLS-1$
-					+ "    WHEN 0 THEN 'STATEMENT' " //$NON-NLS-1$
-					+ "    ELSE 'ROW' " //$NON-NLS-1$
-					+ "  END AS trigger_type " //$NON-NLS-1$
+			Statement stmt = conn.createStatement();
+
+			boolean isTgConsColAvailable = false;
+			try {
+				rset = stmt.executeQuery("SELECT trg.tgconstraint " //$NON-NLS-1$
+						+ "FROM pg_trigger trg LIMIT 1"); //$NON-NLS-1$
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("[Triggers] Column pg_trigger.tgconstraint available " //$NON-NLS-1$
+							+ "(only for versions > 8.2)"); //$NON-NLS-1$
+				}
+				isTgConsColAvailable = true;
+			} catch (SQLException sqle) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("[Triggers] Column pg_trigger.tgconstraint not available: " //$NON-NLS-1$
+							+ "falling back on pg_trigger.tgisconstraint " //$NON-NLS-1$
+							+ "(only for versions < 8.3)"); //$NON-NLS-1$
+				}
+				isTgConsColAvailable = false;
+			} finally {
+				CaptureHelper.safeClose(rset, stmt);
+			}
+
+			String triggersQuery = "SELECT " //$NON-NLS-1$
+					+ "    trg.tgname AS trigger_name " //$NON-NLS-1$
+					+ "  , CASE trg.tgtype & CAST(28 AS INT2) " //$NON-NLS-1$
+					+ "      WHEN 16 THEN 'UPDATE' " //$NON-NLS-1$
+					+ "      WHEN  8 THEN 'DELETE' " //$NON-NLS-1$
+					+ "      WHEN  4 THEN 'INSERT' " //$NON-NLS-1$
+					+ "      WHEN 20 THEN 'INSERT UPDATE' " //$NON-NLS-1$
+					+ "      WHEN 28 THEN 'INSERT UPDATE DELETE' "//$NON-NLS-1$
+					+ "      WHEN 24 THEN 'UPDATE DELETE' " //$NON-NLS-1$
+					+ "      WHEN 12 THEN 'INSERT DELETE' " //$NON-NLS-1$
+					+ "    END AS event_manipulation " //$NON-NLS-1$
+					+ "  , tbl.relname AS event_object_table " //$NON-NLS-1$
+					+ "  , prc.proname AS function_name " //$NON-NLS-1$
+					+ "  , CASE trg.tgtype & CAST(2 AS INT2) " //$NON-NLS-1$
+					+ "      WHEN 0 THEN 'AFTER' " //$NON-NLS-1$
+					+ "      ELSE 'BEFORE' " //$NON-NLS-1$
+					+ "    END AS trigger_time " //$NON-NLS-1$
+					+ "  , CASE trg.tgtype & CAST(1 AS INT2) " //$NON-NLS-1$
+					+ "      WHEN 0 THEN 'STATEMENT' " //$NON-NLS-1$
+					+ "      ELSE 'ROW' " //$NON-NLS-1$
+					+ "    END AS trigger_type " //$NON-NLS-1$
 					+ "FROM pg_trigger trg " //$NON-NLS-1$
 					+ "  JOIN pg_class tbl ON trg.tgrelid = tbl.oid " //$NON-NLS-1$
 					+ "  JOIN pg_proc prc ON trg.tgfoid = prc.oid " //$NON-NLS-1$
 					+ "  JOIN pg_namespace nsp ON nsp.oid = tbl.relnamespace " //$NON-NLS-1$
 					+ "WHERE tbl.relname NOT LIKE 'pg_%' " //$NON-NLS-1$
-					+ "  AND trg.tgconstraint = 0 " //$NON-NLS-1$
-					+ "  AND nsp.nspname = ?"); //$NON-NLS-1$
+					+ "  AND nsp.nspname = ? "; //$NON-NLS-1$
+
+			if (isTgConsColAvailable) {
+				triggersQuery = triggersQuery + "  AND trg.tgconstraint = 0 "; //$NON-NLS-1$
+			} else {
+				triggersQuery = triggersQuery + "  AND trg.tgisconstraint = FALSE "; //$NON-NLS-1$
+			}
+
+			prepStmt = conn.prepareStatement(triggersQuery);
 			prepStmt.setString(1, context.getSchema());
 
 			if (LOGGER.isDebugEnabled())
 				start = System.currentTimeMillis();
 			rset = prepStmt.executeQuery();
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("[Triggers] query time: " + (System.currentTimeMillis() - start) //$NON-NLS-1$
-						+ "ms"); //$NON-NLS-1$
+				LOGGER.debug(
+						"[Triggers] query time: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 				start = System.currentTimeMillis();
 			}
 
@@ -854,11 +898,12 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				}
 			}
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("[Sequences] fetch time: " + (System.currentTimeMillis() - start) //$NON-NLS-1$
-						+ "ms"); //$NON-NLS-1$
+				LOGGER.debug(
+						"[Sequences] fetch time: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		} finally {
 			CaptureHelper.safeClose(rset, prepStmt);
@@ -869,7 +914,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 	@Override
 	public Collection<IProcedure> getProcedures(ICaptureContext context, IProgressMonitor m) {
-		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 100), PROGRESS_RANGE);
+		final IProgressMonitor monitor = new CustomProgressMonitor(SubMonitor.convert(m, 100),
+				PROGRESS_RANGE);
 		Map<String, IProcedure> procedures = new HashMap<String, IProcedure>();
 		Map<String, String> typeOidMap = new HashMap<String, String>();
 
@@ -946,19 +992,22 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 					final String allArgTypesString = rset.getString("all_arg_types_oids"); //$NON-NLS-1$
 					String[] allTypes = new String[0];
 					if (allArgTypesString != null) {
-						allTypes = allArgTypesString.substring(1, allArgTypesString.length() - 1).split(","); //$NON-NLS-1$
+						allTypes = allArgTypesString.substring(1, allArgTypesString.length() - 1)
+								.split(","); //$NON-NLS-1$
 					}
 					final String argTypesString = rset.getString("argument_types_oids"); //$NON-NLS-1$
 					String[] types = argTypesString.split("(\\s)+"); //$NON-NLS-1$
 					final String argModesString = rset.getString("arg_modes"); //$NON-NLS-1$
 					String[] argModes = new String[0];
 					if (argModesString != null) {
-						argModes = argModesString.substring(1, argModesString.length() - 1).split(","); //$NON-NLS-1$
+						argModes = argModesString.substring(1, argModesString.length() - 1)
+								.split(","); //$NON-NLS-1$
 					}
 					final String argNamesString = rset.getString("arg_names"); //$NON-NLS-1$
 					String[] argNames = new String[0];
 					if (argNamesString != null) {
-						argNames = argNamesString.substring(1, argNamesString.length() - 1).split(","); //$NON-NLS-1$
+						argNames = argNamesString.substring(1, argNamesString.length() - 1)
+								.split(","); //$NON-NLS-1$
 					}
 					final String volatil = rset.getString("volatile"); //$NON-NLS-1$
 					final String body = rset.getString("proc_body"); //$NON-NLS-1$
@@ -982,25 +1031,24 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 						LOGGER.debug(logPrefix + "[pg_proc.probin] " + binDir); //$NON-NLS-1$
 					}
 
-					IVersionable<IProcedure> v = VersionableFactory.createVersionable(IProcedure.class);
+					IVersionable<IProcedure> v = VersionableFactory
+							.createVersionable(IProcedure.class);
 					IProcedure proc = v.getVersionnedObject().getModel();
 					proc.setLanguageType(LanguageType.STANDARD); // TODO generic
 																	// languages
 
 					/*
-					 * FIXME [BGA] This mechanism is currently not compatible
-					 * with procedure name checking when editing procedure SQL
-					 * definition.
+					 * FIXME [BGA] This mechanism is currently not compatible with procedure name
+					 * checking when editing procedure SQL definition.
 					 */
 					final StringBuffer args = (new StringBuffer(50)).append("("); //$NON-NLS-1$
 					final StringBuffer returnedTable = new StringBuffer(50);
 
 					/*
-					 * The pg_proc.proallargtypes field contains data only if
-					 * the mode of at least one function argument is different
-					 * from IN, or if the return value of the function is a
-					 * TABLE type. If pg_proc.proallargtypes is null, we
-					 * fallback using pg_proc.proargtypes.
+					 * The pg_proc.proallargtypes field contains data only if the mode of at least
+					 * one function argument is different from IN, or if the return value of the
+					 * function is a TABLE type. If pg_proc.proallargtypes is null, we fallback
+					 * using pg_proc.proargtypes.
 					 */
 					if (allArgTypesString != null) {
 						int typeIndex = 0;
@@ -1009,9 +1057,9 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 						boolean isReturnValue = false;
 						for (String type : allTypes) {
 							/*
-							 * Appends the mode of the function argument if it
-							 * is not a return value, and sets the flag to
-							 * differentiate arguments from return values.
+							 * Appends the mode of the function argument if it is not a return
+							 * value, and sets the flag to differentiate arguments from return
+							 * values.
 							 */
 							String argMode = argModes[typeIndex];
 							if ("i".equals(argMode)) { //$NON-NLS-1$
@@ -1084,9 +1132,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 					args.append(")"); //$NON-NLS-1$
 
 					/*
-					 * The procedure arguments types are appended to the
-					 * procedure name in order to uniquely identify overloaded
-					 * procedures.
+					 * The procedure arguments types are appended to the procedure name in order to
+					 * uniquely identify overloaded procedures.
 					 */
 					proc.setName(name + args);
 
@@ -1117,7 +1164,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 					} else {
 						if (body != null) {
 							sqlText.append("$BODY$").append(NEWLINE) //$NON-NLS-1$
-									.append(body.trim()).append(NEWLINE).append("$BODY$").append(NEWLINE); //$NON-NLS-1$
+									.append(body.trim()).append(NEWLINE).append("$BODY$") //$NON-NLS-1$
+									.append(NEWLINE);
 						}
 					}
 					sqlText.append("  LANGUAGE '").append(languageType).append("'"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1172,7 +1220,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 
 						if (LOGGER.isDebugEnabled()) {
 							String logPrefix = "[" + name + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-							LOGGER.debug("= " + logPrefix + " procedure Metadata (only for versions > 8.2) ="); //$NON-NLS-1$ //$NON-NLS-2$
+							LOGGER.debug("= " + logPrefix //$NON-NLS-1$
+									+ " procedure Metadata (only for versions > 8.2) ="); //$NON-NLS-1$
 							LOGGER.debug(logPrefix + "[pg_proc.procost] " + cost); //$NON-NLS-1$
 							LOGGER.debug(logPrefix + "[pg_proc.prorows] " + resultRows); //$NON-NLS-1$
 						}
@@ -1203,7 +1252,8 @@ public class PostgreSqlCapturer extends AbstractCapturer {
 				CaptureHelper.safeClose(rset, prepStmt);
 			}
 		} catch (SQLException e) {
-			LOGGER.warn(MessageFormat.format(SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
+			LOGGER.warn(MessageFormat.format(
+					SQLGenMessages.getString("capturer.error.genericCapturerError"), //$NON-NLS-1$
 					context.getConnection().getDBVendor().toString()) + e.getMessage(), e);
 		}
 
