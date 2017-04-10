@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 
@@ -9,7 +9,7 @@
 
 		<!-- JDBC connection pool (use c3p0) -->
 		<!-- Hibernate 3.3.1 bug: need to explicitly set the c3p0 connection provider -->
-		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<!-- property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property-->
 
 		<property name="hibernate.c3p0.min_size">2</property> <!-- Hibernate default: 1 -->
 		<property name="hibernate.c3p0.max_size">5</property> <!-- Hibernate default: 100 -->

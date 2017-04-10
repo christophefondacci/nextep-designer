@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.ui,
  com.neXtep.designer.sqlgen,
  com.neXtep.designer.testing;bundle-version="1.0.0",
  com.neXtep.designer.shared;bundle-version="1.0.0",
- com.neXtep.designer.hibernate;bundle-version="3.3.1"
+ com.neXtep.designer.hibernate;bundle-version="3.6.10"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

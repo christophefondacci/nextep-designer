@@ -9,7 +9,7 @@ Bundle-Vendor: neXtep
 Require-Bundle: org.eclipse.core.runtime,
  com.neXtep.designer.core;bundle-version="1.0.4",
  com.neXtep.designer.dbgm,
- com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.hibernate;bundle-version="3.6.10",
  com.neXtep.designer.logging,
  com.neXtep.designer.sqlgen;bundle-version="1.0.4",
  com.neXtep.designer.vcs

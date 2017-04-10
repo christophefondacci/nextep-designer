@@ -12,7 +12,7 @@ Require-Bundle: com.neXtep.designer.core,
  com.neXtep.designer.sqlgen,
  org.eclipse.core.runtime,
  com.neXtep.designer.shared;bundle-version="1.0.0",
- com.neXtep.designer.hibernate;bundle-version="3.3.1"
+ com.neXtep.designer.hibernate;bundle-version="3.6.10"
 Export-Package: com.nextep.designer.beng,
  com.nextep.designer.beng.dao,
  com.nextep.designer.beng.exception,

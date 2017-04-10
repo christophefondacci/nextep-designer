@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <joined-subclass
-        name="com.nextep.designer.dbgm.oracle.impl.OracleSynonym"
-        extends="com.nextep.datadesigner.dbgm.impl.Synonym"
-        table="DBOM_SYNONYMS"
-        lazy="false"
-        >
-            <key column="VERSION_ID"/>
-            <property name="public" column="SYN_PUBLIC" type="com.nextep.designer.core.dao.types.BooleanType"></property>
-            <property name="refDbObjDbLinkName" column="REF_OBJ_DBLINK" type="string"></property>
-    </joined-subclass>
+	<joined-subclass
+		name="com.nextep.designer.dbgm.oracle.impl.OracleSynonym"
+		extends="com.nextep.datadesigner.dbgm.impl.Synonym"
+		table="DBOM_SYNONYMS"
+		lazy="false"
+		>
+			<key column="VERSION_ID"/>
+			<property name="public" column="SYN_PUBLIC" type="com.nextep.designer.core.dao.types.BooleanType"></property>
+			<property name="refDbObjDbLinkName" column="REF_OBJ_DBLINK" type="string"></property>
+	</joined-subclass>
 </hibernate-mapping>

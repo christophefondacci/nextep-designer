@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.neXtep.designer.synch;bundle-version="1.0.5",
  com.neXtep.designer.vcs;bundle-version="1.0.5",
  com.neXtep.designer.dbgm;bundle-version="1.0.5",
- com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.hibernate;bundle-version="3.6.10",
  com.neXtep.designer.beng;bundle-version="1.0.5",
  com.neXtep.designer.installer;bundle-version="1.0.5",
  com.neXtep.designer.repository;bundle-version="1.0.5"

@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.slf4j</groupId>
     <artifactId>slf4j-parent</artifactId>
-    <version>1.5.2</version>
+    <version>1.6.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -44,7 +44,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Bundle-Version>${project.version}</Bundle-Version>
+              <Bundle-Version>${parsedVersion.osgiVersion}</Bundle-Version>
               <Bundle-Description>${project.description}</Bundle-Description>
               <Implementation-Version>${project.version}</Implementation-Version>
             </manifestEntries>
@@ -92,7 +92,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>clirr-maven-plugin</artifactId>
         <configuration>
-          <comparisonVersion>1.5.0</comparisonVersion>
+          <comparisonVersion>1.5.6</comparisonVersion>
         </configuration>
       </plugin>
     </plugins>

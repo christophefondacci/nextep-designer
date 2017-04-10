@@ -23,8 +23,10 @@ Apache Software Foundation http://www.apache.org/
 
    <launcherArgs>
       <vmArgs>-Xms128m
--Xmx512m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+-Xmx512m
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="icons/DesignerIconTiny.ico" i32="icons/DesignerIconSmall.ico" i48="icons/DesignerIconMedium.ico" i64="icons/DesignerIconLarge.ico"/>
@@ -47,12 +49,14 @@ Apache Software Foundation http://www.apache.org/
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
+
    <plugins>
       <plugin id="Apache_Commons"/>
-      <plugin id="Hibernate_Core" fragment=""/>
+      <plugin id="Hibernate_Core"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.neXtep.Designer"/>
       <plugin id="com.neXtep.designer.beng"/>
@@ -102,7 +106,7 @@ Apache Software Foundation http://www.apache.org/
       <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
-      <plugin id="org.eclipse.core.resources.win32" fragment=""/>
+      <plugin id="org.eclipse.core.resources.win32"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
@@ -156,12 +160,19 @@ Apache Software Foundation http://www.apache.org/
       <plugin id="org.eclipse.update.core.linux" fragment="true"/>
       <plugin id="org.eclipse.update.core.win32" fragment="true"/>
       <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.mortbay.jetty" fragment=""/>
+      <plugin id="org.mortbay.jetty"/>
    </plugins>
 
    <features>
-      <feature id="com.neXtep.designer.feature" version="1.0.3.200912311453"/>
+      <feature id="com.neXtep.designer.feature" version="1.0.7.201704071004"/>
    </features>
 
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

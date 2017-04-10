@@ -2,7 +2,7 @@
 <feature
       id="com.neXtep.designer.feature"
       label="neXtep Designer Development Environment"
-      version="1.0.7.201610130739"
+      version="1.0.7.201704071004"
       provider-name="neXtep">
 
    <description url="http://www.nextep-softwares.com">

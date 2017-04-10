@@ -11,7 +11,7 @@ Require-Bundle: com.neXtep.designer.logging,
  com.neXtep.designer.vcs;visibility:=reexport,
  com.neXtep.designer.core,
  org.eclipse.core.runtime,
- com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.hibernate;bundle-version="3.6.10",
  org.apache.db.derby;bundle-version="10.6.2"
 Export-Package: com.nextep.datadesigner.dbgm.impl;
   uses:="org.eclipse.core.runtime,

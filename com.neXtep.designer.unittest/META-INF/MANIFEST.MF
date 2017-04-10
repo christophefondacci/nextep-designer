@@ -34,7 +34,7 @@ Require-Bundle: org.eclipse.ui,
  com.neXtep.designer.ui;bundle-version="1.0.2",
  com.neXtep.designer.vcs;bundle-version="1.0.2",
  com.neXtep.designer.vcs.ui;bundle-version="1.0.2",
- com.neXtep.designer.hibernate;bundle-version="3.3.1",
+ com.neXtep.designer.hibernate;bundle-version="3.6.10",
  org.junit;bundle-version="3.8.2",
  com.neXtep.designer.synch;bundle-version="1.0.4",
  com.neXtep.designer.synch.ui;bundle-version="1.0.4"

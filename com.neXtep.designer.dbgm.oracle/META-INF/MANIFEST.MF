@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.neXtep.designer.logging,
  com.neXtep.designer.core;bundle-version="1.0.0",
  com.neXtep.designer.sqlgen;bundle-version="1.0.2",
- com.neXtep.designer.hibernate;bundle-version="3.3.1"
+ com.neXtep.designer.hibernate;bundle-version="3.6.10"
 Bundle-ActivationPolicy: lazy
 Export-Package: com.nextep.designer.dbgm.oracle.dao,
  com.nextep.designer.dbgm.oracle.impl,

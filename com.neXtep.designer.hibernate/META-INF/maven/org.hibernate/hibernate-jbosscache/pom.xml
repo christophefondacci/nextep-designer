@@ -1,3 +1,27 @@
+<?xml version="1.0"?>
+<!--
+  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~
+  ~ Copyright (c) 2011, Red Hat Inc. or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU
+  ~ Lesser General Public License, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public License
+  ~ along with this distribution; if not, write to:
+  ~ Free Software Foundation, Inc.
+  ~ 51 Franklin Street, Fifth Floor
+  ~ Boston, MA  02110-1301  USA
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -5,8 +29,8 @@
     <parent>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-parent</artifactId>
-        <version>3.3.1.GA</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <version>3.6.10.Final</version>
+        <relativePath>../hibernate-parent/pom.xml</relativePath>
     </parent>
     
     <groupId>org.hibernate</groupId>
@@ -14,56 +38,25 @@
     <packaging>jar</packaging>
 
     <name>Hibernate JBossCache Integration</name>
-    <description>Integration of Hibernate with JBossCache (based on JBossCache1.x APIs)</description>
+    <description>Integration of Hibernate with JBossCache 3.x (though 2.x sould work as well)</description>
 
     <dependencies>
         <dependency>
-            <groupId>${groupId}</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-cache</artifactId>
-            <version>1.4.1.GA</version>
+            <groupId>org.jboss.cache</groupId>
+            <artifactId>jbosscache-core</artifactId>
+            <version>3.2.1.GA</version> 
         </dependency>
-        <!-- jboss-cache (the one from the jboss repo, anyway) does not properly define its dependencies -->
+        
+        <!-- test dependencies -->
         <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-system</artifactId>
-            <version>4.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-common</artifactId>
-            <version>4.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-minimal</artifactId>
-            <version>4.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-j2se</artifactId>
-            <version>200504122039</version>
-        </dependency>
-        <dependency>
-            <groupId>concurrent</groupId>
-            <artifactId>concurrent</artifactId>
-            <version>1.3.4</version>
-        </dependency>
-        <dependency>
-            <groupId>jgroups</groupId>
-            <artifactId>jgroups-all</artifactId>
-            <version>2.2.7</version>
-        </dependency>
-
-        <!-- testing deps -->
-        <dependency>
-            <groupId>${groupId}</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>hibernate-testing</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -72,54 +65,121 @@
             <version>1.8.0.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>99.0-does-not-exist</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-api</artifactId>
-            <version>99.0-does-not-exist</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <version>1.4.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.4.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- these are optional on core... :( -->
-        <dependency>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.4.GA</version>
-            <scope>test</scope>
-        </dependency>
+        <!-- this is optional on core :( and needed for testing -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>2.1_3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-attrs</artifactId>
-            <version>1.5.3</version>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <testResources>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- Skip a long-running test of a prototype class -->
+                        <exclude>**/ClusteredConcurrentTimestampRegionTestCase.java</exclude>
+                    </excludes>
+                    <systemProperties>
+                        <property>
+                            <name>hibernate.test.validatefailureexpected</name>
+                            <value>true</value>
+                        </property>
+                        <property>
+                            <name>jgroups.bind_addr</name>
+                            <value>${jgroups.bind_addr}</value>
+                        </property>
+                        <!-- There are problems with multicast and IPv6 on some
+                             OS/JDK combos, so we tell Java to use IPv4. If you
+                             have problems with multicast when running the tests
+                             you can try setting this to 'false', although typically
+                             that won't be helpful.
+                        -->
+                        <property>
+                            <name>java.net.preferIPv4Stack</name>
+                            <value>true</value>
+                        </property>
+                        <!-- Tell JGroups to only wait a short time for PING 
+                             responses before determining coordinator. Speeds cluster
+                             formation during integration tests. (This is too
+                             low a value for a real system; only use for tests.)
+                        -->
+                        <property>
+                            <name>jgroups.ping.timeout</name>
+                            <value>500</value>
+                        </property>
+                        <!-- Tell JGroups to only require one PING response
+                             before determining coordinator. Speeds cluster
+                             formation during integration tests. (This is too
+                             low a value for a real system; only use for tests.)
+                        -->
+                        <property>
+                            <name>jgroups.ping.num_initial_members</name>
+                            <value>1</value>
+                        </property>
+                        <!-- Disable the JGroups message bundling feature
+                             to speed tests and avoid FLUSH issue -->
+                        <property>
+                            <name>jgroups.udp.enable_bundling</name>
+                            <value>false</value>
+                        </property>
+                    </systemProperties>
+                    <skipExec>${skipUnitTests}</skipExec>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <!-- 
+            Following is the default jgroups mcast address.  If you find the testsuite runs very slowly, there
+            may be problems with multicast on the interface JGroups uses by default on your machine. You can
+            try to resolve setting 'jgroups.bind_addr' as a system-property to the jvm launching maven and
+            setting the value to an interface where you know multicast works
+        -->
+        <jgroups.bind_addr>127.0.0.1</jgroups.bind_addr>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <skipUnitTests>false</skipUnitTests>
+            </properties>
+        </profile>
+     </profiles>
 </project>

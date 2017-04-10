@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<joined-subclass
 		name="com.nextep.datadesigner.dbgm.impl.Synonym"
@@ -12,7 +12,7 @@
 			<key column="VERSION_ID"/>
 			<property name="name" column="SYN_NAME" type="string"></property>
 			<property name="description" column="SYN_DESCRIPTION" type="string"></property>
-            <property name="refDbObjName" column="REF_OBJ_NAME" type="string"></property>
-            <property name="refDbObjSchemaName" column="REF_OBJ_SCHEMA" type="string"></property>
+			<property name="refDbObjName" column="REF_OBJ_NAME" type="string"></property>
+			<property name="refDbObjSchemaName" column="REF_OBJ_SCHEMA" type="string"></property>
 	</joined-subclass>
 </hibernate-mapping>
