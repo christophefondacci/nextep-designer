@@ -95,18 +95,14 @@ public class SQLSearchQuery implements ISearchQuery {
 		if (searchedText == null || "".equals(searchedText)) { //$NON-NLS-1$
 			return new Status(Status.WARNING, PLUGIN_ID, "Search cancelled: empty search string"); //$NON-NLS-1$
 		}
-		final int searchedTextLength = searchedText.length();
 
 		/*
 		 * If the search string is a regular expression, we take it as is. Otherwise, we turn it
 		 * into a literal pattern string, and encapsulate it with word boundary matchers if the
 		 * "Whole word only" checkbox has been checked.
 		 */
-		final String regex = (isRegexp ? searchedText
-				: (wholeWord
-						? "\\b" //$NON-NLS-1$
-								+ Pattern.quote(searchedText) + "\\b" //$NON-NLS-1$
-						: Pattern.quote(searchedText)));
+		final String regex = (isRegexp ? searchedText : (wholeWord ? "\\b" //$NON-NLS-1$
+				+ Pattern.quote(searchedText) + "\\b" : Pattern.quote(searchedText))); //$NON-NLS-1$
 
 		/*
 		 * Regular expression is compiled with the CASE_INSENSITIVE match flag so we don't have to
@@ -123,8 +119,8 @@ public class SQLSearchQuery implements ISearchQuery {
 		// Fetching all objects from the current workspace
 		final IWorkspaceService workspaceService = CorePlugin.getService(IWorkspaceService.class);
 		final IWorkspace currentWorkspace = workspaceService.getCurrentWorkspace();
-		final Collection<IVersionable<?>> versionables = VersionHelper
-				.getAllVersionables(currentWorkspace, null);
+		final Collection<IVersionable<?>> versionables = VersionHelper.getAllVersionables(
+				currentWorkspace, null);
 
 		// Searching for the specified text in the SQL source code of all workspace objects
 		for (IVersionable<?> v : versionables) {
@@ -150,7 +146,7 @@ public class SQLSearchQuery implements ISearchQuery {
 				if (source != null && !"".equals(source)) { //$NON-NLS-1$
 					final Matcher m = p.matcher(source);
 					while (m.find()) {
-						result.addMatch(new Match(v, m.start(), searchedTextLength));
+						result.addMatch(new Match(v, m.start(), m.end() - m.start()));
 					}
 				}
 			}
