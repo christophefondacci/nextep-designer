@@ -31,54 +31,74 @@ import com.nextep.installer.model.IDatabaseStructureBuilder;
 
 /**
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class JdbcStructureBuilder implements IDatabaseStructureBuilder {
 
 	public IDatabaseStructure buildStructure(String schema, Connection conn) throws SQLException {
 		final IDatabaseStructure structure = new DatabaseStructure();
+
+		/*
+		 * If specified schema name is empty, it is replaced by null so it won't be used to narrow
+		 * the search of objects in the current database.
+		 */
+		String schemaPattern = ((schema != null && !schema.trim().equals("")) ? schema.trim() //$NON-NLS-1$
+				: null);
+
 		ResultSet rset = null;
 		ResultSet rsetIdx = null;
 		try {
 			DatabaseMetaData md = conn.getMetaData();
 
-			// Listing tables
-			rset = md.getTables(null, schema, null, new String[] { "TABLE", "VIEW" });
+			rset = md.getTables(null, schemaPattern, null, new String[] { "TABLE", "VIEW" }); //$NON-NLS-1$ //$NON-NLS-2$
 
 			// Building an array of checked objects
 			while (rset.next()) {
-				DBObject dbObj = new DBObject(rset.getString("TABLE_TYPE"),
-						rset.getString("TABLE_NAME"));
+				DBObject dbObj = new DBObject(rset.getString("TABLE_TYPE"), //$NON-NLS-1$
+						rset.getString("TABLE_NAME")); //$NON-NLS-1$
 				structure.addObject(dbObj);
 				try {
-					rsetIdx = md.getIndexInfo(null, schema, dbObj.getName(), false, false);
+					rsetIdx = md.getIndexInfo(null, schemaPattern, dbObj.getName(), false, false);
 					while (rsetIdx.next()) {
 						structure.addObject(new DBObject(DBObject.TYPE_INDEX, rsetIdx
-								.getString("INDEX_NAME")));
+								.getString("INDEX_NAME"))); //$NON-NLS-1$
 					}
 				} catch (SQLException e) {
 					// Unable to get the index, may we log anything?
 				} finally {
-					if (rsetIdx != null) {
-						rsetIdx.close();
+					try {
+						if (rsetIdx != null) {
+							rsetIdx.close();
+						}
+					} catch (SQLException sqle) {
+						// No logger so we do nothing
 					}
 				}
 			}
 			rset.close();
 			// Fetching table columns
-			rset = md.getColumns(null, schema, null, null);
+			rset = md.getColumns(null, schemaPattern, null, null);
 			while (rset.next()) {
-				final String tabName = rset.getString("TABLE_NAME");
-				final String colName = rset.getString("COLUMN_NAME");
-				structure.addObject(new DBObject("COLUMN", tabName + "." + colName));
+				final String tabName = rset.getString("TABLE_NAME"); //$NON-NLS-1$
+				final String colName = rset.getString("COLUMN_NAME"); //$NON-NLS-1$
+				structure.addObject(new DBObject("COLUMN", tabName + "." + colName)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			// We return the database structure
 			return structure;
 		} finally {
-			if (rset != null) {
-				rset.close();
+			try {
+				if (rset != null) {
+					rset.close();
+				}
+			} catch (SQLException sqle) {
+				// No logger so we do nothing
 			}
-			if (rsetIdx != null) {
-				rsetIdx.close();
+			try {
+				if (rsetIdx != null) {
+					rsetIdx.close();
+				}
+			} catch (SQLException sqle) {
+				// No logger so we do nothing
 			}
 		}
 	}

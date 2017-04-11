@@ -57,16 +57,16 @@ public class ConnectionService implements IConnectionService {
 					.createExecutableExtension("class"); //$NON-NLS-1$
 			return conn;
 		} catch (CoreException e) {
-			throw new ErrorException(
-					MessageFormat.format(CoreMessages
-							.getString("connection.service.connectorNotFound"), vendor.name()), e); //$NON-NLS-1$
+			throw new ErrorException(MessageFormat.format(
+					CoreMessages.getString("connection.service.connectorNotFound"), vendor.name()), //$NON-NLS-1$
+					e);
 		}
 	}
 
 	@Override
 	public IDatabaseConnector<?> getDatabaseConnector(IConnection conn) {
 		if (conn == null) {
-			throw new ErrorException(CoreMessages.getString("connection.service.noConnection")); ////$NON-NLS-1$
+			throw new ErrorException(CoreMessages.getString("connection.service.noConnection")); //$NON-NLS-1$
 		}
 		IDatabaseConnector<?> connector = getDatabaseConnector(conn.getDBVendor());
 		return connector;

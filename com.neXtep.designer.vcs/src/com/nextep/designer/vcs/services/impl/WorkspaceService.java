@@ -64,10 +64,15 @@ import com.nextep.designer.vcs.services.IDependencyService;
 import com.nextep.designer.vcs.services.IVersioningService;
 import com.nextep.designer.vcs.services.IWorkspaceService;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class WorkspaceService implements IWorkspaceService {
 
 	/** Max number of dependencies displayed in an error message */
 	private final static int MAX_DISPLAYED_DEPENDENCIES = 10;
+
 	private IWorkspace currentView;
 	private ITargetSet currentTargetSet;
 	private List<IWorkspaceListener> listeners;
@@ -315,12 +320,15 @@ public class WorkspaceService implements IWorkspaceService {
 		List<Number> idList = (List<Number>) HibernateUtil
 				.getInstance()
 				.getSandBoxSession()
-				.createSQLQuery(
-						"select v.VIEW_ID from REP_VERSION_VIEWS v where lower(replace(v.view_name,' ','_'))=lower(replace(?,' ','_'))") //$NON-NLS-1$
-				.setString(0, name).list(); //$NON-NLS-1$ 
+				.createSQLQuery("SELECT vv.view_id " //$NON-NLS-1$
+						+ "FROM {h-schema}rep_version_views vv " //$NON-NLS-1$
+						+ "WHERE LOWER(REPLACE(vv.view_name,' ','_')) = LOWER(REPLACE(?,' ','_')) ") //$NON-NLS-1$
+				.setString(0, name).list();
+
 		if (idList != null && idList.size() == 1) {
 			return new UID(idList.iterator().next().longValue());
 		}
 		return null;
 	}
+
 }

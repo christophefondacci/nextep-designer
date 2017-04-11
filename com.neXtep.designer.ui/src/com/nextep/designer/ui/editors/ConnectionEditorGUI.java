@@ -66,6 +66,7 @@ import com.nextep.designer.ui.model.ITypedObjectUIController;
 public class ConnectionEditorGUI extends WizardDisplayConnector {
 
 	private static final Log LOGGER = LogFactory.getLog(ConnectionEditorGUI.class);
+	private static final IConnectionService connService = CorePlugin.getConnectionService();
 
 	private CLabel dbVendorLabel = null;
 	private Combo dbVendorCombo = null;
@@ -475,7 +476,6 @@ public class ConnectionEditorGUI extends WizardDisplayConnector {
 	 */
 	private boolean testConnection() {
 		final IConnection conn = (IConnection) getModel();
-		final IConnectionService connService = CorePlugin.getConnectionService();
 
 		// We change the status message so that the user can see that a test is in progress (in case
 		// he already tried unsuccessfully to connect and an error message was displayed)

@@ -51,18 +51,22 @@ import com.nextep.datadesigner.gui.impl.GUIWrapper;
 import com.nextep.datadesigner.sqlgen.model.IGenerationConsole;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.dbgm.ui.services.DBGMUIHelper;
 import com.nextep.designer.sqlclient.ui.editors.ProfilerSettingsGUI;
 import com.nextep.designer.sqlclient.ui.impl.ProfilerSettings;
 import com.nextep.designer.sqlclient.ui.model.IProfilerSettings;
 import com.nextep.designer.sqlgen.ui.views.GenerationConsole;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class ProfileQueryHandler extends AbstractHandler {
 
-	private static final Log log = LogFactory.getLog(ProfileQueryHandler.class);
+	private static final Log LOGGER = LogFactory.getLog(ProfileQueryHandler.class);
+	private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS"); //$NON-NLS-1$
+
 	private static List<String> csvStats = new ArrayList<String>();
-	private static final DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
 
 	private static class SqlThread implements Runnable {
 
@@ -86,15 +90,13 @@ public class ProfileQueryHandler extends AbstractHandler {
 
 		@Override
 		public void run() {
-			final IDatabaseConnector connector = CorePlugin.getConnectionService()
-					.getDatabaseConnector(connection);
 			final Random randGenerator = new Random();
-			Connection c = null;
+			Connection jdbcConn = null;
 			Statement stmt = null;
 
 			try {
-				c = connector.connect(connection);
-				stmt = c.createStatement();
+				jdbcConn = CorePlugin.getConnectionService().connect(connection);
+				stmt = jdbcConn.createStatement();
 				int nextQueryPos = (randOrder ? randGenerator.nextInt(sql.length) : 0);
 
 				while (!shouldStop) {
@@ -145,8 +147,8 @@ public class ProfileQueryHandler extends AbstractHandler {
 					if (stmt != null) {
 						stmt.close();
 					}
-					if (c != null) {
-						c.close();
+					if (jdbcConn != null) {
+						jdbcConn.close();
 					}
 				} catch (SQLException e) {
 					log.error("Error while terminating SQL profiling", e);
@@ -167,8 +169,10 @@ public class ProfileQueryHandler extends AbstractHandler {
 		final IGenerationConsole console = new GenerationConsole("SQL Profiling - "
 				+ new Date().toString(), true);
 		ISelection sel = provider.getSelection();
+
 		if (sel == null || sel.isEmpty())
 			return null;
+
 		if (sel instanceof ITextSelection) {
 			ITextSelection textSel = (ITextSelection) sel;
 
@@ -176,7 +180,7 @@ public class ProfileQueryHandler extends AbstractHandler {
 			if (sql.length() == 0) {
 				return null;
 			}
-			final String[] sqls = sql.split(";");
+			final String[] sqls = sql.split(";"); //$NON-NLS-1$
 
 			// Building profiler settings
 			final IProfilerSettings settings = new ProfilerSettings();
@@ -184,7 +188,7 @@ public class ProfileQueryHandler extends AbstractHandler {
 					"Define profiling settings", 400, 220);
 			wrapper.invoke();
 			console.start();
-			final IConnection conn = DBGMUIHelper.getConnection(null);
+			final IConnection targetConn = DBGMUIHelper.getConnection(null);
 
 			// Starting profiling
 			Job profilingJob = new Job("Profiling SQL...") {
@@ -200,6 +204,7 @@ public class ProfileQueryHandler extends AbstractHandler {
 							+ (settings.isRandomOrder() ? "enabled" : "disabled"));
 					csvStats.clear();
 					csvStats.add("time;threads count;Minimum time;Maximum time;Average Time;Total Time;Total Executions");
+
 					final long startTime = new Date().getTime();
 					long currentTime = new Date().getTime();
 					long lastThreadTime = 0;
@@ -209,7 +214,7 @@ public class ProfileQueryHandler extends AbstractHandler {
 						printStatistics(threads, console);
 						if (threads.size() < settings.getThreadCount()) {
 							if ((currentTime - lastThreadTime) > (settings.getThreadStepDuration() * 1000)) {
-								SqlThread thread = new SqlThread(conn, settings.isFetching(),
+								SqlThread thread = new SqlThread(targetConn, settings.isFetching(),
 										settings.isRandomOrder(), sqls);
 								threads.add(thread);
 								Thread t = new Thread(thread);
@@ -220,12 +225,13 @@ public class ProfileQueryHandler extends AbstractHandler {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
-							log.error("Interrupted profiling", e);
+							LOGGER.error("Interrupted profiling", e);
 							break;
 						}
 						currentTime = new Date().getTime();
 					}
 					printStatistics(threads, console);
+
 					// Stopping everything
 					for (SqlThread t : threads) {
 						t.stop();
@@ -242,12 +248,14 @@ public class ProfileQueryHandler extends AbstractHandler {
 
 			profilingJob.schedule();
 		}
+
 		return null;
 	}
 
 	private void printStatistics(List<SqlThread> threads, IGenerationConsole console) {
 		long minTime = -1, maxTime = -1, totalTime = 0;
 		int executions = 0;
+
 		for (SqlThread t : threads) {
 			if (minTime < 0) {
 				minTime = t.minTime;
@@ -259,13 +267,14 @@ public class ProfileQueryHandler extends AbstractHandler {
 			totalTime += t.totalTime;
 			executions += t.executions;
 		}
+
 		final Date thisDate = new Date();
-		console.log(format.format(thisDate) + " - Profiled " + threads.size() + " threads : min="
-				+ minTime + "ms, max=" + maxTime + "ms, avg="
+		console.log(DATE_FORMATTER.format(thisDate) + " - Profiled " + threads.size()
+				+ " threads : min=" + minTime + "ms, max=" + maxTime + "ms, avg="
 				+ ((double) totalTime / (double) executions) + "ms, exec=" + executions);
-		csvStats.add(format.format(thisDate) + ";" + threads.size() + ";" + minTime + ";" + maxTime
-				+ ";" + ((double) totalTime / (double) executions) + ";" + totalTime + ";"
-				+ executions);
+		csvStats.add(DATE_FORMATTER.format(thisDate) + ";" + threads.size() + ";" + minTime + ";" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ maxTime + ";" + ((double) totalTime / (double) executions) + ";" + totalTime //$NON-NLS-1$ //$NON-NLS-2$
+				+ ";" + executions); //$NON-NLS-1$
 	}
 
 }

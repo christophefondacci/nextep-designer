@@ -42,40 +42,37 @@ import com.nextep.installer.services.ILoggingService;
  */
 public class DeliveryDeployHandler implements IDeployHandler {
 
-	/**
-	 * @see com.neXtep.installer.model.IDeployHandler#deploy(com.neXtep.installer.model.IArtefact,
-	 *      java.lang.String, java.lang.String, java.lang.String)
-	 */
 	public void deploy(IInstallConfiguration conf, IArtefact artefact) throws DeployException {
 		String descriptorPath = artefact.getRelativePath() + File.separator
 				+ artefact.getFilename();
-		File descriptor = new File(descriptorPath + File.separator + "delivery.xml");
+		File descriptor = new File(descriptorPath + File.separator
+				+ DeliveryRequirement.DELIVERY_FILE_NAME);
 		// Checking that our descriptor exists
 		if (!descriptor.exists()) {
 			throw new DeployException("No descriptor found for delivery artefact '"
 					+ artefact.getFilename() + "'");
 		}
-		// Deplying nested delivery
-		final ILoggingService loggingService = NextepInstaller.getService(ILoggingService.class);
-		final IInstallerService installerService = NextepInstaller
-				.getService(IInstallerService.class);
+
+		// Deploying nested delivery
+		final ILoggingService logger = NextepInstaller.getService(ILoggingService.class);
+		final IInstallerService installer = NextepInstaller.getService(IInstallerService.class);
 		try {
-			loggingService.pad();
+			logger.pad();
 			// We copy the configurator so we make sure required deliveries will not interfere
 			// with us
-			IInstallConfigurator subConfigurator = installerService.copyConfigurator(conf);
+			IInstallConfigurator subConfigurator = installer.copyConfigurator(conf);
 			// We only need to check the delivery of this "required" package as all other
 			// checks have been done (we deploy to the same target, with same admin, etc.)
 			List<IRequirement> subRequirements = new ArrayList<IRequirement>();
 			subRequirements.add(new DeliveryRequirement());
 			// Recursively fires installation of the sub module
-			installerService.install(subConfigurator, artefact.getRelativePath() + File.separator
-					+ artefact.getFilename(), subRequirements); //$NON-NLS-1$
+			installer.install(subConfigurator, artefact.getRelativePath() + File.separator
+					+ artefact.getFilename(), subRequirements);
 		} catch (InstallerException e) {
 			throw new DeployException("Unable to deploy nested delivery dependency: "
 					+ e.getMessage(), e);
 		} finally {
-			loggingService.unpad();
+			logger.unpad();
 		}
 	}
 

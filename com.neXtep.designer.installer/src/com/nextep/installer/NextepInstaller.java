@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.exception.InvalidOptionException;
@@ -44,28 +43,28 @@ import com.nextep.installer.model.IRequirement;
 import com.nextep.installer.model.InstallerOption;
 import com.nextep.installer.model.impl.DefaultInstallerConfigurator;
 import com.nextep.installer.services.IAdminService;
+import com.nextep.installer.services.IConnectionService;
 import com.nextep.installer.services.IInstallerService;
 import com.nextep.installer.services.ILoggingService;
 import com.nextep.installer.services.impl.AdminService;
+import com.nextep.installer.services.impl.ConnectionService;
 import com.nextep.installer.services.impl.InstallerService;
 import com.nextep.installer.services.impl.LoggingService;
 
 /**
  * Entry-point for the neXtep installer in standalone mode.<br>
- * Users of the installer in the non-standalone mode should only use the
- * {@link IInstallerService}. <br>
- * The installer always works with files so you must have a delivery persisted
- * on the file system in order for the installer to work.<br>
+ * Users of the installer in the non-standalone mode should only use the {@link IInstallerService}. <br>
+ * The installer always works with files so you must have a delivery persisted on the file system in
+ * order for the installer to work.<br>
  * <br>
  * <b>This class needs to be Java 1.5 compliant</b> <br>
- * Another constraint of the installer is to be lightweight as the installer is
- * exported with every delivery generated through neXtep designer. That means no
- * spring, no hibernate, no apache commons, etc. It should be kept as small as
- * possible.<br>
- * This leads to some raw code which is not very elegant, sorry for this
- * constraint.
+ * Another constraint of the installer is to be lightweight as the installer is exported with every
+ * delivery generated through neXtep designer. That means no spring, no hibernate, no apache
+ * commons, etc. It should be kept as small as possible.<br>
+ * This leads to some raw code which is not very elegant, sorry for this constraint.
  * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class NextepInstaller {
 
@@ -74,16 +73,17 @@ public class NextepInstaller {
 	public static final String PROP_BINARY = "admin.nextep.bin.location"; //$NON-NLS-1$
 
 	/**
-	 * Since we are lightweight, we cannot use spring for dependency injection
-	 * so we register services manually using this map
+	 * Since we are lightweight, we cannot use spring for dependency injection so we register
+	 * services manually using this map.
 	 */
-	private static Map<Class<?>, Object> serviceRegistryMap = new HashMap<Class<?>, Object>();
+	private static final Map<Class<?>, Object> SERVICE_REGISTRY = new HashMap<Class<?>, Object>();
 
 	/**
 	 * Displays program header with legal mentions & versions.
 	 */
 	public static void printLaunchHeader() {
 		final ILoggingService logger = getService(ILoggingService.class);
+
 		Date d = new Date();
 		SimpleDateFormat f = new SimpleDateFormat("EEE d MMM yyyy"); //$NON-NLS-1$
 		logger.log(""); //$NON-NLS-1$
@@ -108,9 +108,9 @@ public class NextepInstaller {
 		logger.pad();
 		for (InstallerOption option : InstallerOption.values()) {
 			String argument = null;
-			if (option.isValued()) {
+			if (option.isMandatory()) {
 				argument = MessageFormat
-						.format(InstallerMessages.getString("installer.valuedOptionPattern"), option.getName(), option.getValueName()); //$NON-NLS-1$
+						.format(InstallerMessages.getString("installer.mandatoryOptionPattern"), option.getName(), option.getValueName()); //$NON-NLS-1$
 			} else {
 				argument = MessageFormat.format(InstallerMessages
 						.getString("installer.nonValuedOptionPattern"), option.getName()); //$NON-NLS-1$
@@ -123,21 +123,23 @@ public class NextepInstaller {
 		logger.log(InstallerMessages.getString("installer.usageFooterLine1")); //$NON-NLS-1$
 		logger.log(InstallerMessages.getString("installer.usageFooterLine2")); //$NON-NLS-1$
 		logger.log(""); //$NON-NLS-1$
-
 	}
 
 	/**
-	 * Installer entry point
+	 * Installer entry point.
 	 * 
-	 * @param args
-	 *            command line arguments
+	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
 		// Service registration
 		registerService(ILoggingService.class, new LoggingService());
 		registerService(IAdminService.class, new AdminService());
 		registerService(IInstallerService.class, new InstallerService());
+		registerService(IConnectionService.class, new ConnectionService());
+
 		final ILoggingService logger = getService(ILoggingService.class);
+		final IInstallerService installer = getService(IInstallerService.class);
+
 		// Launching header
 		printLaunchHeader();
 		IInstallConfigurator configurator = new DefaultInstallerConfigurator();
@@ -149,13 +151,16 @@ public class NextepInstaller {
 			displayHelp();
 			System.exit(-1);
 		}
+
 		// If help option is active, we display help and exit
 		if (configurator.isOptionDefined(InstallerOption.HELP)) {
 			displayHelp();
 			return;
 		}
-		// Configuring logger
-		getService(ILoggingService.class).configure(configurator);
+
+		// Configuring logger for verbose mode if verbose option has been defined
+		logger.configure(configurator);
+
 		// Only info has been requested
 		if (configurator.isOptionDefined(InstallerOption.INFO)) {
 			try {
@@ -167,13 +172,14 @@ public class NextepInstaller {
 			}
 			return;
 		}
+
 		// Building prerequisites list
 		List<IRequirement> requirements = buildStandaloneRequirements();
 
 		// Installation
 		boolean success = false;
 		try {
-			success = getService(IInstallerService.class).install(configurator, ".", requirements); //$NON-NLS-1$
+			success = installer.install(configurator, ".", requirements); //$NON-NLS-1$
 
 			logger.log(""); //$NON-NLS-1$
 			logger.log(InstallerMessages.getString("installer.installationTerminated")); //$NON-NLS-1$
@@ -184,7 +190,7 @@ public class NextepInstaller {
 			System.exit(-1);
 		} finally {
 			try {
-				getService(IInstallerService.class).release(configurator);
+				installer.release(configurator);
 				System.exit(success ? 0 : -1);
 			} catch (InstallerException e) {
 				logger.error(e.getMessage(), e);
@@ -194,12 +200,10 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Builds the list of requirements to check in standalone installer mode.
-	 * The requirement order is important since requirements contribute to the
-	 * configuration.
+	 * Builds the list of requirements to check in standalone installer mode. The requirement order
+	 * is important since requirements contribute to the configuration.
 	 * 
-	 * @return a list of {@link IRequirement} to use in standalone installer
-	 *         mode.
+	 * @return a list of {@link IRequirement} to use in standalone installer mode.
 	 */
 	public static List<IRequirement> buildStandaloneRequirements() {
 		List<IRequirement> requirements = new ArrayList<IRequirement>();
@@ -212,22 +216,19 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Displays the information on currently installed releases to the user and
-	 * performs a full structure check.
+	 * Displays the information on currently installed releases to the user and performs a full
+	 * structure check.
 	 * 
-	 * @param login
-	 *            login of target db
-	 * @param password
-	 *            password to connect to target db
-	 * @param sid
-	 *            database name of target
-	 * @throws DeployException
-	 *             if we fail to perform the structure check
+	 * @param login login of target db
+	 * @param password password to connect to target db
+	 * @param sid database name of target
+	 * @throws DeployException if we fail to perform the structure check
 	 */
 	private static void showInfo(IInstallConfigurator configurator) throws InstallerException {
 		final ILoggingService logger = getService(ILoggingService.class);
 		final IAdminService adminService = getService(IAdminService.class);
 		final IInstallerService installerService = getService(IInstallerService.class);
+
 		// Preparing info requirements
 		List<IRequirement> reqs = new ArrayList<IRequirement>();
 		reqs.add(new NextepHomeRequirement());
@@ -241,11 +242,10 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Captures the input from the user and returns it as a string. The input is
-	 * captured when the user type the return key
+	 * Captures the input from the user and returns it as a string. The input is captured when the
+	 * user type the return key.
 	 * 
-	 * @param defaultResponse
-	 *            for non interactive mode, default is always used
+	 * @param defaultResponse for non interactive mode, default is always used
 	 * @return the string entered by the user
 	 */
 	public static String getUserInput(String defaultResponse) {
@@ -253,13 +253,11 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Captures the input from the user and returns it as a string. The input is
-	 * captured when the user type the return key
+	 * Captures the input from the user and returns it as a string. The input is captured when the
+	 * user type the return key.
 	 * 
-	 * @param defaultResponse
-	 *            for non interactive mode, default is always used
-	 * @param password
-	 *            is this a password field
+	 * @param defaultResponse for non interactive mode, default is always used
+	 * @param password is this a password field
 	 * @return the string entered by the user
 	 */
 	public static String getUserInput(String defaultResponse, boolean password) {
@@ -268,16 +266,12 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Fills the configurator with command line arguments converted into
-	 * {@link InstallerOption}. Any unrecognized option will fire an
-	 * {@link InvalidOptionException}.
+	 * Fills the configurator with command line arguments converted into {@link InstallerOption}.
+	 * Any unrecognized option will fire an {@link InvalidOptionException}.
 	 * 
-	 * @param args
-	 *            command line arguments
-	 * @param configurator
-	 *            the installer configurator as {@link IInstallConfigurator}
-	 * @throws InvalidOptionException
-	 *             when invalid options are parsed
+	 * @param args command line arguments
+	 * @param configurator the installer configurator as {@link IInstallConfigurator}
+	 * @throws InvalidOptionException when invalid options are parsed
 	 */
 	private static void initOptionsMap(String[] args, IInstallConfigurator configurator)
 			throws InvalidOptionException {
@@ -304,20 +298,16 @@ public class NextepInstaller {
 	}
 
 	/**
-	 * Retrieves a given service implementation. This is a home-made service
-	 * registration as we need to stay lightweight in this installer to ensure
-	 * that we can embed it into every delivery.
+	 * Retrieves a given service implementation. This is a home-made service registration as we need
+	 * to stay lightweight in this installer to ensure that we can embed it into every delivery.
 	 * 
-	 * @param <T>
-	 * @param service
-	 *            service interface to get implementation for
+	 * @param service service interface to get implementation for
 	 * @return the corresponding implementation
-	 * @throws NoSuchElementException
-	 *             when no implementation has been registered for this service
+	 * @throws NoSuchElementException when no implementation has been registered for this service
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getService(Class<T> service) {
-		Object serviceImpl = serviceRegistryMap.get(service);
+		Object serviceImpl = SERVICE_REGISTRY.get(service);
 		if (serviceImpl != null && service.isAssignableFrom(serviceImpl.getClass())) {
 			return (T) serviceImpl;
 		}
@@ -328,13 +318,11 @@ public class NextepInstaller {
 	/**
 	 * Registers the given service.
 	 * 
-	 * @param <T>
-	 * @param service
-	 *            service interface
-	 * @param serviceImpl
-	 *            service implementation
+	 * @param service service interface
+	 * @param serviceImpl service implementation
 	 */
 	public static <T> void registerService(Class<T> service, T serviceImpl) {
-		serviceRegistryMap.put(service, serviceImpl);
+		SERVICE_REGISTRY.put(service, serviceImpl);
 	}
+
 }

@@ -31,9 +31,9 @@ import com.nextep.installer.model.IDBObject;
  */
 public class DBObject implements IDBObject {
 
-	public static final String TYPE_TABLE = "TABLE";
-	public static final String TYPE_VIEW = "VIEW";
-	public static final String TYPE_INDEX = "INDEX";
+	public static final String TYPE_TABLE = "TABLE"; //$NON-NLS-1$
+	public static final String TYPE_VIEW = "VIEW"; //$NON-NLS-1$
+	public static final String TYPE_INDEX = "INDEX"; //$NON-NLS-1$
 
 	private String type;
 	private String name;
@@ -51,9 +51,6 @@ public class DBObject implements IDBObject {
 		return name;
 	}
 
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof DBObject) {
 			return type.equals(((DBObject) obj).getType())
@@ -62,15 +59,13 @@ public class DBObject implements IDBObject {
 		return false;
 	}
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
 	public int hashCode() {
-		return (type + "." + name).toUpperCase().hashCode();
+		return (type + "." + name).toUpperCase().hashCode(); //$NON-NLS-1$
 	}
 
 	@Override
 	public String toString() {
-		return type + " " + name;
+		return type + " " + name; //$NON-NLS-1$
 	}
+
 }

@@ -101,8 +101,8 @@ public class SynchSelectionControl extends ContributionItem {
 	private void updateControl() {
 		if (item != null) {
 			item.setImage(unselectAction ? SynchUIImages.UNSELECT_ALL : SynchUIImages.SELECT_ALL);
-			item.setToolTipText(SynchUIMessages.getString(
-					unselectAction ? "command.tooltip.unselectAll" : "command.tooltip.selectAll")); //$NON-NLS-1$ //$NON-NLS-2$
+			item.setToolTipText(SynchUIMessages
+					.getString(unselectAction ? "command.tooltip.unselectAll" : "command.tooltip.selectAll")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -114,7 +114,8 @@ public class SynchSelectionControl extends ContributionItem {
 	private void selectAll(boolean selected) {
 		IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService()
 				.getActivePart();
-		ISynchronizationResult result = part.getAdapter(ISynchronizationResult.class);
+		ISynchronizationResult result = (ISynchronizationResult) part
+				.getAdapter(ISynchronizationResult.class);
 		if (result != null) {
 			final Collection<IComparisonItem> items = result.getComparedItems();
 			final ISynchronizationUIService synchService = getSynchronizationService();

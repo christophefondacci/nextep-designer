@@ -22,6 +22,7 @@
  *******************************************************************************/
 package com.nextep.designer.ui.services.impl;
 
+import java.sql.Connection;
 import java.text.MessageFormat;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -100,10 +101,10 @@ public class RepositoryUIService implements IRepositoryService {
 	}
 
 	@Override
-	public IDatabaseConnector getRepositoryConnector() {
+	public IDatabaseConnector<Connection> getRepositoryConnector() {
 		final IConnection conn = getRepositoryConnection();
-		// Loading all views
-		IDatabaseConnector connector = CorePlugin.getConnectionService().getDatabaseConnector(conn);
+		IDatabaseConnector<Connection> connector = (IDatabaseConnector<Connection>) CorePlugin
+				.getConnectionService().getDatabaseConnector(conn);
 		return connector;
 	}
 

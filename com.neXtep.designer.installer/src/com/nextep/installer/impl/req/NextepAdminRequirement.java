@@ -44,6 +44,7 @@ import com.nextep.installer.model.impl.DatabaseTarget;
 import com.nextep.installer.model.impl.Delivery;
 import com.nextep.installer.model.impl.Status;
 import com.nextep.installer.services.IAdminService;
+import com.nextep.installer.services.IConnectionService;
 import com.nextep.installer.services.ILoggingService;
 
 /**
@@ -57,27 +58,34 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	public static final String PROP_ADMIN_USER = "admin.nextep.user"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_PASS = "admin.nextep.password"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_DBID = "admin.nextep.SID"; //$NON-NLS-1$
+	public static final String PROP_ADMIN_SCHEMA = "admin.nextep.schema"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_VENDOR = "admin.nextep.vendor"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_BIN = "admin.nextep.bin.location"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_SERVER = "admin.nextep.server"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_PORT = "admin.nextep.port"; //$NON-NLS-1$
 	public static final String PROP_ADMIN_TNS = "admin.nextep.tnsname"; //$NON-NLS-1$
 
-	private static final String DEFAULT_SERVER = "127.0.0.1"; //$NON-NLS-1$
-
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
 		final ILoggingService logger = NextepInstaller.getService(ILoggingService.class);
 		try {
 			// Initializing admin.properties files
 			loadProperties(configurator);
+
 			// Retrieving target database information
 			final IDatabaseTarget target = configurator.getTarget();
+
 			// If it is defined, we try to determine whether the admin component is present there
 			if (target != null) {
 				try {
 					if (checkTargetIsAdmin(configurator, target)) {
 						configurator.setAdminInTarget(true);
 						return new Status(true, target.toString());
+					} else {
+						// Only displaying log in verbose mode
+						if (configurator.isOptionDefined(InstallerOption.VERBOSE)) {
+							logger.log("No neXtep admin tables found in target database, "
+									+ "properties-based admin will be checked");
+						}
 					}
 				} catch (InstallerException e) {
 					// Only displaying error in verbose mode
@@ -87,6 +95,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 					}
 				}
 			}
+
 			// If ADMIN is not in the target database, we fallback on properties
 			final IDatabaseTarget adminTarget = buildAdminTarget(configurator);
 			boolean isAdmin = false;
@@ -98,6 +107,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 				configurator.setAdminInTarget(true);
 				isAdmin = checkTargetIsAdmin(configurator, adminTarget);
 			}
+
 			// At this point, admin is not in the target DB
 			configurator.setAdminInTarget(false);
 			if (isAdmin) {
@@ -122,7 +132,9 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	private boolean checkTargetIsAdmin(IInstallConfigurator configurator, IDatabaseTarget target)
 			throws InstallerException {
 		// First, we try to connect
-		Connection targetConnection = getConnectionFor(target);
+		final IConnectionService connService = NextepInstaller.getService(IConnectionService.class);
+		Connection targetConnection = connService.connect(target);
+
 		// If we are in admin INSTALL mode, connection is enough
 		if (configurator.isOptionDefined(InstallerOption.INSTALL)
 				|| configurator.isOptionDefined(InstallerOption.FULL_INSTALL)) {
@@ -134,6 +146,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 				configurator.setAdminConnection(targetConnection);
 			}
 		}
+
 		// If admin connection is set we're done
 		if (configurator.getAdminConnection() != null) {
 			return true;
@@ -175,6 +188,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 			}
 			return;
 		}
+
 		// Reading properties
 		Properties nextepProperties = new Properties();
 		FileInputStream propIS = null;
@@ -194,6 +208,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 				}
 			}
 		}
+
 		// Loading properties into the configurator
 		for (Object key : nextepProperties.keySet()) {
 			configurator.setProperty((String) key, nextepProperties.getProperty((String) key));
@@ -208,20 +223,21 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 		Assert.notNull(adminLogin, "Admin database login not defined in properties"); //$NON-NLS-1$
 
 		String adminPassword = nextepProperties.getProperty(PROP_ADMIN_PASS);
-
 		String adminSID = nextepProperties.getProperty(PROP_ADMIN_DBID);
 		Assert.notNull(adminSID, "Admin database id not defined in properties"); //$NON-NLS-1$
 
 		String serviceName = nextepProperties.getProperty(PROP_ADMIN_TNS);
+		String adminSchema = nextepProperties.getProperty(PROP_ADMIN_SCHEMA);
 
 		String adminVendor = nextepProperties.getProperty(PROP_ADMIN_VENDOR);
 		Assert.notNull(adminVendor, "Admin database vendor not defined in properties"); //$NON-NLS-1$
+
 		// Checking vendor
 		DBVendor vendor = DBVendor.valueOf(adminVendor);
 
 		String server = nextepProperties.getProperty(PROP_ADMIN_SERVER);
 		if (server == null) {
-			server = DEFAULT_SERVER;
+			server = TargetUserRequirement.DEFAULT_SERVER;
 		}
 
 		String port = nextepProperties.getProperty(PROP_ADMIN_PORT);
@@ -229,8 +245,9 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 			port = String.valueOf(vendor.getDefaultPort());
 		}
 
-		IDatabaseTarget target = new DatabaseTarget(adminLogin, adminPassword, adminSID, server,
-				port, vendor, serviceName);
+		IDatabaseTarget target = new DatabaseTarget(adminLogin, adminPassword, adminSID,
+				adminSchema, server, port, vendor, serviceName);
+
 		return target;
 	}
 

@@ -76,8 +76,11 @@ public class DatabaseObjectCheck implements IDatabaseObjectCheck {
 		final ILoggingService logger = getLoggingService();
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn.prepareStatement("insert into NADM_RELEASE_OBJECTS (" //$NON-NLS-1$
-					+ "  irel_id,object_type,object_name" + ") values (" + "  ?,?,?" + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			stmt = conn.prepareStatement("INSERT INTO nadm_release_objects ( " //$NON-NLS-1$
+					+ "  irel_id, object_type, object_name" //$NON-NLS-1$
+					+ ") VALUES (" //$NON-NLS-1$
+					+ "  ?, ?, ?" //$NON-NLS-1$
+					+ ") "); //$NON-NLS-1$
 			for (IDBObject dbObj : objects) {
 				stmt.setLong(1, rel.getId());
 				stmt.setString(2, dbObj.getType());

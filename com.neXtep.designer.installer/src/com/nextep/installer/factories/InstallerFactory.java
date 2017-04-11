@@ -107,6 +107,7 @@ public final class InstallerFactory {
 	 * @param user
 	 * @param password
 	 * @param database
+	 * @param schema
 	 * @param host
 	 * @param port
 	 * @param vendor
@@ -115,8 +116,8 @@ public final class InstallerFactory {
 	 * @return a {@link IDatabaseTarget} filled with provided information
 	 */
 	public static IDatabaseTarget createTarget(String user, String password, String database,
-			String host, String port, DBVendor vendor, String serviceName) {
-		return new DatabaseTarget(user, password, database, host, port, vendor, serviceName);
+			String schema, String host, String port, DBVendor vendor, String serviceName) {
+		return new DatabaseTarget(user, password, database, schema, host, port, vendor, serviceName);
 	}
 
 }

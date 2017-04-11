@@ -43,15 +43,18 @@ import com.nextep.datadesigner.dbgm.gui.editors.ISQLEditorInput;
 import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.dbgm.ui.services.DBGMUIHelper;
 import com.nextep.designer.sqlclient.ui.SQLClientPlugin;
 import com.nextep.designer.sqlclient.ui.services.ISQLClientService;
 import com.nextep.designer.sqlgen.ui.model.IConnectable;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class ExecuteQueryHandler extends AbstractHandler {
 
-	private static final Log log = LogFactory.getLog(ExecuteQueryHandler.class);
+	private static final Log LOGGER = LogFactory.getLog(ExecuteQueryHandler.class);
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -67,6 +70,7 @@ public class ExecuteQueryHandler extends AbstractHandler {
 				ITextEditor editor = (ITextEditor) p;
 				ISelectionProvider selprovider = editor.getEditorSite().getSelectionProvider();
 				TextSelection selectedText = (TextSelection) selprovider.getSelection();
+
 				// Getting our document
 				final IDocument doc = ((ITextEditor) p).getDocumentProvider().getDocument(input);
 				try {
@@ -98,40 +102,43 @@ public class ExecuteQueryHandler extends AbstractHandler {
 					SQLClientPlugin.getService(ISQLClientService.class).runQuery(input, conn, sql);
 
 				} catch (BadLocationException e) {
-					log.warn("Problems while trying to extract the SQL query", e);
+					LOGGER.warn("Problems while trying to extract the SQL query", e);
 				}
 			}
 		}
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	private Connection getConnectionFromInput(ISQLEditorInput<?> input) {
-		Connection sqlConn = null;
-		IConnection conn = null;
+		Connection jdbcConn = null;
+		IConnection targetConn = null;
+
 		if (input instanceof IConnectable) {
 			final IConnectable connectable = (IConnectable) input;
-			sqlConn = connectable.getSqlConnection();
-			conn = connectable.getConnection();
+			jdbcConn = connectable.getSqlConnection();
+			targetConn = connectable.getConnection();
 		}
-		if (sqlConn == null) {
-			if (conn != null) {
-				DBGMUIHelper.checkConnectionPassword(conn);
+
+		if (jdbcConn == null) {
+			if (targetConn != null) {
+				DBGMUIHelper.checkConnectionPassword(targetConn);
 			} else {
-				conn = DBGMUIHelper.getConnection(null);
+				targetConn = DBGMUIHelper.getConnection(null);
 			}
-			// Initiliazing connection
-			IDatabaseConnector dbConnector = CorePlugin.getConnectionService()
-					.getDatabaseConnector(conn);
+
+			// Initializing connection
 			try {
-				sqlConn = dbConnector.connect(conn);
+				jdbcConn = CorePlugin.getConnectionService().connect(targetConn);
 				if (input instanceof IConnectable) {
-					((IConnectable) input).setSqlConnection(sqlConn);
+					((IConnectable) input).setSqlConnection(jdbcConn);
 				}
 			} catch (SQLException e) {
 				throw new ErrorException("Could not establish connection : " + e.getMessage(), e);
 			}
 		}
-		return sqlConn;
+
+		return jdbcConn;
 	}
+
 }

@@ -39,7 +39,6 @@ import com.nextep.datadesigner.dbgm.model.IBasicTable;
 import com.nextep.datadesigner.model.INamedObject;
 import com.nextep.designer.core.model.DBVendor;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.core.model.ITypedObjectFactory;
 import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.dbgm.model.IColumnValue;
@@ -55,13 +54,14 @@ import com.nextep.designer.vcs.model.VersionableFactory;
 
 /**
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class DataCaptureService implements IDataCaptureService {
 
 	private final static Log LOGGER = LogFactory.getLog(DataCaptureService.class);
 	private final static int BUFFER_SIZE = 1000;
 
-	private IConnectionService connectionService;
+	private IConnectionService connService;
 	private ITypedObjectFactory typedObjectFactory;
 	private IDataService dataService;
 
@@ -71,16 +71,16 @@ public class DataCaptureService implements IDataCaptureService {
 		final SubMonitor monitor = SubMonitor.convert(m, "Capturing table data",
 				tablesToCapture.size() * 1000 + 10);
 		monitor.subTask("Initializing database connection");
-		final IDatabaseConnector dbConnector = connectionService.getDatabaseConnector(c);
+
 		final Collection<IVersionable<IDataSet>> datasets = new ArrayList<IVersionable<IDataSet>>();
-		Connection conn = null;
+		Connection sqlConn = null;
 		try {
-			conn = dbConnector.connect(c);
+			sqlConn = connService.connect(c);
 			monitor.worked(10);
 			for (IBasicTable t : tablesToCapture) {
 				try {
-					final IVersionable<IDataSet> dataset = fetchDataSet(conn, c.getDBVendor(), t,
-							t.getColumns(), monitor.newChild(1000));
+					final IVersionable<IDataSet> dataset = fetchDataSet(sqlConn, c.getDBVendor(),
+							t, t.getColumns(), monitor.newChild(1000));
 					// Checking for cancellation
 					if (monitor.isCanceled()) {
 						return datasets;
@@ -97,9 +97,9 @@ public class DataCaptureService implements IDataCaptureService {
 				}
 			}
 		} catch (SQLException e) {
-			if (conn != null) {
+			if (sqlConn != null) {
 				try {
-					conn.close();
+					sqlConn.close();
 				} catch (SQLException ex) {
 					LOGGER.error("Problems while closing database connection: " + ex.getMessage(),
 							ex);
@@ -233,7 +233,7 @@ public class DataCaptureService implements IDataCaptureService {
 	}
 
 	public void setConnectionService(IConnectionService connectionService) {
-		this.connectionService = connectionService;
+		this.connService = connectionService;
 	}
 
 	public void setTypedObjectFactory(ITypedObjectFactory typedFactory) {

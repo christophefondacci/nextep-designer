@@ -44,11 +44,11 @@ public class LocalDatabaseConnector implements IDatabaseConnector<Connection> {
 	@Override
 	public Connection connect(IConnection conn) throws SQLException {
 		String databaseName = conn.getDatabase();
-		// Looking at our data source map
-		// We do this because database connectors are statefull and initialized each time we need
-		// them. Here we don't want to re-establish Derby connection each time we connect so we
-		// store
-		// a reference to the connection pool in a static map.
+		/*
+		 * Looking at our data source map. We do this because database connectors are statefull and
+		 * initialized each time we need them. Here we don't want to re-establish Derby connection
+		 * each time we connect so we store a reference to the connection pool in a static map.
+		 */
 		connectionPoolDatasource = connectionPoolMap.get(databaseName);
 		if (connectionPoolDatasource == null) {
 			// No pool yet created, we instantiate it
@@ -90,7 +90,7 @@ public class LocalDatabaseConnector implements IDatabaseConnector<Connection> {
 	}
 
 	public Connection getConnection(IConnection conn) throws SQLException {
-		return null;
+		return connect(conn);
 	}
 
 }

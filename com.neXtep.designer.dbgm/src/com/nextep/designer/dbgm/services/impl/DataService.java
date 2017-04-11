@@ -63,6 +63,7 @@ import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.helpers.NameHelper;
 import com.nextep.designer.core.model.IConnection;
 import com.nextep.designer.core.model.ITypedObjectFactory;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.core.services.IRepositoryService;
 import com.nextep.designer.dbgm.model.DeltaType;
 import com.nextep.designer.dbgm.model.IColumnValue;
@@ -79,6 +80,11 @@ import com.nextep.designer.vcs.model.IVersionInfo;
 import com.nextep.designer.vcs.model.IVersionable;
 import com.nextep.designer.vcs.model.VersionableFactory;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
+
 public class DataService implements IDataService {
 
 	private final static Log LOGGER = LogFactory.getLog(DataService.class);
@@ -86,10 +92,11 @@ public class DataService implements IDataService {
 	private ITypedObjectFactory typedObjectFactory;
 	private IRepositoryService repositoryService;
 	private IStorageService storageService;
+	private IConnectionService connectionService;
 
 	@Override
 	public void addDataline(IDataSet set, IDataLine... lines) {
-		Connection conn = null;
+		Connection localConn = null;
 		PreparedStatement stmt = null;
 		IStorageHandle handle = set.getStorageHandle();
 		if (handle == null) {
@@ -97,9 +104,9 @@ public class DataService implements IDataService {
 			handle = set.getStorageHandle();
 		}
 		try {
-			conn = storageService.getLocalConnection();
+			localConn = storageService.getLocalConnection();
 			final String insertStmt = handle.getInsertStatement();
-			stmt = conn.prepareStatement(insertStmt);
+			stmt = localConn.prepareStatement(insertStmt);
 			for (IDataLine line : lines) {
 				int col = 1;
 				// For repository handles, we specify the row id
@@ -131,12 +138,12 @@ public class DataService implements IDataService {
 				stmt.addBatch();
 			}
 			stmt.executeBatch();
-			conn.commit();
+			localConn.commit();
 		} catch (SQLException e) {
-			LOGGER.error(
-					DBGMMessages.getString("service.data.addDatalineFailed") + e.getMessage(), e); //$NON-NLS-1$
+			LOGGER.error(DBGMMessages.getString("service.data.addDatalineFailed") + e.getMessage(), //$NON-NLS-1$
+					e);
 		} finally {
-			safeClose(null, stmt, conn, false);
+			safeClose(null, stmt, localConn, false);
 		}
 
 	}
@@ -225,19 +232,21 @@ public class DataService implements IDataService {
 					final boolean targetExists = fillResults(targetResults, rset,
 							datasetColumnCount + 2, md.getColumnCount());
 					if (LOGGER.isTraceEnabled()) {
-						LOGGER.warn("Source = " + sourceResults + " | Target = " + targetResults);
+						LOGGER.warn("Source = " + sourceResults + " | Target = " + targetResults); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					if (sourceExists && targetExists) {
 						final int columnsDeltaCount = targetResults.size() - sourceResults.size();
-						// Filling null columns when we got less source columns than target (since
-						// the update dataset is mirrored). Note that the situation when target has
-						// less columns than source is handled during the insert by filling null
-						// values.
+						/*
+						 * Filling null columns when we got less source columns than target (since
+						 * the update dataset is mirrored). Note that the situation when target has
+						 * less columns than source is handled during the insert by filling null
+						 * values.
+						 */
 						for (int i = 0; i < columnsDeltaCount; i++) {
 							sourceResults.add(null);
 						}
-						// We append our targets next to our results to inject them
-						// as meta data that will be used
+						// We append our targets next to our results to inject them as meta data
+						// that will be used.
 						sourceResults.addAll(targetResults);
 						fillStorageValues(updates.getStorageHandle(), sourceResults);
 						delta.computeDifferenceType(DifferenceType.DIFFER);
@@ -272,11 +281,11 @@ public class DataService implements IDataService {
 		try {
 			conn = storageService.getLocalConnection();
 			final String insertStmt = handle.getInsertStatement();
-			final int expectedArgCount = insertStmt.length() - insertStmt.replace("?", "").length();
+			final int expectedArgCount = insertStmt.length() - insertStmt.replace("?", "").length(); //$NON-NLS-1$ //$NON-NLS-2$
 			stmt = conn.prepareStatement(insertStmt);
 			int i = 1;
 			for (Object o : values) {
-				// TODO : Testing nullity to workaround some derby jdbc problem (tmeporary)
+				// TODO : Testing nullity to workaround some derby jdbc problem (temporary)
 				if (i <= expectedArgCount) {
 					if (o == null) {
 						stmt.setNull(i++, Types.VARCHAR);
@@ -284,16 +293,16 @@ public class DataService implements IDataService {
 						stmt.setObject(i++, o);
 					}
 				} else {
-					// Normally, this should append when source and target data sets have different
-					// structure (more columns in target or in source), but this might also hide
-					// some other bug (not sure about what will happen when column are swapped
-					// between
-					// source and target
-					// So we log in debug mode
+					/*
+					 * Normally, this should append when source and target data sets have different
+					 * structure (more columns in target or in source), but this might also hide
+					 * some other bug (not sure about what will happen when column are swapped
+					 * between source and target), so we log in debug mode.
+					 */
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("DataSet DEBUG : parameter " + (i++)
-								+ " ignored while filling storage handle for query " + insertStmt
-								+ " with values : " + values);
+						LOGGER.debug("DataSet DEBUG : parameter " + (i++) //$NON-NLS-1$
+								+ " ignored while filling storage handle for query " + insertStmt //$NON-NLS-1$
+								+ " with values : " + values); //$NON-NLS-1$
 					}
 				}
 			}
@@ -363,7 +372,8 @@ public class DataService implements IDataService {
 
 	private String buildSelectDataSetDeltaStatement(IDataSet source, IDataSet target) {
 		StringBuilder buf = new StringBuilder(500);
-		buf.append("select "); //$NON-NLS-1$
+
+		buf.append("SELECT "); //$NON-NLS-1$
 		final String srcPrefix = "s"; //$NON-NLS-1$
 		final String tgtPrefix = "t"; //$NON-NLS-1$
 		final String srcColDecl = buildPrefixedColumnDeclaration(srcPrefix, tgtPrefix, source);
@@ -373,28 +383,29 @@ public class DataService implements IDataService {
 		buf.append(srcColDecl);
 		buf.append(", "); //$NON-NLS-1$
 		buf.append(tgtColDecl);
-		buf.append(" from " + srcHandle.getStorageUnitName() + " " + srcPrefix); //$NON-NLS-1$ //$NON-NLS-2$
-		buf.append(" left join " + tgtHandle.getStorageUnitName() + " " + tgtPrefix + " on "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buf.append(" FROM " + srcHandle.getStorageUnitName() + " " + srcPrefix); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append(" LEFT JOIN " + tgtHandle.getStorageUnitName() + " " + tgtPrefix + " ON "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String join = buildJoin(srcPrefix, source, tgtPrefix, target);
 		buf.append(join);
 		final String whereDifferent = buildWhereDifferentClause(srcPrefix, source, tgtPrefix,
 				target);
 		buf.append(whereDifferent);
-		buf.append(" union all select "); //$NON-NLS-1$
+		buf.append(" UNION ALL SELECT "); //$NON-NLS-1$
 		buf.append(srcColDecl);
 		buf.append(", "); //$NON-NLS-1$
 		buf.append(tgtColDecl);
-		buf.append(" from " + srcHandle.getStorageUnitName() + " " + srcPrefix); //$NON-NLS-1$ //$NON-NLS-2$
-		buf.append(" right join " + tgtHandle.getStorageUnitName() + " " + tgtPrefix + " on "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buf.append(" FROM " + srcHandle.getStorageUnitName() + " " + srcPrefix); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append(" RIGHT JOIN " + tgtHandle.getStorageUnitName() + " " + tgtPrefix + " ON "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		buf.append(join);
-		buf.append(" where "); //$NON-NLS-1$
+		buf.append(" WHERE "); //$NON-NLS-1$
 		final String srcPkIsNull = buildPKColumnsIsNull(srcPrefix, source);
 		buf.append(srcPkIsNull);
+
 		return buf.toString();
 	}
 
 	/**
-	 * Builds the primary key join between source and target
+	 * Builds the primary key join between source and target.
 	 * 
 	 * @param srcPrefix source table alias
 	 * @param src source dataset
@@ -404,13 +415,16 @@ public class DataService implements IDataService {
 	 */
 	private String buildJoin(String srcPrefix, IDataSet src, String tgtPrefix, IDataSet tgt) {
 		final StringBuilder buf = new StringBuilder(100);
-		// When we have 2 repository dataset to compare, we join on the repository rowid, else
-		// we join on the PK of the table, and if not found we fallback by joining all columns
+		/*
+		 * When we have 2 repository dataset to compare, we join on the repository rowid, else we
+		 * join on the PK of the table, and if not found we fallback by joining all columns.
+		 */
 		if (src.getStorageHandle().isRepositoryHandle()
 				&& tgt.getStorageHandle().isRepositoryHandle()) {
 			// Joining on rowid
-			buf.append(srcPrefix + "." + IStorageService.ROWID_COLUMN_NAME + "=" + tgtPrefix + "." //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					+ IStorageService.ROWID_COLUMN_NAME);
+			buf.append(srcPrefix).append(".").append(IStorageService.ROWID_COLUMN_NAME) //$NON-NLS-1$
+					.append(" = ").append(tgtPrefix).append(".") //$NON-NLS-1$ //$NON-NLS-2$
+					.append(IStorageService.ROWID_COLUMN_NAME);
 		} else {
 			List<IBasicColumn> joinCols = getPrimaryKeyColumns(src);
 			String separator = ""; //$NON-NLS-1$
@@ -452,13 +466,14 @@ public class DataService implements IDataService {
 	private String buildWhereDifferentClause(String srcAlias, IDataSet src, String tgtAlias,
 			IDataSet tgt) {
 		final StringBuilder buf = new StringBuilder(100);
-		buf.append(" where "); //$NON-NLS-1$
+		buf.append(" WHERE "); //$NON-NLS-1$
 		List<IBasicColumn> pkCols = Collections.emptyList();
 		final boolean isRepositoryComparison = src.getStorageHandle().isRepositoryHandle()
 				&& tgt.getStorageHandle().isRepositoryHandle();
+
 		if (isRepositoryComparison) {
-			buf.append(tgtAlias + "." + IStorageService.ROWID_COLUMN_NAME + " is null"); //$NON-NLS-1$ //$NON-NLS-2$
-			buf.append(" or " + srcAlias + "." + IStorageService.ROWID_COLUMN_NAME + "<>" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			buf.append(tgtAlias + "." + IStorageService.ROWID_COLUMN_NAME + " IS NULL"); //$NON-NLS-1$ //$NON-NLS-2$
+			buf.append(" OR " + srcAlias + "." + IStorageService.ROWID_COLUMN_NAME + "<>" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ tgtAlias + "." + IStorageService.ROWID_COLUMN_NAME); //$NON-NLS-1$
 		} else {
 			pkCols = getPrimaryKeyColumns(src);
@@ -466,28 +481,29 @@ public class DataService implements IDataService {
 			final String targetPKIsNull = buildPKColumnsIsNull(tgtAlias, tgt);
 			buf.append(targetPKIsNull);
 		}
+
 		if (!pkCols.isEmpty() || isRepositoryComparison) {
 			List<String> joinColName = NameHelper.buildNameList(pkCols);
-			String separator = " or "; //$NON-NLS-1$
+			String separator = " OR "; //$NON-NLS-1$
 			for (IBasicColumn c : src.getColumns()) {
 				if (tgt.getColumnsRef().contains(c.getReference())) {
 					if (!joinColName.contains(c.getName())) {
 						buf.append(separator);
 						buf.append('(');
-						buf.append(buildPrefixedCol(srcAlias, c) + " is not null"); //$NON-NLS-1$
-						buf.append(" and " + buildPrefixedCol(tgtAlias, c) + " is null"); //$NON-NLS-1$ //$NON-NLS-2$
-						buf.append(") or ("); //$NON-NLS-1$
-						buf.append(buildPrefixedCol(srcAlias, c) + " is null"); //$NON-NLS-1$
-						buf.append(" and " + buildPrefixedCol(tgtAlias, c) + " is not null"); //$NON-NLS-1$ //$NON-NLS-2$
-						buf.append(") or "); //$NON-NLS-1$
+						buf.append(buildPrefixedCol(srcAlias, c) + " IS NOT NULL"); //$NON-NLS-1$
+						buf.append(" AND " + buildPrefixedCol(tgtAlias, c) + " IS NULL"); //$NON-NLS-1$ //$NON-NLS-2$
+						buf.append(") OR ("); //$NON-NLS-1$
+						buf.append(buildPrefixedCol(srcAlias, c) + " IS NULL"); //$NON-NLS-1$
+						buf.append(" AND " + buildPrefixedCol(tgtAlias, c) + " IS NOT NULL"); //$NON-NLS-1$ //$NON-NLS-2$
+						buf.append(") OR "); //$NON-NLS-1$
 						buf.append(buildPrefixedCol(srcAlias, c)
 								+ "<>" + buildPrefixedCol(tgtAlias, c)); //$NON-NLS-1$
-						separator = " or "; //$NON-NLS-1$
+						separator = " OR "; //$NON-NLS-1$
 					}
 				} else {
 					buf.append(separator);
-					buf.append(buildPrefixedCol(srcAlias, c) + " is not null"); //$NON-NLS-1$
-					separator = " or "; //$NON-NLS-1$
+					buf.append(buildPrefixedCol(srcAlias, c) + " IS NOT NULL"); //$NON-NLS-1$
+					separator = " OR "; //$NON-NLS-1$
 				}
 			}
 		}
@@ -518,27 +534,29 @@ public class DataService implements IDataService {
 
 	/**
 	 * Builds a string with a comma-separated list of the dataset columns, prefixed by the provided
-	 * string. All columns are aliased by the prefix immediatly followed by a counter. For example,
+	 * string. All columns are aliased by the prefix immediately followed by a counter. For example,
 	 * calling this method with a "s" prefix and a dataset with column A B and C would give :<br>
 	 * <code>s.A s1, s.B s2, s.C s3</code>
 	 * 
 	 * @param prefix column name prefix
 	 * @param set dataset to generate column list for
-	 * @return a comma seperated string with prefixed and aliased columns
+	 * @return a comma separated string with prefixed and aliased columns
 	 */
 	private String buildPrefixedColumnDeclaration(String prefix, String otherPrefix, IDataSet set) {
 		final StringBuilder buf = new StringBuilder(100);
 		String separator = ""; //$NON-NLS-1$
 		int i = 1;
-		// If current table is not a repository table, we try to fetch other's table rowid which is
-		// our only chance to get a rowid
+
+		/*
+		 * If current table is not a repository table, we try to fetch other's table rowid which is
+		 * our only chance to get a rowid.
+		 */
 		String rowIdPrefix = prefix;
 		if (!set.getStorageHandle().isRepositoryHandle()) {
 			rowIdPrefix = otherPrefix;
 		}
 		buf.append(rowIdPrefix + "." + IStorageService.ROWID_COLUMN_NAME); //$NON-NLS-1$
 		separator = ", "; //$NON-NLS-1$
-		// }
 		for (IBasicColumn c : set.getColumns()) {
 			buf.append(separator + buildPrefixedCol(prefix, c) + " " + prefix + i); //$NON-NLS-1$
 			separator = ", "; //$NON-NLS-1$
@@ -550,12 +568,14 @@ public class DataService implements IDataService {
 	@Override
 	public void loadDataLinesFromRepository(IDataSet dataSet, IProgressMonitor m) {
 		SubMonitor monitor = SubMonitor.convert(m, 100000);
+
 		// Check if already loaded
 		if (dataSet.getStorageHandle() != null || dataSet.getUID() == null) {
 			return;
 		} else {
 			storageService.createDataSetStorage(dataSet);
 		}
+
 		// Make sure that data set version is tagged
 		Session session = HibernateUtil.getInstance().getSandBoxSession();
 		final IVersionInfo version = VersionHelper.getVersionInfo(dataSet);
@@ -566,7 +586,7 @@ public class DataService implements IDataService {
 			CorePlugin.getIdentifiableDao().save(version, true, session, true);
 		}
 		// Connecting explicitly to repository
-		Connection conn = null;
+		Connection repoConn = null;
 		PreparedStatement stmt = null;
 		ResultSet rset = null;
 		// Building reference map to avoid instantiating references
@@ -577,10 +597,10 @@ public class DataService implements IDataService {
 		// Building version tree id list
 		List<Long> idList = buildVersionIdHistoryList(version);
 		try {
-			conn = getRepositoryConnection();
+			repoConn = getRepositoryConnection();
 			monitor.subTask(DBGMMessages.getString("service.data.executingRepositoryQuery")); //$NON-NLS-1$
 			final String selectStmt = buildSelectRepositoryValuesStmt(idList);
-			stmt = conn.prepareStatement(selectStmt);
+			stmt = repoConn.prepareStatement(selectStmt);
 			// "SELECT dlc.dset_row_id, dlv.column_refid, dlv.column_value "
 			// + "FROM dbgm_dset_rows dlc LEFT JOIN dbgm_dset_rows dln "
 			// + "       ON dln.dset_refid = dlc.dset_refid "
@@ -604,6 +624,7 @@ public class DataService implements IDataService {
 			IDataLine line = typedObjectFactory.create(IDataLine.class);
 			long lineId;
 			boolean isEmpty = true;
+
 			// Preparing line buffer
 			Collection<IDataLine> bufferedLines = new ArrayList<IDataLine>(LINE_BUFFER_SIZE);
 			long counter = 0;
@@ -612,6 +633,7 @@ public class DataService implements IDataService {
 					return;
 				}
 				lineId = rset.getLong(1);
+
 				// If new row id, new line
 				if (line.getRowId() != lineId && !isEmpty) {
 					bufferedLines.add(line);
@@ -631,8 +653,11 @@ public class DataService implements IDataService {
 				final long colRefId = rset.getLong(2);
 				final String strValue = rset.getString(3);
 				final IReference colRef = colRefMap.get(colRefId);
-				// We might have unresolved column reference when the column has been removed
-				// from the dataset. In this case we simply ignore the value
+
+				/*
+				 * We might have unresolved column reference when the column has been removed from
+				 * the dataset. In this case we simply ignore the value.
+				 */
 				if (colRef != null) {
 					final Object value = storageService.decodeValue(colRef, strValue);
 					// Preparing column value
@@ -652,7 +677,7 @@ public class DataService implements IDataService {
 			throw new ErrorException(
 					DBGMMessages.getString("service.data.loadRepositoryDataSetError") + e.getMessage(), e); //$NON-NLS-1$
 		} finally {
-			safeClose(rset, stmt, conn, true);
+			safeClose(rset, stmt, repoConn, true);
 		}
 		handleDataSetStructuralChanges(dataSet);
 	}
@@ -704,21 +729,32 @@ public class DataService implements IDataService {
 
 	private String buildSelectRepositoryValuesStmt(List<Long> idList) {
 		final StringBuilder buf = new StringBuilder();
-		buf.append("SELECT r.dset_row_id, rv.column_refid, rv.column_value" //$NON-NLS-1$
-				+ " FROM (    SELECT ds.dset_row_id, MAX(rv.version_tag) max_tag" //$NON-NLS-1$
-				+ "    FROM DBGM_DSET_ROWS ds, REP_VERSIONS rv" //$NON-NLS-1$
-				+ "    WHERE ds.dset_version_id = rv.version_id" //$NON-NLS-1$
-				+ "      AND rv.vref_id=? and rv.VERSION_ID in ("); //$NON-NLS-1$
+		buf.append("SELECT r.dset_row_id, rv.column_refid, rv.column_value " //$NON-NLS-1$
+				+ "FROM ( " //$NON-NLS-1$
+				+ "    SELECT ds.dset_row_id, MAX(rv.version_tag) max_tag " //$NON-NLS-1$
+				+ "    FROM dbgm_dset_rows ds " //$NON-NLS-1$
+				+ "      INNER JOIN rep_versions rv " //$NON-NLS-1$
+				+ "        ON rv.version_id = ds.dset_version_id " //$NON-NLS-1$
+				+ "    WHERE rv.vref_id = ? " //$NON-NLS-1$
+				+ "      AND rv.is_dropped = 'N' " //$NON-NLS-1$
+				+ "      AND rv.version_id IN ( "); //$NON-NLS-1$
 		String separator = ""; //$NON-NLS-1$
 		for (Long id : idList) {
 			buf.append(separator + "?"); //$NON-NLS-1$
 			separator = ","; //$NON-NLS-1$
 		}
-		buf.append(") and rv.IS_DROPPED='N'" + "    GROUP BY ds.dset_row_id" //$NON-NLS-1$ //$NON-NLS-2$
-				+ "  ) t, REP_VERSIONS v, DBGM_DSET_ROWS r, DBGM_DSET_ROW_VALUES rv" //$NON-NLS-1$
-				+ " WHERE v.vref_id = ?  AND v.version_tag = t.max_tag and v.IS_DROPPED='N'" //$NON-NLS-1$
-				+ "  AND r.dset_row_id = t.dset_row_id" //$NON-NLS-1$
-				+ "  AND r.dset_version_id = v.version_id  AND rv.drow_id = r.drow_id"); //$NON-NLS-1$
+		buf.append("      ) " //$NON-NLS-1$
+				+ "    GROUP BY ds.dset_row_id " //$NON-NLS-1$
+				+ "  ) t " //$NON-NLS-1$
+				+ "  INNER JOIN rep_versions v " //$NON-NLS-1$
+				+ "    ON v.version_tag = t.max_tag " //$NON-NLS-1$
+				+ "  INNER JOIN dbgm_dset_rows r " //$NON-NLS-1$
+				+ "    ON r.dset_row_id = t.dset_row_id " //$NON-NLS-1$
+				+ "      AND r.dset_version_id = v.version_id " //$NON-NLS-1$
+				+ "  INNER JOIN dbgm_dset_row_values rv " //$NON-NLS-1$
+				+ "    ON rv.drow_id = r.drow_id " //$NON-NLS-1$
+				+ "WHERE v.vref_id = ? " //$NON-NLS-1$
+				+ "  AND v.is_dropped = 'N' "); //$NON-NLS-1$
 		return buf.toString();
 	}
 
@@ -784,13 +820,18 @@ public class DataService implements IDataService {
 		try {
 			repoConn = getRepositoryConnection();
 			repoConn.setAutoCommit(false);
-			stmt = repoConn
-					.prepareStatement("delete from DBGM_DSET_ROW_VALUES where DROW_ID in (select r.DROW_ID from DBGM_DSET_ROWS r where DSET_VERSION_ID=?)"); //$NON-NLS-1$
+			stmt = repoConn.prepareStatement("DELETE FROM dbgm_dset_row_values rv " //$NON-NLS-1$
+					+ "WHERE rv.drow_id IN ( " //$NON-NLS-1$
+					+ "    SELECT r.drow_id " //$NON-NLS-1$
+					+ "    FROM dbgm_dset_rows r " //$NON-NLS-1$
+					+ "    WHERE r.dset_version_id = ? " //$NON-NLS-1$
+					+ "  ) "); //$NON-NLS-1$
 			stmt.setLong(1, set.getUID().rawId());
 			stmt.execute();
 			stmt.close();
 			// Now deleting lines
-			stmt = repoConn.prepareStatement("delete from DBGM_DSET_ROWS where DSET_VERSION_ID=?"); //$NON-NLS-1$
+			stmt = repoConn.prepareStatement("DELETE FROM dbgm_dset_rows r " //$NON-NLS-1$
+					+ "WHERE r.dset_version_id = ? "); //$NON-NLS-1$
 			stmt.setLong(1, set.getUID().rawId());
 			stmt.execute();
 			stmt.close();
@@ -803,10 +844,10 @@ public class DataService implements IDataService {
 	}
 
 	private Connection getRepositoryConnection() throws SQLException {
-		final IConnection repoConnection = repositoryService.getRepositoryConnection();
-		final Connection conn = repositoryService.getRepositoryConnector().connect(repoConnection);
-		conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-		return conn;
+		final IConnection repoConn = repositoryService.getRepositoryConnection();
+		final Connection jdbcConn = connectionService.connect(repoConn);
+		jdbcConn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+		return jdbcConn;
 	}
 
 	private void saveDataLinesToRepository(IDataSet dataSet, IDataSet dataSetContents,
@@ -818,7 +859,8 @@ public class DataService implements IDataService {
 		if (handle == null) {
 			handle = storageService.createDataSetStorage(dataSet);
 		}
-		Connection conn = null;
+
+		Connection derbyConn = null;
 		Statement stmt = null;
 		ResultSet rset = null;
 		Connection repoConn = null;
@@ -829,19 +871,25 @@ public class DataService implements IDataService {
 		try {
 			repoConn = getRepositoryConnection();
 			repoConn.setAutoCommit(false);
-			// We handle the hibernate session specifically to boost the import process
+
+			// We handle the Hibernate session specifically to boost the import process
 			s = HibernateUtil.getInstance().getSandBoxSession();
 			s.clear();
 			t = s.beginTransaction();
-			// Getting our local derby connection
-			conn = storageService.getLocalConnection();
-			stmt = conn.createStatement();
 			// Our prepared INSERT rows statement
-			insertStmt = repoConn
-					.prepareStatement("insert into DBGM_DSET_ROW_VALUES (DROW_ID,COLUMN_REFID,COLUMN_VALUE) values (?,?,?)"); //$NON-NLS-1$
+			insertStmt = repoConn.prepareStatement("INSERT INTO dbgm_dset_row_values ( " //$NON-NLS-1$
+					+ "  drow_id, column_refid, column_value " //$NON-NLS-1$
+					+ ") VALUES ( " //$NON-NLS-1$
+					+ "  ?, ?, ? " //$NON-NLS-1$
+					+ ") "); //$NON-NLS-1$
+
+			// Getting our local derby connection
+			derbyConn = storageService.getLocalConnection();
+			stmt = derbyConn.createStatement();
+
 			// Selecting data from derby local storage
 			String selectStmt = handle.getSelectStatement();
-			selectStmt = selectStmt.replace("select", "select " + IStorageService.ROWID_COLUMN_NAME //$NON-NLS-1$ //$NON-NLS-2$
+			selectStmt = selectStmt.replace("SELECT", "SELECT " + IStorageService.ROWID_COLUMN_NAME //$NON-NLS-1$ //$NON-NLS-2$
 					+ ","); //$NON-NLS-1$
 			rset = stmt.executeQuery(selectStmt);
 			final List<IReference> colRefs = dataSet.getColumnsRef();
@@ -901,7 +949,7 @@ public class DataService implements IDataService {
 			throw new ErrorException(
 					DBGMMessages.getString("service.data.saveDatalineFailed") + e.getMessage(), e); //$NON-NLS-1$
 		} finally {
-			safeClose(rset, stmt, conn, false);
+			safeClose(rset, stmt, derbyConn, false);
 			safeClose(null, insertStmt, repoConn, true);
 		}
 	}
@@ -917,12 +965,9 @@ public class DataService implements IDataService {
 	public void setStorageService(IStorageService storageService) {
 		this.storageService = storageService;
 	}
-	/***
-	 * SELECT dlc.dset_refid, dlc.dlin_no, dlc.version_tag, dlv.column_refid, dlv.column_value FROM
-	 * dbgm_dset_lines dlc LEFT JOIN dbgm_dset_lines dln ON dln.dset_refid = dlc.dset_refid AND
-	 * dln.dlin_no = dlc.dlin_no AND dln.version_tag > dlc.version_tag AND dln.version_tag <=
-	 * 100000100 JOIN dbgm_dset_line_values dlv ON dlv.dln2_id = dlc.dln2_id WHERE dlc.dset_refid =
-	 * 1 AND dlc.version_tag <= 100000100 AND dln.dset_refid IS NULL ORDER BY dlc.dlin_no,
-	 * dlc.version_tag ;
-	 */
+
+	public void setConnectionService(IConnectionService connectionService) {
+		this.connectionService = connectionService;
+	}
+
 }

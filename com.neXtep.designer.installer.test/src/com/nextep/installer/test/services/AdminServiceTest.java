@@ -103,7 +103,7 @@ public class AdminServiceTest {
 				.getName());
 
 		// Building fake target
-		IDatabaseTarget fakeTarget = new DatabaseTarget("invalidTarget", "password", "db",
+		IDatabaseTarget fakeTarget = new DatabaseTarget("invalidTarget", "password", "db", "",
 				"127.0.0.1", "3306", DBVendor.MYSQL, null);
 		configurator.setTarget(fakeTarget);
 		List<IRequirement> reqs = new ArrayList<IRequirement>();

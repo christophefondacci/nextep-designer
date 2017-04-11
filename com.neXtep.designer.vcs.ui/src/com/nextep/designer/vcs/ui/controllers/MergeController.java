@@ -62,7 +62,7 @@ import com.nextep.datadesigner.vcs.services.VersionHelper;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.dao.IIdentifiableDAO;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.core.services.IRepositoryService;
 import com.nextep.designer.vcs.VCSPlugin;
 import com.nextep.designer.vcs.model.IActivity;
@@ -84,7 +84,8 @@ import com.nextep.designer.vcs.ui.services.VersionUIHelper;
  */
 public class MergeController extends InvokableController {
 
-	private static Log log = LogFactory.getLog(MergeController.class);
+	private static final Log LOGGER = LogFactory.getLog(MergeController.class);
+
 	private static MergeController instance;
 
 	public MergeController() {
@@ -149,10 +150,10 @@ public class MergeController extends InvokableController {
 				// }
 				MergeResultGUI mergeGUI = new MergeResultGUI(true, comp);
 				mergeGUI.setIsRepositoryMerge(true);
-				mergeGUI.setRootText("Source release " + wiz.getFromRelease().getLabel() + " ["
-						+ wiz.getFromRelease().getBranch().getName() + "]",
-						"Current target release " + wiz.getToRelease().getLabel() + " ["
-								+ wiz.getToRelease().getBranch().getName() + "]", "Merge result");
+				mergeGUI.setRootText("Source release " + wiz.getFromRelease().getLabel() + " [" //$NON-NLS-2$
+						+ wiz.getFromRelease().getBranch().getName() + "]", //$NON-NLS-1$
+						"Current target release " + wiz.getToRelease().getLabel() + " [" //$NON-NLS-2$
+								+ wiz.getToRelease().getBranch().getName() + "]", "Merge result"); //$NON-NLS-1$
 				boolean doItAgain = true;
 				while (doItAgain) {
 					invokeGUI(new GUIWrapper(mergeGUI, "Merge results", 800, 600));
@@ -161,8 +162,8 @@ public class MergeController extends InvokableController {
 						// IF not we ask if the user would like to edit again
 						doItAgain = MessageDialog.openQuestion(VCSUIPlugin.getDefault()
 								.getWorkbench().getActiveWorkbenchWindow().getShell(),
-								VCSUIMessages.getString("mergeUnresolvedTitle"),
-								VCSUIMessages.getString("mergeUnresolved"));
+								VCSUIMessages.getString("mergeUnresolvedTitle"), //$NON-NLS-1$
+								VCSUIMessages.getString("mergeUnresolved")); //$NON-NLS-1$
 						if (!doItAgain) {
 							throw new CancelException(
 									"Merge operation aborted due to unresolved conflicts.");
@@ -192,7 +193,7 @@ public class MergeController extends InvokableController {
 							try {
 								// Building the merge result
 								final String activityText = "Merged "
-										+ wiz.getFromRelease().getLabel() + " -> "
+										+ wiz.getFromRelease().getLabel() + " -> " //$NON-NLS-1$
 										+ wiz.getFromRelease().getBranch().getName();
 								final IVersioningService versioningService = VCSPlugin
 										.getService(IVersioningService.class);
@@ -205,8 +206,8 @@ public class MergeController extends InvokableController {
 									if (((IVersionable<?>) mergedObject).getVersion().getStatus() == IVersionStatus.CHECKED_IN) {
 										final boolean forceMerge = MessageDialog.openQuestion(
 												Display.getCurrent().getActiveShell(),
-												VCSUIMessages.getString("mergeDidNothingTitle"),
-												VCSUIMessages.getString("mergeDidNothing"));
+												VCSUIMessages.getString("mergeDidNothingTitle"), //$NON-NLS-1$
+												VCSUIMessages.getString("mergeDidNothing")); //$NON-NLS-1$
 										if (forceMerge) {
 											comp.getMergeInfo().setMergeProposal(null);
 											mergedObject = (IVersionable<?>) m.buildMergedObject(
@@ -219,7 +220,7 @@ public class MergeController extends InvokableController {
 							} finally {
 								Observable.activateListeners();
 							}
-							log.info("Merged successfully!");
+							LOGGER.info("Merged successfully!");
 							// Refreshing progress
 							monitor.worked(1);
 							monitor.setTaskName("Updating view contents...");
@@ -245,8 +246,8 @@ public class MergeController extends InvokableController {
 							// sandbox)
 
 							if (parent instanceof IWorkspace) {
-								parent = (IVersionContainer) identifiableDao.load(
-										Workspace.class, parent.getUID(), session, false);
+								parent = (IVersionContainer) identifiableDao.load(Workspace.class,
+										parent.getUID(), session, false);
 							} else {
 								parent = (IVersionContainer) identifiableDao.load(
 										IVersionable.class, parent.getUID(), session, false);
@@ -267,19 +268,27 @@ public class MergeController extends InvokableController {
 							// But logs it properly in the logs !
 							final IRepositoryService repositoryService = CorePlugin
 									.getRepositoryService();
-							final IDatabaseConnector connector = repositoryService
-									.getRepositoryConnector();
+							final IConnectionService connectionService = CorePlugin
+									.getConnectionService();
 							final IConnection repositoryConnection = repositoryService
 									.getRepositoryConnection();
 							Connection conn = null;
 							PreparedStatement stmt = null;
 							try {
-								conn = connector.connect(repositoryConnection);
+								conn = connectionService.connect(repositoryConnection);
 								String insertSql = null;
 								if (parent instanceof IWorkspace) {
-									insertSql = "INSERT INTO REP_VIEW_CONTENTS (VIEW_ID,VERSION_ID) VALUES (?,?)"; //$NON-NLS-1$
+									insertSql = "INSERT INTO rep_view_contents ( " //$NON-NLS-1$
+											+ "  view_id, version_id " //$NON-NLS-1$
+											+ ") VALUES ( " //$NON-NLS-1$
+											+ "  ?, ? " //$NON-NLS-1$
+											+ ") "; //$NON-NLS-1$
 								} else {
-									insertSql = "INSERT INTO REP_MODULE_CONTENTS (MODULE_ID,VERSION_ID) VALUES (?,?)"; //$NON-NLS-1$
+									insertSql = "INSERT INTO rep_module_contents ( " //$NON-NLS-1$
+											+ "  module_id, version_id " //$NON-NLS-1$
+											+ ") VALUES ( " //$NON-NLS-1$
+											+ "  ?, ? " //$NON-NLS-1$
+											+ ") "; //$NON-NLS-1$
 								}
 								stmt = conn.prepareStatement(insertSql);
 								stmt.setLong(1, parent.getUID().rawId());
@@ -289,20 +298,20 @@ public class MergeController extends InvokableController {
 									conn.commit();
 								}
 							} catch (SQLException e) {
-								log.error(e);
+								LOGGER.error(e);
 							} finally {
 								if (stmt != null) {
 									try {
 										stmt.close();
 									} catch (SQLException e) {
-										log.error(e);
+										LOGGER.error(e);
 									}
 								}
 								if (conn != null) {
 									try {
 										conn.close();
 									} catch (SQLException e) {
-										log.error(e);
+										LOGGER.error(e);
 									}
 								}
 							}
@@ -313,7 +322,7 @@ public class MergeController extends InvokableController {
 							// Merger.save(mergedObject);
 							// Merger.save(parent);
 							monitor.worked(1);
-							log.info("Please wait while view is reloading...");
+							LOGGER.info("Please wait while view is reloading...");
 							monitor.setTaskName("Finished: Reloading view...");
 							monitor.done();
 							// END OF the fixme part
@@ -326,7 +335,7 @@ public class MergeController extends InvokableController {
 				}
 
 				// Restoring a new view
-				log.info("Refreshing current view");
+				LOGGER.info("Refreshing current view");
 				VersionUIHelper.changeView(VersionHelper.getCurrentView().getUID());
 
 				// Designer.getInstance().invokeSelection("com.neXtep.designer.vcs.SelectionInvoker",
@@ -348,9 +357,6 @@ public class MergeController extends InvokableController {
 			this.merger = merger;
 		}
 
-		/**
-		 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
-		 */
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException,
 				InterruptedException {
@@ -376,10 +382,6 @@ public class MergeController extends InvokableController {
 			count += i.getSubItems().size();
 		}
 
-		/**
-		 * @see com.nextep.datadesigner.model.IEventListener#handleEvent(com.nextep.datadesigner.model.ChangeEvent,
-		 *      com.nextep.datadesigner.model.IObservable, java.lang.Object)
-		 */
 		@Override
 		public void handleEvent(ChangeEvent event, IObservable source, Object data) {
 			monitor.setTaskName((String) data);
@@ -407,4 +409,5 @@ public class MergeController extends InvokableController {
 			return true;
 		}
 	}
+
 }

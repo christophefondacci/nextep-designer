@@ -31,9 +31,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import org.eclipse.core.runtime.IProgressMonitor;
-
 import com.neXtep.shared.parser.JdbcScriptParser;
 import com.neXtep.shared.parser.ParsedItem;
 import com.nextep.datadesigner.sqlgen.impl.AbstractSQLSubmitter;
@@ -45,7 +43,6 @@ import com.nextep.datadesigner.sqlgen.services.SQLGenUtil;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.DBVendor;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.sqlgen.helpers.CaptureHelper;
 import com.nextep.designer.sqlgen.model.ISQLParser;
 
@@ -55,6 +52,10 @@ import com.nextep.designer.sqlgen.model.ISQLParser;
  */
 public class JdbcSQLSubmitter extends AbstractSQLSubmitter {
 
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("EEE d MMM yyyy"); //$NON-NLS-1$
+	private static final String QUERY_SEPARATOR = "--------------"; //$NON-NLS-1$
+	private static final String JDBC_PROMPT = "JDBC> "; //$NON-NLS-1$
+
 	@Override
 	protected void abort() {
 	}
@@ -62,31 +63,32 @@ public class JdbcSQLSubmitter extends AbstractSQLSubmitter {
 	@Override
 	protected boolean doSubmit(IProgressMonitor monitor, ISQLScript script, IConnection conn)
 			throws SQLException, IOException {
-		IDatabaseConnector<?> connector = CorePlugin.getConnectionService().getDatabaseConnector(
-				conn.getDBVendor());
-		Connection c = null;
-		SimpleDateFormat f = new SimpleDateFormat("EEE d MMM yyyy"); //$NON-NLS-1$
-		getConsole()
-				.log("neXtep JDBC database client 1.0.0.0 - Started on " + f.format(new Date())); //$NON-NLS-1$
+		getConsole().log("neXtep JDBC database client 1.0.0.0 - Started on " //$NON-NLS-1$
+				+ DATE_FORMATTER.format(new Date()));
 		getConsole().log("Copyright (c) 2007-2011 neXtep Softwares."); //$NON-NLS-1$
 		getConsole().log(""); //$NON-NLS-1$
+
+		Connection jdbcConn = null;
 		try {
-			c = connector.connect(conn);
-			process(conn.getDBVendor(), script, c);
+			jdbcConn = CorePlugin.getConnectionService().connect(conn);
+			process(conn.getDBVendor(), script, jdbcConn);
 		} finally {
-			if (c != null) {
-				c.close();
+			if (jdbcConn != null) {
+				jdbcConn.close();
 			}
 		}
+
 		getConsole().log(""); //$NON-NLS-1$
 		getConsole().log("JDBC client terminated."); //$NON-NLS-1$
+
 		return true;
 	}
 
 	private void process(DBVendor vendor, ISQLScript script, Connection c) throws SQLException,
 			IOException {
-		ISQLParser sqlParser = GeneratorFactory.getSQLParser(vendor);
+		final ISQLParser sqlParser = GeneratorFactory.getSQLParser(vendor);
 		String stmtDelimiter = sqlParser.getStatementDelimiter();
+
 		if (vendor == DBVendor.ORACLE) {
 			stmtDelimiter = "\r\n" + stmtDelimiter + "\r\n"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -114,9 +116,9 @@ public class JdbcSQLSubmitter extends AbstractSQLSubmitter {
 					break;
 				case STATEMENT:
 					String query = item.getContent();
-					log("--------------"); //$NON-NLS-1$
+					log(QUERY_SEPARATOR);
 					log(query);
-					log("--------------"); //$NON-NLS-1$
+					log(QUERY_SEPARATOR);
 					try {
 						String msg = "Query OK, "; //$NON-NLS-1$
 						long start = System.currentTimeMillis();
@@ -160,7 +162,7 @@ public class JdbcSQLSubmitter extends AbstractSQLSubmitter {
 			}
 			r.close();
 		} else {
-			getConsole().log("JDBC> " + text); //$NON-NLS-1$
+			getConsole().log(JDBC_PROMPT + text);
 		}
 	}
 

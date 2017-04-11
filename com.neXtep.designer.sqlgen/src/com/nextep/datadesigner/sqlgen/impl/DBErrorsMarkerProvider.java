@@ -44,11 +44,11 @@ import com.nextep.datadesigner.vcs.services.VersionHelper;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.factories.ICoreFactory;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.core.model.IMarker;
 import com.nextep.designer.core.model.IMarkerProvider;
 import com.nextep.designer.core.model.MarkerScope;
 import com.nextep.designer.core.model.MarkerType;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.sqlgen.SQLGenPlugin;
 import com.nextep.designer.sqlgen.helpers.CaptureHelper;
 import com.nextep.designer.sqlgen.model.ErrorInfo;
@@ -59,10 +59,11 @@ import com.nextep.designer.vcs.model.IVersionable;
 
 public class DBErrorsMarkerProvider extends Observable implements IMarkerProvider {
 
+	private static final Log LOGGER = LogFactory.getLog(DBErrorsMarkerProvider.class);
+
 	private MultiValueMap markersMap;
 	private boolean validated = false;
 	private Long validationTimeout = null;
-	private static final Log log = LogFactory.getLog(DBErrorsMarkerProvider.class);
 
 	public DBErrorsMarkerProvider() {
 		markersMap = new MultiValueMap();
@@ -101,62 +102,70 @@ public class DBErrorsMarkerProvider extends Observable implements IMarkerProvide
 	private synchronized void recompileAndLoadMarkers() {
 		if (!isValidated()) {
 			final ICoreFactory coreFactory = CorePlugin.getService(ICoreFactory.class);
+
 			// Resetting markers
 			markersMap = new MultiValueMap();
+
 			// Fetching for all connections
 			final ITargetSet targetSet = VCSPlugin.getViewService().getCurrentViewTargets();
 			if (targetSet != null) {
+				final ICaptureService captureService = SQLGenPlugin
+						.getService(ICaptureService.class);
+				final IConnectionService connectionService = SQLGenPlugin
+						.getService(IConnectionService.class);
+
 				final Collection<IConnection> connections = targetSet.getTarget(SQLGenUtil
 						.getDefaultTargetType());
-				for (IConnection conn : connections) {
-					final IDatabaseConnector<?> connector = CorePlugin.getConnectionService()
-							.getDatabaseConnector(conn.getDBVendor());
-					Connection c = null;
+
+				for (IConnection dbConn : connections) {
+					Connection jdbcConn = null;
 					Statement stmt = null;
 					try {
-						c = connector.connect(conn);
-						stmt = c.createStatement();
+						jdbcConn = connectionService.connect(dbConn);
+						stmt = jdbcConn.createStatement();
+
 						// Recompiling first
-						stmt.execute("begin  dbms_utility.compile_schema(user,false); end;");
+						stmt.execute("BEGIN DBMS_UTILITY.COMPILE_SCHEMA(USER, FALSE); END;"); //$NON-NLS-1$
 						// Fetching errors
 
 					} catch (SQLException e) {
-						markersMap.put(conn, coreFactory.createMarker(conn, MarkerType.ERROR,
+						markersMap.put(dbConn, coreFactory.createMarker(dbConn, MarkerType.ERROR,
 								"Connection failed: " + e.getMessage()));
 						// Setting up a timeout before retrying
 						validationTimeout = System.currentTimeMillis() + 120000;
 					} finally {
 						CaptureHelper.safeClose(null, stmt);
-						if (c != null) {
+						if (jdbcConn != null) {
 							try {
-								c.close();
+								jdbcConn.close();
 							} catch (SQLException e) {
-								log.error("Unable to close connection", e);
+								LOGGER.error("Unable to close connection", e);
 							}
 						}
 					}
-					final ICaptureService captureService = SQLGenPlugin
-							.getService(ICaptureService.class);
-					final Collection<ErrorInfo> errors = captureService.getErrorsFromDatabase(conn,
-							new NullProgressMonitor());
+
+					final Collection<ErrorInfo> errors = captureService.getErrorsFromDatabase(
+							dbConn, new NullProgressMonitor());
+
 					// Hashing current view contents by name
 					Map<String, ITypedObject> objMap = hashCurrentViewByName();
 					for (ErrorInfo i : errors) {
 						final ITypedObject o = objMap.get(i.getObjectName());
 						IMarker m = coreFactory.createMarker(o,
-								"ERROR".equals(i.getAttribute()) ? MarkerType.ERROR
+								"ERROR".equals(i.getAttribute()) ? MarkerType.ERROR //$NON-NLS-1$
 										: MarkerType.WARNING, i.getErrorMessage());
 						m.setAttribute(IMarker.ATTR_LINE, i.getLine());
 						m.setAttribute(IMarker.ATTR_COL, i.getCol());
+
 						// Specific quick'n dirty fix for Triggers
 						if (o != null && o.getType() == IElementType.getInstance(ITrigger.TYPE_ID)) {
 							final ITrigger trg = (ITrigger) o;
 							if (trg.isCustom()) {
-								Pattern pat = Pattern.compile("(DECLARE|BEGIN)");
+								Pattern pat = Pattern.compile("(DECLARE|BEGIN)"); //$NON-NLS-1$
 								Matcher mat = pat.matcher(trg.getSql().toUpperCase());
 								if (mat.find()) {
 									int index = mat.start();
-									pat = Pattern.compile("\n");
+									pat = Pattern.compile("\n"); //$NON-NLS-1$
 									mat = pat.matcher(trg.getSql().substring(0, index));
 									int lineShift = 0;
 									while (mat.find()) {
@@ -167,7 +176,7 @@ public class DBErrorsMarkerProvider extends Observable implements IMarkerProvide
 							}
 						}
 						m.setAttribute(IMarker.ATTR_EXTERNAL_TYPE, i.getObjectTypeName());
-						m.setAttribute(IMarker.ATTR_CONTEXT, conn);
+						m.setAttribute(IMarker.ATTR_CONTEXT, dbConn);
 						if (o instanceof IReferenceable) {
 							markersMap.put(((IReferenceable) o).getReference(), m);
 						} else {
@@ -195,9 +204,6 @@ public class DBErrorsMarkerProvider extends Observable implements IMarkerProvide
 		return MarkerScope.DEFAULT;
 	}
 
-	/**
-	 * @return the validated
-	 */
 	public boolean isValidated() {
 		if (validated) {
 			validationTimeout = null;
@@ -212,4 +218,5 @@ public class DBErrorsMarkerProvider extends Observable implements IMarkerProvide
 			}
 		}
 	}
+
 }

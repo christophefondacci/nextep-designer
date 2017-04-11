@@ -38,8 +38,8 @@ public final class ExternalProgramHelper {
 	}
 
 	public static String getProgramLocation(IInstallConfiguration configuration, String programName) {
-		// Locating SQL*Plus binary
-		String binaryLocation = configuration.getProperty(PROP_BINARY_LOCATION + "."
+		// Locating specified program binary
+		String binaryLocation = configuration.getProperty(PROP_BINARY_LOCATION + "." //$NON-NLS-1$
 				+ programName.toLowerCase());
 		if (binaryLocation == null) {
 			// Compatibility with older installer releases

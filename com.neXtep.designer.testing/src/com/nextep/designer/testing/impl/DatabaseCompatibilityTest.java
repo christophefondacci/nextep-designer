@@ -28,32 +28,30 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.testing.model.TestStatus;
 
 /**
- * A compatiblity test which uses a database connection to perform the compatibility check rather
+ * A compatibility test which uses a database connection to perform the compatibility check rather
  * than the repository.
  * 
- * @author Christophe
+ * @author Christophe Fondacci
  */
 public abstract class DatabaseCompatibilityTest extends CompatibilityTest {
 
 	@Override
 	public TestStatus run(IProgressMonitor monitor) {
 		final IConnection conn = getConnection();
-		IDatabaseConnector dbConnector = CorePlugin.getConnectionService().getDatabaseConnector(
-				conn.getDBVendor());
-		Connection c = null;
+
+		Connection jdbcConn = null;
 		try {
-			c = dbConnector.connect(conn);
-			return runDatabase(monitor, c);
+			jdbcConn = CorePlugin.getConnectionService().connect(conn);
+			return runDatabase(monitor, jdbcConn);
 		} catch (SQLException e) {
 			throw new ErrorException(e);
 		} finally {
-			if (c != null) {
+			if (jdbcConn != null) {
 				try {
-					c.close();
+					jdbcConn.close();
 				} catch (SQLException e) {
 					throw new ErrorException("Error while trying to release SQL connection");
 				}
@@ -62,10 +60,8 @@ public abstract class DatabaseCompatibilityTest extends CompatibilityTest {
 	}
 
 	/**
-	 * Runs the tests using a SQL connection
-	 * 
-	 * @param conn
-	 * @return
+	 * Runs the tests using a SQL connection.
 	 */
 	protected abstract TestStatus runDatabase(IProgressMonitor monitor, Connection conn);
+
 }

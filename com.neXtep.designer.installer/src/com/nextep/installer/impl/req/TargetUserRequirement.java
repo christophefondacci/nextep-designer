@@ -23,6 +23,7 @@
 package com.nextep.installer.impl.req;
 
 import java.sql.Connection;
+import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.helpers.Assert;
 import com.nextep.installer.model.DBVendor;
@@ -33,51 +34,67 @@ import com.nextep.installer.model.InstallerOption;
 import com.nextep.installer.model.base.AbstractJDBCRequirement;
 import com.nextep.installer.model.impl.DatabaseTarget;
 import com.nextep.installer.model.impl.Status;
+import com.nextep.installer.services.IConnectionService;
 
+/**
+ * This requirement ensures that one can connect to the target database as defined by the user with
+ * the command line options.
+ * 
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class TargetUserRequirement extends AbstractJDBCRequirement {
 
-	private static final String DEFAULT_SERVER = "127.0.0.1"; //$NON-NLS-1$
+	public static final String DEFAULT_SERVER = "127.0.0.1"; //$NON-NLS-1$
 
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
-		try {
-			final String user = configurator.getOption(InstallerOption.USER);
-			final String password = configurator.getOption(InstallerOption.PASSWORD);
-			final String database = configurator.getOption(InstallerOption.DATABASE);
-			String host = configurator.getOption(InstallerOption.HOST);
-			String port = configurator.getOption(InstallerOption.PORT);
-			String vendor = configurator.getOption(InstallerOption.VENDOR);
-			String tns = configurator.getOption(InstallerOption.TNS);
+		final IConnectionService connService = NextepInstaller.getService(IConnectionService.class);
 
+		final String user = configurator.getOption(InstallerOption.USER);
+		final String password = configurator.getOption(InstallerOption.PASSWORD);
+		final String database = configurator.getOption(InstallerOption.DATABASE);
+		final String schema = configurator.getOption(InstallerOption.SCHEMA);
+		String host = configurator.getOption(InstallerOption.HOST);
+		String port = configurator.getOption(InstallerOption.PORT);
+		String vendor = configurator.getOption(InstallerOption.VENDOR);
+		String tns = configurator.getOption(InstallerOption.TNS);
+
+		try {
 			Assert.notNull(user, "No username defined");
 			Assert.notNull(database, "No database identifier defined");
+
 			if (host == null) {
 				host = DEFAULT_SERVER;
 			}
+
 			DBVendor dbVendor;
 			if (vendor == null) {
-				Assert.notNull(configurator.getDelivery(),
-						"Cannot determine database vendor, try to specify it explicitly with -vendor option");
+				Assert.notNull(configurator.getDelivery(), "Cannot determine database vendor, "
+						+ "try to specify it explicitly with -vendor option");
 				dbVendor = configurator.getDelivery().getDBVendor();
+
 				if (dbVendor == DBVendor.JDBC) {
-					return new Status(false,
-							"No database vendor specified: JDBC deliveries need an explicit vendor");
+					return new Status(false, "No database vendor specified: "
+							+ "JDBC deliveries need an explicit vendor");
 				}
 			} else {
 				dbVendor = DBVendor.valueOf(vendor);
 			}
 			Assert.notNull(dbVendor,
 					"Unable to retrieve database vendor, try specifying it explicitly");
+
 			if (port == null) {
 				port = String.valueOf(dbVendor.getDefaultPort());
 			}
 
-			IDatabaseTarget target = new DatabaseTarget(user, password, database, host, port,
-					dbVendor, tns);
+			IDatabaseTarget target = new DatabaseTarget(user, password, database, schema, host,
+					port, dbVendor, tns);
 			configurator.setTarget(target);
 
 			// Establishing connection
-			Connection targetConnection = getConnectionFor(target);
+			Connection targetConnection = connService.connect(target);
 			configurator.setTargetConnection(targetConnection);
+
 			return new Status(true, target.toString());
 		} catch (InstallerException e) {
 			if (configurator.isAnyOptionDefined(InstallerOption.INSTALL)) {
@@ -94,7 +111,7 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 	}
 
 	public String getName() {
-		return "Target JDBC connection";
+		return "Target JDBC connection"; //$NON-NLS-1$
 	}
 
 }

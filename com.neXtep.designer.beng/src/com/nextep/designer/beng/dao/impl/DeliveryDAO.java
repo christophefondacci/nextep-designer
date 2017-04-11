@@ -40,6 +40,7 @@ import com.nextep.designer.core.model.DBVendor;
  * This class provides data access for Deliveries related information.
  * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class DeliveryDAO implements IDeliveryDao {
 
@@ -51,13 +52,13 @@ public class DeliveryDAO implements IDeliveryDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<IDeliveryInfo> getDeliveriesForVendor(DBVendor vendor) {
-		List<IDeliveryInfo> deliveries = (List<IDeliveryInfo>) HibernateUtil
-				.getInstance()
-				.getSandBoxSession()
-				.createSQLQuery(
-						"select d.* from BENG_MODULES d, REP_MODULES m where m.version_id=d.target_version_id " + //$NON-NLS-1$
-								"and m.dbvendor=?") //$NON-NLS-1$
-				.addEntity("d", DeliveryInfo.class).setString(0, vendor.name()).list(); //$NON-NLS-1$ 
+		List<IDeliveryInfo> deliveries = (List<IDeliveryInfo>) HibernateUtil.getInstance()
+				.getSandBoxSession().createSQLQuery("SELECT bm.* " //$NON-NLS-1$
+						+ "FROM {h-schema}beng_modules bm " //$NON-NLS-1$
+						+ "  INNER JOIN {h-schema}rep_modules rm " //$NON-NLS-1$
+						+ "    ON rm.version_id = bm.target_version_id " //$NON-NLS-1$
+						+ "WHERE rm.dbvendor = ? ") //$NON-NLS-1$
+				.addEntity("bm", DeliveryInfo.class).setString(0, vendor.name()).list(); //$NON-NLS-1$ 
 		return deliveries;
 	}
 
@@ -81,13 +82,19 @@ public class DeliveryDAO implements IDeliveryDao {
 				.getInstance()
 				.getSandBoxSession()
 				.createSQLQuery(
-						"select distinct r.* from REP_MODULES m, REP_VERSIONS v, REP_VERSION_REFERENCES r where lower(replace(m.module_name,' ','_'))=lower(replace(?,' ','_')) " + //$NON-NLS-1$
-								"and v.version_id=m.version_id and r.vref_id=v.vref_id") //$NON-NLS-1$
-				.addEntity("r", Reference.class).setString(0, moduleName).list(); //$NON-NLS-1$
+						"SELECT DISTINCT vr.* " //$NON-NLS-1$
+								+ "FROM {h-schema}rep_modules rm " //$NON-NLS-1$
+								+ "  INNER JOIN {h-schema}rep_versions rv " //$NON-NLS-1$
+								+ "    ON rv.version_id = rm.version_id " //$NON-NLS-1$
+								+ "  INNER JOIN {h-schema}rep_version_references vr " //$NON-NLS-1$
+								+ "    ON vr.vref_id = rv.vref_id " //$NON-NLS-1$
+								+ "WHERE LOWER(REPLACE(rm.module_name,' ','_')) = LOWER(REPLACE(?,' ','_')) ") //$NON-NLS-1$
+				.addEntity("vr", Reference.class).setString(0, moduleName).list(); //$NON-NLS-1$
 		if (deliveries != null) {
 			return deliveries;
 		} else {
 			return Collections.emptyList();
 		}
 	}
+
 }

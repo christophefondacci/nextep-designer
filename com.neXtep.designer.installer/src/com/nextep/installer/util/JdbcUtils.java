@@ -25,36 +25,58 @@ package com.nextep.installer.util;
 import com.nextep.installer.model.DBVendor;
 
 /**
- *
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class JdbcUtils {
 
 	public static String getPromptTag(DBVendor vendor) {
-		switch(vendor) {
+		switch (vendor) {
 		case DB2:
-			return "ECHO";
+			return "ECHO"; //$NON-NLS-1$
 		case POSTGRE:
-			return "\\echo";
+			return "\\echo"; //$NON-NLS-1$
 		case MYSQL:
 		case ORACLE:
 		default:
-			return "Prompt";
+			return "Prompt"; //$NON-NLS-1$
 		}
 	}
+
 	public static String getScriptCallerTag(DBVendor vendor) {
-		if(vendor==DBVendor.ORACLE) {
-			return "@@";
-		} else if(vendor==DBVendor.MYSQL) {
-			return "source";
-		} else {
+		switch (vendor) {
+		case DB2:
+		case POSTGRE:
+		case MYSQL:
+			return "source"; //$NON-NLS-1$
+		case ORACLE:
+			return "@@"; //$NON-NLS-1$
+		default:
 			return null;
 		}
 	}
+
 	public static String getStatementEndTag(DBVendor vendor) {
-		if(vendor == DBVendor.ORACLE) {
-			return "\r\n/\r\n";
+		switch (vendor) {
+		case DB2:
+		case POSTGRE:
+		case MYSQL:
+		case ORACLE:
+			return "\r\n/\r\n"; //$NON-NLS-1$
+		default:
+			return ";"; //$NON-NLS-1$
 		}
-		return ";";
 	}
+
+	public static String getCommentStartSequence(DBVendor vendor) {
+		switch (vendor) {
+		case DB2:
+		case POSTGRE:
+		case MYSQL:
+		case ORACLE:
+		default:
+			return "--"; //$NON-NLS-1$
+		}
+	}
+
 }

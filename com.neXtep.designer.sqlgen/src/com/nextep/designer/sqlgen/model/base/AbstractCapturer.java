@@ -40,6 +40,7 @@ import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
 import com.nextep.designer.core.model.IDatabaseConnector;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.sqlgen.model.ErrorInfo;
 import com.nextep.designer.sqlgen.model.ICaptureContext;
 import com.nextep.designer.sqlgen.model.ICapturer;
@@ -60,11 +61,12 @@ public abstract class AbstractCapturer implements ICapturer {
 
 	@Override
 	public void initialize(IConnection conn, IMutableCaptureContext context) {
+		final IConnectionService connectionService = CorePlugin.getConnectionService();
+		final IDatabaseConnector<?> connector = connectionService.getDatabaseConnector(conn);
+
 		try {
-			IDatabaseConnector connector = CorePlugin.getConnectionService().getDatabaseConnector(
-					conn);
-			Connection c = connector.connect(conn);
-			context.setConnectionObject(c);
+			Connection jdbcConn = connectionService.connect(conn);
+			context.setConnectionObject(jdbcConn);
 			context.setSchema(connector.getSchema(conn));
 			context.setCatalog(connector.getCatalog(conn));
 			context.setConnection(conn);

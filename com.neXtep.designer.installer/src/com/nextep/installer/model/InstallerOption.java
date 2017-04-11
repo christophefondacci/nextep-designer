@@ -22,34 +22,40 @@
  *******************************************************************************/
 package com.nextep.installer.model;
 
+import java.text.MessageFormat;
+import com.nextep.installer.InstallerMessages;
+
 /**
  * This enumeration defines all options which can be set when launching the neXtep installer.
  * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public enum InstallerOption {
 
-	USER("user", "username", "user name to log in the database server"),
-	PASSWORD("pass", "password", "password to log in the database server"),
-	DATABASE("db", "database", "database identifier to connect to"),
-	HOST("host", "hostname", "host name or ip address of the database server (default is localhost)"),
-	PORT("port", "port", "the port on which the database server is listening to (default is vendor default)"),
-	VENDOR("vendor", "vendor", "vendor of the target database for generic JDBC deliveries: ORACLE, MYSQL or POSTGRE"),
-	TNS("tns", "tns_name", "[Oracle] the explicit TNS name to use when different from database SID"),
-	INSTALL("install", "deploys the admin schema on the target database"),
-	FULL_INSTALL("repository", "indicates that the delivery is a neXtep IDE repository delivery"),
-	NOCHECK("nocheck", "will not perform a structure check before allowing deployment (use carefully)"),
-	VERBOSE("verbose", "causes the installer to log stack traces of any error"),
-	INFO("info", "displays installed modules and their consistency on the target database"),
-	HELP("help", "displays this help information");
+	USER("user", "username", InstallerMessages.getString("installer.option.username")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	PASSWORD("pass", "password", InstallerMessages.getString("installer.option.password")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	DATABASE("db", "database", InstallerMessages.getString("installer.option.database")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	SCHEMA("schema", "schema name to connect to (optional)"), //$NON-NLS-1$ //$NON-NLS-2$
+	HOST("host", InstallerMessages.getString("installer.option.host")), //$NON-NLS-1$ //$NON-NLS-2$
+	PORT("port", InstallerMessages.getString("installer.option.port")), //$NON-NLS-1$ //$NON-NLS-2$
+	VENDOR("vendor", //$NON-NLS-1$
+			"vendor of the target database for generic JDBC deliveries: ORACLE, MYSQL or POSTGRE"), //$NON-NLS-1$
+	TNS("tns", "[Oracle] the explicit TNS name to use when different from database SID (optional)"), //$NON-NLS-1$ //$NON-NLS-2$
+	INSTALL("install", InstallerMessages.getString("installer.option.install")), //$NON-NLS-1$ //$NON-NLS-2$
+	FULL_INSTALL("repository", InstallerMessages.getString("installer.option.repository")), //$NON-NLS-1$ //$NON-NLS-2$
+	NOCHECK("nocheck", InstallerMessages.getString("installer.option.nocheck")), //$NON-NLS-1$ //$NON-NLS-2$
+	VERBOSE("verbose", InstallerMessages.getString("installer.option.verbose")), //$NON-NLS-1$ //$NON-NLS-2$
+	INFO("info", InstallerMessages.getString("installer.option.info")), //$NON-NLS-1$ //$NON-NLS-2$
+	HELP("help", InstallerMessages.getString("installer.option.help")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	private String name;
 	private String valueName;
 	private String description;
-	private boolean valued;
+	private boolean mandatory;
 
 	/**
-	 * Builds a non-valued option.
+	 * Builds an optional option.
 	 * 
 	 * @param name option's name
 	 * @param description option's description
@@ -57,28 +63,28 @@ public enum InstallerOption {
 	InstallerOption(String name, String description) {
 		this.name = name;
 		this.description = description;
-		valued = false;
+		this.mandatory = false;
 	}
 
 	/**
-	 * Builds a valued option
+	 * Builds a mandatory option.
 	 * 
-	 * @param name option's name
+	 * @param name option name
 	 * @param valueName option's value short name (for documentation)
-	 * @param description option's description (for documentation)
+	 * @param description option description (for documentation)
 	 */
 	InstallerOption(String name, String valueName, String description) {
 		this.name = name;
 		this.valueName = valueName;
 		this.description = description;
-		this.valued = true;
+		this.mandatory = true;
 
 	}
 
 	/**
-	 * The option's name
+	 * Return the option name.
 	 * 
-	 * @return
+	 * @return the option name
 	 */
 	public String getName() {
 		return name;
@@ -88,7 +94,7 @@ public enum InstallerOption {
 	 * The option's value name. Used only for displaying documentation of this option.
 	 * 
 	 * @return a short name describing the expected value of this option. Will return
-	 *         <code>null</code> when {@link InstallerOption#isValued()} is <code>false</code>
+	 *         <code>null</code> when {@link InstallerOption#isMandatory()} is <code>false</code>
 	 */
 	public String getValueName() {
 		return valueName;
@@ -104,13 +110,13 @@ public enum InstallerOption {
 	}
 
 	/**
-	 * Says whether the option expects a value or not. Valued options need to be passed as :<br>
+	 * Says whether the option expects a value or not. Mandatory options need to be passed as:<br>
 	 * <code>-<i>option</i>=<i>value</i></code>
 	 * 
 	 * @return <code>true</code> when the option needs a value, else <code>false</code>
 	 */
-	public boolean isValued() {
-		return valued;
+	public boolean isMandatory() {
+		return mandatory;
 	}
 
 	public static InstallerOption parse(String optionName) {
@@ -119,6 +125,8 @@ public enum InstallerOption {
 				return option;
 			}
 		}
-		throw new IllegalArgumentException("Option '" + optionName + "' is not valid");
+		throw new IllegalArgumentException(MessageFormat.format(
+				InstallerMessages.getString("installer.invalidOptionException"), optionName)); //$NON-NLS-1$
 	}
+
 }

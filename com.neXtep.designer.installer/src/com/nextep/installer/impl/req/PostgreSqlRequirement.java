@@ -37,11 +37,11 @@ public class PostgreSqlRequirement extends AbstractVendorRequirement {
 
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
 		boolean passed = true;
-		try {
 
+		try {
 			final List<String> pbArgs = PostgreSqlHelper.getProcessBuilderArgs(configurator);
-			pbArgs.add("-c");
-			pbArgs.add("\\q");
+			pbArgs.add("-c"); //$NON-NLS-1$
+			pbArgs.add("\\q"); //$NON-NLS-1$
 			final ProcessBuilder pb = new ProcessBuilder(pbArgs);
 			pb.redirectErrorStream(true);
 			Process p = pb.start();
@@ -64,13 +64,10 @@ public class PostgreSqlRequirement extends AbstractVendorRequirement {
 			// writer.close();
 
 			input.close();
-
 		} catch (IOException e) {
-			throw new InstallerException(
-					"PostgreSQL user login failed: "
-							+ e.getMessage()
-							+ ". You may need to explicitly define psql binary location through installer properties",
-					e);
+			throw new InstallerException("PostgreSQL user login failed: " + e.getMessage()
+					+ ". You may need to explicitly define psql binary location "
+					+ "through installer properties", e);
 		}
 
 		return new Status(true);
@@ -79,4 +76,5 @@ public class PostgreSqlRequirement extends AbstractVendorRequirement {
 	public String getName() {
 		return "PostgreSql native login";
 	}
+
 }

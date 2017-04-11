@@ -80,7 +80,7 @@ import com.nextep.designer.vcs.ui.dialogs.RepositoryInstallerMonitorPage;
  */
 public final class VersionUIHelper {
 
-	private static final Log log = LogFactory.getLog(VersionUIHelper.class);
+	private static final Log LOGGER = LogFactory.getLog(VersionUIHelper.class);
 
 	private VersionUIHelper() {
 	}
@@ -182,29 +182,33 @@ public final class VersionUIHelper {
 	 * @param newPassword new password to assign to this user
 	 */
 	public static void changeUserPassword(IRepositoryUser user, String newPassword) {
-		boolean confirm = MessageDialog.openConfirm(
-				Display.getCurrent().getActiveShell(),
+		boolean confirm = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
 				"Change user password",
-				MessageFormat.format(VCSUIMessages.getString("userConfirmChangePassword"),
+				MessageFormat.format(VCSUIMessages.getString("userConfirmChangePassword"), //$NON-NLS-1$
 						user.getName(), newPassword));
 		if (confirm) {
 			try {
+				/*
+				 * Columns names in the SET clause cannot be qualified with an alias name because it
+				 * would fail in Postgres.
+				 */
 				HibernateUtil.getInstance().getSession()
-						.createSQLQuery("update REP_USERS set password=? where user_id=?")
-						.setString(0, newPassword).setLong(1, user.getUID().rawId())
-						.executeUpdate();
+						.createSQLQuery("UPDATE {h-schema}rep_users ru " //$NON-NLS-1$
+								+ "  SET password = ? " //$NON-NLS-1$
+								+ "WHERE ru.user_id = ? ").setString(0, newPassword) //$NON-NLS-1$
+						.setLong(1, user.getUID().rawId()).executeUpdate();
 			} catch (HibernateException e) {
-				log.error("Error while updating user password", e);
+				LOGGER.error("Error while updating user password", e);
 				throw e;
 			}
-			log.info("Password changed for user '" + user.getName() + "'");
+			LOGGER.info("Password changed for user '" + user.getName() + "'");
 		} else {
-			log.info("Aborted password change.");
+			LOGGER.info("Aborted password change.");
 		}
 	}
 
 	/**
-	 * Retrieves the repository database status
+	 * Retrieves the repository database status.
 	 * 
 	 * @return a {@link RepositoryStatus} enumeration representing our ability to connect to a
 	 *         proper repository database.
@@ -243,8 +247,8 @@ public final class VersionUIHelper {
 	 * repository connection, its version, user setup and displays the appropriate wizards when
 	 * needed.
 	 * 
-	 * @return <code>true</code> if startup requirements are ok, else </code>. Users should not go
-	 *         on with the startup of neXtep if this method returns false.
+	 * @return <code>true</code> if startup requirements are ok, <code>false</code> otherwise. Users
+	 *         should not go on with the startup of neXtep if this method returns false.
 	 */
 	public static boolean startup() {
 		final List<IWizardPage> pages = new ArrayList<IWizardPage>();
@@ -270,7 +274,7 @@ public final class VersionUIHelper {
 		case CLIENT_TOO_OLD:
 			// update manager cannot work here because the platform is not yet running
 			// UpdateManagerUI.openInstaller(statusLabel.getShell());
-			IWorkspace view = new Workspace("Update view", "");
+			IWorkspace view = new Workspace("Update view", ""); //$NON-NLS-2$
 			view.setId(1);
 			VersionHelper.setCurrentView(view);
 			break;
@@ -337,16 +341,16 @@ public final class VersionUIHelper {
 					return false;
 				}
 			} catch (CancelException e) {
-				log.info("Action cancelled", e);
+				LOGGER.info("Action cancelled", e);
 				return false;
 			} catch (RuntimeException e) {
-				MessageDialog
-						.openError(
-								shell,
-								"Unexpected exception",
-								"An unexpected exception was raised while checking the repository status, please contact neXtep Softwares.\nException was :\n"
-										+ e.getMessage());
-				log.error("Unexpected exception", e);
+				MessageDialog.openError(
+						shell,
+						"Unexpected exception",
+						"An unexpected exception was raised while checking the repository status, "
+								+ "please contact neXtep Softwares.\n" + "Exception was :\n"
+								+ e.getMessage());
+				LOGGER.error("Unexpected exception", e);
 				return false;
 			}
 		} else {
@@ -364,8 +368,8 @@ public final class VersionUIHelper {
 		if (!Designer.getInstance().getPropertyBool(DesignerUIConstants.PROP_PROMPT_WHEN_SYNCHED)) {
 			MessageDialogWithToggle.openInformation(CoreUiPlugin.getDefault().getWorkbench()
 					.getActiveWorkbenchWindow().getShell(), UIMessages
-					.getString("objectSynchedTitle"), UIMessages.getString("objectSynched"),
-					UIMessages.getString("objectSynchedToggle"), false, VCSUIPlugin.getDefault()
+					.getString("objectSynchedTitle"), UIMessages.getString("objectSynched"), //$NON-NLS-1$ //$NON-NLS-2$
+					UIMessages.getString("objectSynchedToggle"), false, VCSUIPlugin.getDefault() //$NON-NLS-1$
 							.getPreferenceStore(), DesignerUIConstants.PROP_PROMPT_WHEN_SYNCHED);
 		}
 		// Ensuring proper refresh
@@ -378,4 +382,5 @@ public final class VersionUIHelper {
 			}
 		}
 	}
+
 }

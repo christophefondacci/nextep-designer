@@ -56,12 +56,14 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 		ResultSet rset = null;
 		ResultSet rsetIdx = null;
 		// Compatibility with previous code
-		schema = "public"; //$NON-NLS-1$
+		// FIXME [BGA] Removed explicit reference to public
+		//		schema = "public"; //$NON-NLS-1$
 		try {
 			DatabaseMetaData md = conn.getMetaData();
 
 			// Listing tables
-			rset = md.getTables(null, "public", null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			//			rset = md.getTables(null, "public", null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			rset = md.getTables(null, schema, null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 			// Building an array of checked objects
 			while (rset.next()) {
@@ -84,7 +86,8 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 			}
 			rset.close();
 			// Fetching table columns
-			rset = md.getColumns(schema, "public", null, null); //$NON-NLS-1$
+			//			rset = md.getColumns(schema, "public", null, null); //$NON-NLS-1$
+			rset = md.getColumns(null, schema, null, null); //$NON-NLS-1$
 			while (rset.next()) {
 				final String tabName = rset.getString("TABLE_NAME"); //$NON-NLS-1$
 				final String colName = rset.getString("COLUMN_NAME"); //$NON-NLS-1$
@@ -103,11 +106,12 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 			rset.close();
 			stmt.close();
 			// Fetching procedures
-			stmt = conn.prepareStatement("  SELECT p.proname AS procedure_name, " //$NON-NLS-1$
-					+ "p.proargtypes AS argument_types_oids " + "FROM pg_proc p " //$NON-NLS-1$ //$NON-NLS-2$
-					+ "LEFT JOIN pg_language l ON p.prolang=l.oid " //$NON-NLS-1$
-					+ "LEFT JOIN pg_namespace n ON p.pronamespace=l.oid " //$NON-NLS-1$
-					+ "    WHERE l.lanname!='internal' and (n.nspname=? or n.nspname is null)"); //$NON-NLS-1$
+			stmt = conn
+					.prepareStatement("SELECT p.proname AS procedure_name, p.proargtypes AS argument_types_oids " //$NON-NLS-1$
+							+ "FROM pg_proc p " //$NON-NLS-1$
+							+ "  LEFT JOIN pg_language l ON p.prolang=l.oid " //$NON-NLS-1$
+							+ "  LEFT JOIN pg_namespace n ON p.pronamespace=l.oid " //$NON-NLS-1$
+							+ "WHERE l.lanname!='internal' and (n.nspname=? or n.nspname is null)"); //$NON-NLS-1$
 			((PreparedStatement) stmt).setString(1, schema);
 			rset = ((PreparedStatement) stmt).executeQuery();
 			while (rset.next()) {

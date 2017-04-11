@@ -70,6 +70,7 @@ import com.nextep.designer.vcs.services.IWorkspaceService;
  * This method provides helper methods to deal with version control common operations.
  * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public final class VersionHelper {
 
@@ -566,7 +567,9 @@ public final class VersionHelper {
 		if (v == null || v.getVersion() == null || v.getVersion().getUID() == null) {
 			return true;
 		}
-		return queryIsUpToDate("select UPDATE_REVISION from REP_VERSIONS where VERSION_ID=?", v //$NON-NLS-1$
+		return queryIsUpToDate("SELECT rv.update_revision " //$NON-NLS-1$
+				+ "FROM {h-schema}rep_versions rv " //$NON-NLS-1$
+				+ "WHERE rv.version_id = ?", v //$NON-NLS-1$
 				.getVersion().getUID().rawId(), v.getVersion().getUpdateRevision());
 	}
 
@@ -602,11 +605,13 @@ public final class VersionHelper {
 		if (c == null || c.getUID() == null) {
 			return true;
 		}
+
 		if (c instanceof IVersionable<?>) {
 			return isUpToDate((IVersionable<?>) c);
 		} else if (c instanceof IWorkspace) {
-			return queryIsUpToDate("select UPDATE_REVISION from REP_VERSION_VIEWS where VIEW_ID=?", //$NON-NLS-1$
-					c.getUID().rawId(), ((IWorkspace) c).getRevision());
+			return queryIsUpToDate("SELECT vv.update_revision " //$NON-NLS-1$
+					+ "FROM {h-schema}rep_version_views vv " //$NON-NLS-1$
+					+ "WHERE vv.view_id = ? ", c.getUID().rawId(), ((IWorkspace) c).getRevision()); //$NON-NLS-1$
 		}
 		return true;
 	}
@@ -647,6 +652,7 @@ public final class VersionHelper {
 		List<IVersionInfo> versions = (List<IVersionInfo>) CorePlugin.getIdentifiableDao()
 				.loadForeignKey(VersionInfo.class, version.getReference().getReferenceId(),
 						"reference"); //$NON-NLS-1$
+
 		// Checking availability of this version
 		for (IVersionInfo info : new ArrayList<IVersionInfo>(versions)) {
 			if (info.isDropped()) {

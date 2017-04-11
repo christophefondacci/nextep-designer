@@ -81,7 +81,6 @@ import com.nextep.datadesigner.model.UID;
 import com.nextep.datadesigner.sqlgen.model.ISQLScript;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.sqlclient.ui.SQLClientImages;
 import com.nextep.designer.sqlclient.ui.SQLClientMessages;
 import com.nextep.designer.sqlclient.ui.handlers.ExecuteQueryHandler;
@@ -91,6 +90,11 @@ import com.nextep.designer.ui.factories.UIControllerFactory;
  * @author Christophe Fondacci
  */
 public class SQLFullClientGUI extends ControlledDisplayConnector {
+
+	private static final Log LOGGER = LogFactory.getLog(SQLFullClientGUI.class);
+
+	private static final String COL_TYPE = "Datatype"; //$NON-NLS-1$
+	private static final int MAX_ROWS_BEFORE_REFRESH = 500;
 
 	/** Container control */
 	private Composite editor;
@@ -112,10 +116,7 @@ public class SQLFullClientGUI extends ControlledDisplayConnector {
 	// private Listener sortListener;
 	/** Folder for SQL results */
 	private CTabFolder sqlFolder;
-	private static final String COL_TYPE = "Datatype";
 	private IConnection conn;
-	private final static int MAX_ROWS_BEFORE_REFRESH = 500;
-	private static final Log log = LogFactory.getLog(SQLFullClientGUI.class);
 
 	/**
 	 * Generic column sorter class TODO Support numeric datatypes through column data store
@@ -267,17 +268,16 @@ public class SQLFullClientGUI extends ControlledDisplayConnector {
 	 */
 	private void initSQLConnection() {
 		if (conn == null) {
-			MessageDialog
-					.openError(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-							"No development target",
-							"No development target database has been defined. Contents viewer needs a database connection to query SQL data. Please define a development target connection and try again.");
+			MessageDialog.openError(
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+					"No development target", "No development target database has been defined. "
+							+ "Contents viewer needs a database connection to query SQL data. "
+							+ "Please define a development target connection and try again.");
 			throw new ErrorException("No development database defined.");
 		}
-		IDatabaseConnector dbConnector = CorePlugin.getConnectionService().getDatabaseConnector(
-				conn);
+
 		try {
-			connection = dbConnector.connect(conn);
+			connection = CorePlugin.getConnectionService().connect(conn);
 		} catch (SQLException e) {
 			throw new ErrorException("Could not establish connection : " + e.getMessage(), e);
 		}
@@ -293,7 +293,7 @@ public class SQLFullClientGUI extends ControlledDisplayConnector {
 	private void closeSQLConnection() {
 		try {
 			connection.close();
-			log.info("Closing SQL connection");
+			LOGGER.info("Closing SQL connection");
 		} catch (SQLException e) {
 			throw new ErrorException("Error while closing SQL connection: " + e.getMessage(), e);
 		}
@@ -470,7 +470,7 @@ public class SQLFullClientGUI extends ControlledDisplayConnector {
 								try {
 									val = rset.getObject(i);
 								} catch (SQLException e) {
-									log.error(
+									LOGGER.error(
 											"Error while fetching column value : " + e.getMessage(),
 											e);
 									val = e.getMessage();

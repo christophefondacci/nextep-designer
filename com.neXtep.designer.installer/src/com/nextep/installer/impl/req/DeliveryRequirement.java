@@ -23,6 +23,8 @@
 package com.nextep.installer.impl.req;
 
 import java.io.File;
+import java.text.MessageFormat;
+import com.nextep.installer.InstallerMessages;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.exception.ParseException;
 import com.nextep.installer.model.DBVendor;
@@ -35,50 +37,62 @@ import com.nextep.installer.model.impl.Status;
 import com.nextep.installer.parsers.DescriptorParser;
 
 /**
+ * This requirement ensures that the delivery descriptor file delivery.xml exists and that it is a
+ * valid delivery descriptor. It also checks that the value of the <code>--vendor</code> option, if
+ * any specified, is a valid database vendor.
+ * 
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class DeliveryRequirement implements IRequirement {
+
+	public static final String DELIVERY_FILE_NAME = "delivery.xml"; //$NON-NLS-1$
 
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
 		String path = configurator.getDeliveryPath();
 
 		File descriptor = null;
-		// NextepInstaller.out("Delivery descriptor",PADDING);
 		if (!configurator.isOptionDefined(InstallerOption.INSTALL)) {
-			descriptor = new File(path + File.separator + "delivery.xml");
+			descriptor = new File(path + File.separator + DELIVERY_FILE_NAME);
 		} else {
 			String home = configurator.getNextepHome();
-			path = home + File.separator + "admin" + File.separator + "JDBC";
-			descriptor = new File(path + File.separator + "delivery.xml");
+			path = home + File.separator + "admin" + File.separator + "JDBC"; //$NON-NLS-1$ //$NON-NLS-2$
+			descriptor = new File(path + File.separator + DELIVERY_FILE_NAME);
 			configurator.setDeliveryPath(path);
 		}
 		if (!descriptor.exists()) {
-			throw new InstallerException("No delivery descriptor has been found in '"
-					+ descriptor.getAbsolutePath() + "'.");
+			throw new InstallerException(MessageFormat.format(InstallerMessages
+					.getString("requirement.delivery.descriptorFileNotFoundException"), //$NON-NLS-1$
+					DELIVERY_FILE_NAME, descriptor.getAbsolutePath()));
 		}
+
 		// Building delivery
 		try {
 			String vendor = configurator.getOption(InstallerOption.VENDOR);
 			DBVendor dbVendor = null;
-			if (vendor != null && !"".equals(vendor)) {
+			if (vendor != null && !"".equals(vendor)) { //$NON-NLS-1$
 				try {
 					dbVendor = DBVendor.valueOf(vendor);
 				} catch (IllegalArgumentException e) {
-					throw new InstallerException("Unsupported database vendor '" + vendor + "'", e);
+					throw new InstallerException(MessageFormat.format(InstallerMessages
+							.getString("requirement.delivery.unsupportedDBVendorException"), //$NON-NLS-1$
+							vendor), e);
 				}
 			}
 			IDelivery delivery = DescriptorParser.buildDescriptor(path, descriptor, dbVendor);
 			configurator.setDelivery(delivery);
-			// NextepInstaller.log("OK.");
 		} catch (ParseException e) {
-			throw new InstallerException("Exception during parse of delivery.xml in '"
-					+ descriptor.getAbsolutePath() + "'", e);
+			throw new InstallerException(MessageFormat.format(
+					InstallerMessages.getString("requirement.delivery.invalidDescriptorException"), //$NON-NLS-1$
+					DELIVERY_FILE_NAME, descriptor.getAbsolutePath()), e);
 		}
+
 		// We are clean
 		return new Status(true, descriptor.getAbsolutePath());
 	}
 
 	public String getName() {
-		return "Delivery descriptor";
+		return "Delivery descriptor"; //$NON-NLS-1$
 	}
+
 }

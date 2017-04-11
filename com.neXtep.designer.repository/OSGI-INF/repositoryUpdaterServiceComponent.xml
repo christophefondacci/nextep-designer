@@ -7,4 +7,5 @@
    <reference bind="setInstallerService" cardinality="1..1" interface="com.nextep.installer.services.IInstallerService" name="IInstallerService" policy="static"/>
    <reference bind="setAdminService" cardinality="1..1" interface="com.nextep.installer.services.IAdminService" name="IAdminService" policy="static"/>
    <reference bind="setLoggingService" cardinality="1..1" interface="com.nextep.installer.services.ILoggingService" name="ILoggingService" policy="static"/>
+   <reference bind="setConnectionService" cardinality="1..1" interface="com.nextep.installer.services.IConnectionService" name="IConnectionService" policy="static"/>
 </scr:component>

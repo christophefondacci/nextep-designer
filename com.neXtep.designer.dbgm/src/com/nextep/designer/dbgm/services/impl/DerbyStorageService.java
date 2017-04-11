@@ -49,7 +49,6 @@ import com.nextep.datadesigner.vcs.services.VersionHelper;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.DBVendor;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.dbgm.helpers.ConversionHelper;
 import com.nextep.designer.dbgm.model.IDataSet;
@@ -66,44 +65,44 @@ public class DerbyStorageService implements IStorageService {
 
 	private static final String MIRROR_COLUMN_PREFIX = "meta_"; //$NON-NLS-1$
 	private static final int MAX_DERBY_VARCHAR_LENGTH = 32672;
+
 	private IConnectionService connectionService;
-	private IDatabaseConnector connector;
 	private IConnection localConnection;
 	private List<String> reservedWords;
 
 	public DerbyStorageService() {
 		// Reserved derby words used for escaping
-		reservedWords = Arrays
-				.asList("ADD", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "AS", "ASC",
-						"ASSERTION", "AT", "AUTHORIZATION", "AVG", "BEGIN", "BETWEEN", "BIGINT",
-						"BIT", "BOOLEAN", "BOTH", "BY", "CALL", "CASCADE", "CASCADED", "CASE",
-						"CAST", "CHAR", "CHARACTER", "CHECK", "CLOSE", "COALESCE", "COLLATE",
-						"COLLATION", "COLUMN", "COMMIT", "CONNECT", "CONNECTION", "CONSTRAINT",
-						"CONSTRAINTS", "CONTINUE", "CONVERT", "CORRESPONDING", "CREATE", "CURRENT",
-						"CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER",
-						"CURSOR", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT",
-						"DEFERRABLE", "DEFERRED", "DELETE", "DESC", "DESCRIBE", "DIAGNOSTICS",
-						"DISCONNECT", "DISTINCT", "DOUBLE", "DROP", "ELSE", "END", "END-EXEC",
-						"ESCAPE", "EXCEPT", "EXCEPTION", "EXEC", "EXECUTE", "EXISTS", "EXPLAIN",
-						"EXTERNAL", "FALSE", "FETCH", "FIRST", "FLOAT", "FOR", "FOREIGN", "FOUND",
-						"FROM", "FULL", "FUNCTION", "GET", "GETCURRENTCONNECTION", "GLOBAL", "GO",
-						"GOTO", "GRANT", "GROUP", "HAVING", "HOUR", "IDENTITY", "IMMEDIATE", "IN",
-						"INDICATOR", "INITIALLY", "INNER", "INOUT", "INPUT", "INSENSITIVE",
-						"INSERT", "INT", "INTEGER", "INTERSECT", "INTO", "IS", "ISOLATION", "JOIN",
-						"KEY", "LAST", "LEFT", "LIKE", "LOWER", "LTRIM", "MATCH", "MAX", "MIN",
-						"MINUTE", "NATIONAL", "NATURAL", "NCHAR", "NVARCHAR", "NEXT", "NO", "NOT",
-						"NULL", "NULLIF", "NUMERIC", "OF", "ON", "ONLY", "OPEN", "OPTION", "OR",
-						"ORDER", "OUTER", "OUTPUT", "OVERLAPS", "PAD", "PARTIAL", "PREPARE",
-						"PRESERVE", "PRIMARY", "PRIOR", "PRIVILEGES", "PROCEDURE", "PUBLIC",
-						"READ", "REAL", "REFERENCES", "RELATIVE", "RESTRICT", "REVOKE", "RIGHT",
-						"ROLLBACK", "ROWS", "RTRIM", "SCHEMA", "SCROLL", "SECOND", "SELECT",
-						"SESSION_USER", "SET", "SMALLINT", "SOME", "SPACE", "SQL", "SQLCODE",
-						"SQLERROR", "SQLSTATE", "SUBSTR", "SUBSTRING", "SUM", "SYSTEM_USER",
-						"TABLE", "TEMPORARY", "TIMEZONE_HOUR", "TIMEZONE_MINUTE", "TO",
-						"TRANSACTION", "TRANSLATE", "TRANSLATION", "TRUE", "UNION", "UNIQUE",
-						"UNKNOWN", "UPDATE", "UPPER", "USER", "USING", "VALUES", "VARCHAR",
-						"VARYING", "VIEW", "WHENEVER", "WHERE", "WITH", "WORK", "WRITE", "XML",
-						"XMLEXISTS", "XMLPARSE", "XMLQUERY", "XMLSERIALIZE", "YEAR");
+		reservedWords = Arrays.asList(
+				"ADD", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "AS", "ASC", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				"ASSERTION", "AT", "AUTHORIZATION", "AVG", "BEGIN", "BETWEEN", "BIGINT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"BIT", "BOOLEAN", "BOTH", "BY", "CALL", "CASCADE", "CASCADED", "CASE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"CAST", "CHAR", "CHARACTER", "CHECK", "CLOSE", "COALESCE", "COLLATE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"COLLATION", "COLUMN", "COMMIT", "CONNECT", "CONNECTION", "CONSTRAINT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"CONSTRAINTS", "CONTINUE", "CONVERT", "CORRESPONDING", "CREATE", "CURRENT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"CURSOR", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"DEFERRABLE", "DEFERRED", "DELETE", "DESC", "DESCRIBE", "DIAGNOSTICS", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"DISCONNECT", "DISTINCT", "DOUBLE", "DROP", "ELSE", "END", "END-EXEC", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"ESCAPE", "EXCEPT", "EXCEPTION", "EXEC", "EXECUTE", "EXISTS", "EXPLAIN", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"EXTERNAL", "FALSE", "FETCH", "FIRST", "FLOAT", "FOR", "FOREIGN", "FOUND", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"FROM", "FULL", "FUNCTION", "GET", "GETCURRENTCONNECTION", "GLOBAL", "GO", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"GOTO", "GRANT", "GROUP", "HAVING", "HOUR", "IDENTITY", "IMMEDIATE", "IN", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"INDICATOR", "INITIALLY", "INNER", "INOUT", "INPUT", "INSENSITIVE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"INSERT", "INT", "INTEGER", "INTERSECT", "INTO", "IS", "ISOLATION", "JOIN", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"KEY", "LAST", "LEFT", "LIKE", "LOWER", "LTRIM", "MATCH", "MAX", "MIN", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				"MINUTE", "NATIONAL", "NATURAL", "NCHAR", "NVARCHAR", "NEXT", "NO", "NOT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"NULL", "NULLIF", "NUMERIC", "OF", "ON", "ONLY", "OPEN", "OPTION", "OR", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+				"ORDER", "OUTER", "OUTPUT", "OVERLAPS", "PAD", "PARTIAL", "PREPARE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"PRESERVE", "PRIMARY", "PRIOR", "PRIVILEGES", "PROCEDURE", "PUBLIC", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"READ", "REAL", "REFERENCES", "RELATIVE", "RESTRICT", "REVOKE", "RIGHT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"ROLLBACK", "ROWS", "RTRIM", "SCHEMA", "SCROLL", "SECOND", "SELECT", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"SESSION_USER", "SET", "SMALLINT", "SOME", "SPACE", "SQL", "SQLCODE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"SQLERROR", "SQLSTATE", "SUBSTR", "SUBSTRING", "SUM", "SYSTEM_USER", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"TABLE", "TEMPORARY", "TIMEZONE_HOUR", "TIMEZONE_MINUTE", "TO", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"TRANSACTION", "TRANSLATE", "TRANSLATION", "TRUE", "UNION", "UNIQUE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"UNKNOWN", "UPDATE", "UPPER", "USER", "USING", "VALUES", "VARCHAR", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"VARYING", "VIEW", "WHENEVER", "WHERE", "WITH", "WORK", "WRITE", "XML", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"XMLEXISTS", "XMLPARSE", "XMLQUERY", "XMLSERIALIZE", "YEAR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	public void startup() {
@@ -118,7 +117,6 @@ public class DerbyStorageService implements IStorageService {
 		System.setProperty("derby.system.home", location); //$NON-NLS-1$
 		System.setProperty("derby.database.sqlAuthorization", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		connector = connectionService.getDatabaseConnector(DBVendor.DERBY);
 		localConnection = CorePlugin.getTypedObjectFactory().create(IConnection.class);
 		localConnection.setDatabase(derbyLocation);
 		localConnection.setDBVendor(DBVendor.DERBY);
@@ -126,7 +124,7 @@ public class DerbyStorageService implements IStorageService {
 
 	@Override
 	public Connection getLocalConnection() throws SQLException {
-		return connector.connect(localConnection);
+		return connectionService.connect(localConnection);
 	}
 
 	@Override
@@ -259,7 +257,7 @@ public class DerbyStorageService implements IStorageService {
 			boolean isMirrored) {
 		StringBuilder buf = new StringBuilder(1000);
 		StringBuilder mirrorBuf = new StringBuilder(100);
-		buf.append("select "); // values ("); //$NON-NLS-1$
+		buf.append("SELECT "); // values ("); //$NON-NLS-1$
 		String separator = ""; //$NON-NLS-1$
 		for (IBasicColumn c : set.getColumns()) {
 			buf.append(separator + escape(c.getName()));
@@ -272,7 +270,7 @@ public class DerbyStorageService implements IStorageService {
 		if (isMirrored) {
 			buf.append(mirrorBuf.toString());
 		}
-		buf.append(" from " + escape(handle.getStorageUnitName())); //$NON-NLS-1$
+		buf.append(" FROM " + escape(handle.getStorageUnitName())); //$NON-NLS-1$
 		return buf.toString();
 	}
 
@@ -284,7 +282,7 @@ public class DerbyStorageService implements IStorageService {
 			final IStorageHandle fakeHandle = new StorageHandle(table.getName(), set);
 			return buildSelectDatalineStatement(set, fakeHandle, false);
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	private String buildCreateDatasetTableStatement(String name, IDataSet set,
@@ -292,7 +290,7 @@ public class DerbyStorageService implements IStorageService {
 		StringBuilder buf = new StringBuilder(100);
 		StringBuilder mirrorBuf = new StringBuilder(100);
 
-		buf.append("create table " + escape(name) + " "); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append("CREATE TABLE " + escape(name) + " "); //$NON-NLS-1$ //$NON-NLS-2$
 		String separator = "("; //$NON-NLS-1$
 		// Creating the rowid column for repository handles
 		// if (set.getUID() != null) {
@@ -320,7 +318,7 @@ public class DerbyStorageService implements IStorageService {
 	@Override
 	public String escape(String name) {
 		if (reservedWords.contains(name.toUpperCase())) {
-			return "\"" + name + "\"";
+			return "\"" + name + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			return name;
 		}
@@ -343,8 +341,10 @@ public class DerbyStorageService implements IStorageService {
 		default:
 			derbyType = new Datatype("VARCHAR"); //$NON-NLS-1$
 			if (type.getLength() > 0) {
-				LOGGER.warn("Dataset datatype for VARCHAR column " + c.getName()
-						+ " has been truncated to " + MAX_DERBY_VARCHAR_LENGTH);
+				if (type.getLength() > MAX_DERBY_VARCHAR_LENGTH) {
+					LOGGER.warn("Dataset datatype for VARCHAR column " + c.getName()
+							+ " has been truncated to " + MAX_DERBY_VARCHAR_LENGTH);
+				}
 				derbyType.setLength(Math.min(type.getLength(), MAX_DERBY_VARCHAR_LENGTH));
 			} else {
 				derbyType.setLength(4000);
@@ -488,4 +488,5 @@ public class DerbyStorageService implements IStorageService {
 	public void setConnectionService(IConnectionService connectionService) {
 		this.connectionService = connectionService;
 	}
+
 }

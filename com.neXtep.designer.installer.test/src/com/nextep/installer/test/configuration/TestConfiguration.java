@@ -36,6 +36,7 @@ public final class TestConfiguration {
 	private final static String PROP_USER = ".target.user";
 	private final static String PROP_PASSWORD = ".target.password";
 	private final static String PROP_DB = ".target.db";
+	private final static String PROP_SCHEMA = ".target.schema";
 	private final static String PROP_VENDOR = ".target.vendor";
 	private final static String PROP_HOST = ".target.host";
 	private final static String PROP_PORT = ".target.port";
@@ -77,9 +78,9 @@ public final class TestConfiguration {
 		final String user = getProperty(prefix + PROP_USER);
 		final String pass = getProperty(prefix + PROP_PASSWORD);
 		final String db = getProperty(prefix + PROP_DB);
+		final String schema = getProperty(prefix + PROP_SCHEMA);
 		final String host = getProperty(prefix + PROP_HOST);
 		final String port = getProperty(prefix + PROP_PORT);
-		return new DatabaseTarget(user, pass, db, host, port, vendor, null);
+		return new DatabaseTarget(user, pass, db, schema, host, port, vendor, null);
 	}
-
 }

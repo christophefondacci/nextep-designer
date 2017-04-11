@@ -7,4 +7,5 @@
    <reference bind="setTypedObjectFactory" cardinality="1..1" interface="com.nextep.designer.core.model.ITypedObjectFactory" name="ITypedObjectFactory" policy="static"/>
    <reference bind="setRepositoryService" cardinality="1..1" interface="com.nextep.designer.core.services.IRepositoryService" name="IRepositoryService" policy="static"/>
    <reference bind="setStorageService" cardinality="1..1" interface="com.nextep.designer.dbgm.services.IStorageService" name="IStorageService" policy="static"/>
+   <reference bind="setConnectionService" cardinality="1..1" interface="com.nextep.designer.core.services.IConnectionService" name="IConnectionService" policy="static"/>
 </scr:component>

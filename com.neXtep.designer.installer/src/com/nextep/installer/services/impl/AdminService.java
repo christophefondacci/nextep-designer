@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.nextep.installer.InstallerMessages;
 import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.InstallerException;
@@ -58,20 +57,25 @@ import com.nextep.installer.model.impl.Release;
 import com.nextep.installer.services.IAdminService;
 import com.nextep.installer.services.ILoggingService;
 
+/**
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
+ */
 public class AdminService implements IAdminService {
 
 	public static final int DATE_PADDING = 17;
 	public static final int RELEASE_PADDING = 15;
 	public static final int MODULE_PADDING = 30;
+
 	private static int latestInstalledReleaseId = 1;
 
 	public boolean check(IInstallConfiguration configuration, IDelivery delivery) {
 		if (configuration.isOptionDefined(InstallerOption.FULL_INSTALL)) {
-			// On full install, we always consider the check as OK to avoid
-			// fetching the database
-			// structure all the time. In this case we assume the caller of the
-			// install will perform
-			// a full check at the end of the install
+			/*
+			 * On full install, we always consider the check as OK to avoid fetching the database
+			 * structure all the time. In this case we assume the caller of the install will perform
+			 * a full check at the end of the install.
+			 */
 			return true;
 		} else {
 			boolean checkOk = true;
@@ -128,12 +132,25 @@ public class AdminService implements IAdminService {
 		ResultSet rset = null;
 		try {
 			StringBuilder buf = new StringBuilder(200);
-			buf.append("select r.irel_id, m.module_name,r.rel_major,r.rel_minor,r.rel_iteration,r.rel_patch,r.rel_revision " //$NON-NLS-1$
-					+ "from NADM_INSTALLED_RELEASES r, NADM_MODULES m where r.last='Y' and m.module_refid=r.module_refid "); //$NON-NLS-1$
+			buf.append("SELECT " //$NON-NLS-1$
+					+ "    r.irel_id " //$NON-NLS-1$
+					+ "  , m.module_name " //$NON-NLS-1$
+					+ "  , r.rel_major " //$NON-NLS-1$
+					+ "  , r.rel_minor " //$NON-NLS-1$
+					+ "  , r.rel_iteration " //$NON-NLS-1$
+					+ "  , r.rel_patch " //$NON-NLS-1$
+					+ "  , r.rel_revision " //$NON-NLS-1$
+					+ "FROM nadm_installed_releases r " //$NON-NLS-1$
+					+ "  INNER JOIN nadm_modules m " //$NON-NLS-1$
+					+ "    ON r.module_refid = m.module_refid " //$NON-NLS-1$
+					+ "WHERE r.last = 'Y' "); //$NON-NLS-1$
+
 			// Restricting owner and database for standalone admins only
 			if (!configuration.isAdminInTarget()) {
-				buf.append(" and r.owner=? and r.owner_database=? "); //$NON-NLS-1$
+				buf.append("  AND UPPER(r.owner) = UPPER(?) " //$NON-NLS-1$
+						+ "  AND UPPER(r.owner_database) = UPPER(?) "); //$NON-NLS-1$
 			}
+
 			// Retrieving currently installed modules from admin schema
 			stmt = conn.prepareStatement(buf.toString());
 			// Setting parameters user / database for standalone admins only
@@ -142,6 +159,7 @@ public class AdminService implements IAdminService {
 				stmt.setString(2, database);
 			}
 			rset = stmt.executeQuery();
+
 			// Building release list
 			List<IDelivery> deliveries = new ArrayList<IDelivery>();
 			while (rset.next()) {
@@ -241,27 +259,42 @@ public class AdminService implements IAdminService {
 		PreparedStatement stmt = null;
 		ResultSet rset = null;
 		final IDatabaseTarget target = configuration.getTarget();
+
 		try {
 			StringBuilder buf = new StringBuilder(500);
-			buf.append("select m.module_name, r.rel_major, r.rel_minor,r.rel_iteration," //$NON-NLS-1$
-					+ "  r.rel_patch,r.rel_revision, r.irel_id " //$NON-NLS-1$
-					+ "from NADM_MODULES m, NADM_INSTALLED_RELEASES r " //$NON-NLS-1$
-					+ "where m.module_refid=? and r.module_refid=m.module_refid and r.last='Y' "); //$NON-NLS-1$
+			buf.append("SELECT " //$NON-NLS-1$
+					+ "    m.module_name " //$NON-NLS-1$
+					+ "  , r.rel_major " //$NON-NLS-1$
+					+ "  , r.rel_minor " //$NON-NLS-1$
+					+ "  , r.rel_iteration " //$NON-NLS-1$
+					+ "  , r.rel_patch " //$NON-NLS-1$
+					+ "  , r.rel_revision " //$NON-NLS-1$
+					+ "  , r.irel_id " //$NON-NLS-1$
+					+ "FROM nadm_modules m " //$NON-NLS-1$
+					+ "  INNER JOIN nadm_installed_releases r " //$NON-NLS-1$
+					+ "    ON r.module_refid = m.module_refid " //$NON-NLS-1$
+					+ "WHERE m.module_refid = ? " //$NON-NLS-1$
+					+ "  AND r.last = 'Y' "); //$NON-NLS-1$
+
 			// Restricting owner and database for standalone admins ONLY
 			if (!configuration.isAdminInTarget() && moduleRefId != 99999999999L) {
-				buf.append(" and upper(r.owner)=upper(?) and upper(r.owner_database)=upper(?)"); //$NON-NLS-1$
+				buf.append("  AND UPPER(r.owner) = UPPER(?) " //$NON-NLS-1$
+						+ "  AND UPPER(r.owner_database) = UPPER(?) "); //$NON-NLS-1$
 			}
 			stmt = conn.prepareStatement(buf.toString());
 			stmt.setLong(1, moduleRefId);
+
 			// Setting owner and database for standalone admins
 			if (!configuration.isAdminInTarget() && moduleRefId != 99999999999L) {
 				stmt.setString(2, target.getUser());
 				stmt.setString(3, target.getDatabase());
 			}
 			rset = stmt.executeQuery();
-			// Fix of bug INS-12: fetching all matched lines, only take the
-			// highest release
-			// because of potential collisions due to case-insensitivity
+
+			/*
+			 * Fix of bug INS-12: fetching all matched lines, only take the highest release because
+			 * of potential collisions due to case-insensitivity.
+			 */
 			IRelease maxRel = null;
 			while (rset.next()) {
 				IRelease rel = new Release();
@@ -275,11 +308,11 @@ public class AdminService implements IAdminService {
 					maxRel = rel;
 				}
 			}
+
 			/*
-			 * #INS-28 : Emulating a connection with auto-commit=true to avoid
-			 * the creation of a blocking transaction that freezes the
-			 * installation when trying to alter the tables NADM_MODULES or
-			 * NADM_INSTALLED_RELEASES.
+			 * #INS-28 : Emulating a connection with auto-commit=true to avoid the creation of a
+			 * blocking transaction that freezes the installation when trying to alter the tables
+			 * NADM_MODULES or NADM_INSTALLED_RELEASES.
 			 */
 			if (!conn.getAutoCommit()) {
 				conn.commit();
@@ -287,8 +320,7 @@ public class AdminService implements IAdminService {
 			return maxRel;
 		} catch (SQLException e) {
 			if (!raise) {
-				// Compatibiltiy with command line installer
-				return null;
+				return null; // Compatibility with command line installer
 			} else {
 				throw new InstallerException(
 						InstallerMessages.getString("service.admin.getReleaseFailException"), e); //$NON-NLS-1$
@@ -340,18 +372,31 @@ public class AdminService implements IAdminService {
 		try {
 			initialConnectionAutocommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
-			stmt = conn
-					.prepareStatement("update NADM_MODULES set module_name=?,udate=? where module_refid=?"); //$NON-NLS-1$
+			/*
+			 * Columns names in the SET clause cannot be qualified with an alias name because it
+			 * would fail in Postgres.
+			 */
+			stmt = conn.prepareStatement("UPDATE nadm_modules m " //$NON-NLS-1$
+					+ "  SET module_name = ? " //$NON-NLS-1$
+					+ "    , udate = ? " //$NON-NLS-1$
+					+ "WHERE m.module_refid = ? "); //$NON-NLS-1$
 			stmt.setString(1, delivery.getName());
 			stmt.setTimestamp(2, new Timestamp(new Date().getTime()));
 			stmt.setLong(3, delivery.getRefUID());
 			stmt.execute();
+
 			// Check whether we have updated something
 			if (stmt.getUpdateCount() == 0) {
 				stmt.close();
 				// If not, we insert the new module
-				stmt = conn
-						.prepareStatement("insert into NADM_MODULES (module_refid,module_name,cdate,udate) values (?,?,?,?)"); //$NON-NLS-1$
+				stmt = conn.prepareStatement("INSERT INTO nadm_modules ( " //$NON-NLS-1$ 
+						+ "    module_refid " //$NON-NLS-1$
+						+ "  , module_name " //$NON-NLS-1$
+						+ "  , cdate " //$NON-NLS-1$
+						+ "  , udate " //$NON-NLS-1$
+						+ ") VALUES ( " //$NON-NLS-1$
+						+ "  ?, ?, ?, ? " //$NON-NLS-1$
+						+ ") "); //$NON-NLS-1$
 				stmt.setLong(1, delivery.getRefUID());
 				stmt.setString(2, delivery.getName());
 				stmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
@@ -359,13 +404,15 @@ public class AdminService implements IAdminService {
 				stmt.execute();
 			}
 			stmt.close();
+
 			// Manually computing next ID
 			long relId = latestInstalledReleaseId++; // Really cannot understand
 														// why MySQL does not
 														// return a non-null ID
 														// on the second admin
 														// install
-			stmt = conn.prepareStatement("select max(irel_id)+1 from NADM_INSTALLED_RELEASES"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT (MAX(irel_id) + 1) AS rel_id " //$NON-NLS-1$
+					+ "FROM nadm_installed_releases "); //$NON-NLS-1$
 			rset = stmt.executeQuery();
 			if (rset.next()) {
 				// Only taking the db id if > 0
@@ -380,11 +427,22 @@ public class AdminService implements IAdminService {
 			// modules)
 			// Bug INS-12: Handling case-insensitivity for unflagging releases
 			StringBuilder buf = new StringBuilder(200);
-			buf.append("update NADM_INSTALLED_RELEASES set last='N' where module_refid=? and last='Y' "); //$NON-NLS-1$
+
+			/*
+			 * Columns names in the SET clause cannot be qualified with an alias name because it
+			 * would fail in Postgres.
+			 */
+			buf.append("UPDATE nadm_installed_releases r " //$NON-NLS-1$
+					+ "  SET last = 'N' " //$NON-NLS-1$
+					+ "WHERE r.module_refid = ? " //$NON-NLS-1$
+					+ "  AND r.last = 'Y' "); //$NON-NLS-1$
+
 			// Restricting owner & database for standalone admins ONLY
 			if (!configuration.isAdminInTarget()) {
-				buf.append(" and upper(owner)=upper(?) and upper(owner_database)=upper(?)"); //$NON-NLS-1$
+				buf.append("  AND UPPER(r.owner) = UPPER(?) " //$NON-NLS-1$
+						+ "  AND UPPER(r.owner_database) = UPPER(?) "); //$NON-NLS-1$
 			}
+
 			stmt = conn.prepareStatement(buf.toString());
 			stmt.setLong(1, delivery.getRefUID());
 			// Registering owner & database info for standalone admins
@@ -394,11 +452,23 @@ public class AdminService implements IAdminService {
 			}
 			stmt.execute();
 			stmt.close();
+
 			// Installs the new release
-			stmt = conn
-					.prepareStatement("insert into NADM_INSTALLED_RELEASES (" //$NON-NLS-1$
-							+ "   module_refid,rel_major,rel_minor,rel_iteration,rel_patch,rel_revision,owner,owner_database,status,irel_id,cdate" //$NON-NLS-1$
-							+ ") values (" + "   ?,?,?,?,?,?,?,?,?,?,?" + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			stmt = conn.prepareStatement("INSERT INTO nadm_installed_releases ( " //$NON-NLS-1$
+					+ "    module_refid " //$NON-NLS-1$
+					+ "  , rel_major " //$NON-NLS-1$
+					+ "  , rel_minor " //$NON-NLS-1$
+					+ "  , rel_iteration " //$NON-NLS-1$
+					+ "  , rel_patch " //$NON-NLS-1$
+					+ "  , rel_revision " //$NON-NLS-1$
+					+ "  , owner " //$NON-NLS-1$
+					+ "  , owner_database " //$NON-NLS-1$
+					+ "  , status " //$NON-NLS-1$
+					+ "  , irel_id " //$NON-NLS-1$
+					+ "  , cdate " //$NON-NLS-1$
+					+ ") VALUES ( " //$NON-NLS-1$
+					+ "  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " //$NON-NLS-1$
+					+ ") "); //$NON-NLS-1$
 			setReleaseInputs(configuration, delivery, stmt);
 			stmt.setString(9, success ? "OK" : "FAILED"); //$NON-NLS-1$ //$NON-NLS-2$
 			stmt.setLong(10, relId);
@@ -416,20 +486,22 @@ public class AdminService implements IAdminService {
 			try {
 				conn.rollback();
 			} catch (SQLException ex) {
-				throw new InstallerException(MessageFormat.format(InstallerMessages
-						.getString("service.admin.installReleaseFail"), ex.getMessage()), ex); //$NON-NLS-1$
+				throw new InstallerException(MessageFormat.format(
+						InstallerMessages.getString("service.admin.installReleaseFail"), //$NON-NLS-1$
+						ex.getMessage()), ex);
 			}
-			throw new InstallerException(
-					MessageFormat.format(InstallerMessages
-							.getString("service.admin.installReleaseFail"), e.getMessage()), e); //$NON-NLS-1$
+			throw new InstallerException(MessageFormat.format(
+					InstallerMessages.getString("service.admin.installReleaseFail"), //$NON-NLS-1$
+					e.getMessage()), e);
 		} finally {
 			try {
 				if (rset != null) {
 					rset.close();
 				}
 			} catch (SQLException e) {
-				throw new InstallerException(MessageFormat.format(
-						"Unable to close result set while registering release: {0}", e //$NON-NLS-1$
+				throw new InstallerException(
+						MessageFormat.format(InstallerMessages
+								.getString("service.admin.closeReleaseResultSetException"), e //$NON-NLS-1$
 								.getMessage()), e);
 			}
 			try {
@@ -437,8 +509,9 @@ public class AdminService implements IAdminService {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new InstallerException(MessageFormat.format(
-						InstallerMessages.getString("service.admin.37"), e //$NON-NLS-1$
+				throw new InstallerException(
+						MessageFormat.format(InstallerMessages
+								.getString("service.admin.closeReleaseStatementException"), e //$NON-NLS-1$
 								.getMessage()), e);
 			}
 			try {
@@ -467,8 +540,7 @@ public class AdminService implements IAdminService {
 	/**
 	 * Define the release to install, given the delivery.
 	 * 
-	 * @param delivery
-	 *            delivery currently processed
+	 * @param delivery delivery currently processed
 	 * @return the release to install
 	 */
 	protected IRelease getRelease(IDelivery delivery) {
@@ -478,14 +550,14 @@ public class AdminService implements IAdminService {
 	/**
 	 * Installs checks for the new release in database admin.
 	 * 
-	 * @param conn
-	 *            admin connection
+	 * @param conn admin connection
 	 */
 	protected void installChecks(IInstallConfiguration configuration) throws InstallerException {
 		final Connection conn = configuration.getAdminConnection();
 		final IDelivery delivery = configuration.getDelivery();
 		final String owner = configuration.getTarget().getUser();
 		Assert.notNull(delivery, "Cannot find delivery to install"); //$NON-NLS-1$
+
 		// Installing checks
 		if (delivery.getChecks() != null) {
 			for (ICheck check : delivery.getChecks()) {
@@ -500,9 +572,10 @@ public class AdminService implements IAdminService {
 
 		final Connection conn = configuration.getAdminConnection();
 		final IDatabaseTarget target = configuration.getTarget();
-		Assert.notNull(
-				target,
-				"You need to specify the target database to see installed modules.\nConfigure the connection through command line options or enter \"--help\" to see all options availble.");
+		Assert.notNull(target,
+				"You need to specify the target database to see installed modules.\n" //$NON-NLS-1$
+						+ "Configure the connection through command line options " //$NON-NLS-1$
+						+ "or enter \"--help\" to see all options available."); //$NON-NLS-1$
 		final String user = target.getUser();
 		final String database = target.getDatabase();
 
@@ -510,11 +583,22 @@ public class AdminService implements IAdminService {
 		ResultSet rset = null;
 		try {
 			StringBuilder buf = new StringBuilder(500);
-			buf.append("select m.module_name, r.rel_major,r.rel_minor,r.rel_iteration,r.rel_patch,r.rel_revision,r.cdate " //$NON-NLS-1$
-					+ "from NADM_MODULES m, NADM_INSTALLED_RELEASES r " //$NON-NLS-1$
-					+ "where r.module_refid=m.module_refid and r.last='Y' "); //$NON-NLS-1$
+			buf.append("SELECT " //$NON-NLS-1$
+					+ "    m.module_name " //$NON-NLS-1$
+					+ "  , r.rel_major " //$NON-NLS-1$ 
+					+ "  , r.rel_minor " //$NON-NLS-1$
+					+ "  , r.rel_iteration " //$NON-NLS-1$
+					+ "  , r.rel_patch " //$NON-NLS-1$
+					+ "  , r.rel_revision " //$NON-NLS-1$
+					+ "  , r.cdate " //$NON-NLS-1$
+					+ "FROM nadm_modules m " //$NON-NLS-1$
+					+ "  INNER JOIN nadm_installed_releases r " //$NON-NLS-1$
+					+ "    ON r.module_refid = m.module_refid " //$NON-NLS-1$
+					+ "WHERE r.last = 'Y' "); //$NON-NLS-1$
+
 			if (!configuration.isAdminInTarget()) {
-				buf.append(" and upper(r.owner)=upper(?) and upper(r.owner_database)=upper(?) "); //$NON-NLS-1$
+				buf.append("  AND UPPER(r.owner) = UPPER(?) " //$NON-NLS-1$
+						+ "  AND UPPER(r.owner_database) = UPPER(?) "); //$NON-NLS-1$
 			}
 			stmt = conn.prepareStatement(buf.toString());
 			if (!configuration.isAdminInTarget()) {
@@ -522,6 +606,7 @@ public class AdminService implements IAdminService {
 				stmt.setString(2, database);
 			}
 			rset = stmt.executeQuery();
+
 			// Displaying headers
 			logger.out(InstallerMessages.getString("service.admin.moduleNameCol"), MODULE_PADDING); //$NON-NLS-1$
 			logger.out(InstallerMessages.getString("service.admin.releaseCol"), RELEASE_PADDING); //$NON-NLS-1$
@@ -535,11 +620,11 @@ public class AdminService implements IAdminService {
 				IRelease rel = new Release(rset.getInt(2), rset.getInt(3), rset.getInt(4),
 						rset.getInt(5), rset.getInt(6));
 				logger.out(rel.toString(), RELEASE_PADDING);
+
 				/*
-				 * FIXME [BGA] Captured data type changed from Timestamp to Date
-				 * for MSSQL database. Run regression tests on other supported
-				 * databases to check if this fix is compatible with other
-				 * vendors.
+				 * FIXME [BGA] Captured data type changed from Timestamp to Date for MSSQL database.
+				 * Run regression tests on other supported databases to check if this fix is
+				 * compatible with other vendors.
 				 */
 				//
 				try {
@@ -583,39 +668,40 @@ public class AdminService implements IAdminService {
 		final Connection conn = configuration.getAdminConnection();
 		final IDatabaseTarget target = configuration.getTarget();
 		final DBVendor vendor = target.getVendor();
+
+		// Preparing returned list
+		IDatabaseObjectCheck check = InstallerFactory.buildDatabaseObjectCheckerFor(vendor);
+
 		PreparedStatement stmt = null;
 		try {
-			stmt = conn
-					.prepareStatement("select object_type, object_name from NADM_RELEASE_OBJECTS " //$NON-NLS-1$
-							+ "where irel_id=?"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT " //$NON-NLS-1$
+					+ "    ro.object_type " //$NON-NLS-1$
+					+ "  , ro.object_name " //$NON-NLS-1$
+					+ "FROM nadm_release_objects ro " //$NON-NLS-1$
+					+ "WHERE ro.irel_id = ? "); //$NON-NLS-1$
 			stmt.setLong(1, release.getId());
 			ResultSet rset = stmt.executeQuery();
-			// Preparing returned list
-			IDatabaseObjectCheck check = InstallerFactory.buildDatabaseObjectCheckerFor(vendor);
-			// else {
-			// check.setSchema(target.getDatabase());
-			// }
-			// check.setDisplayMissing(false);
+
 			while (rset.next()) {
 				DBObject dbObj = new DBObject(rset.getString(1), rset.getString(2));
 				check.addObject(dbObj);
 			}
 			rset.close();
-			return check;
 		} catch (SQLException e) {
-			throw new InstallerException(MessageFormat.format(InstallerMessages
-					.getString("service.admin.getReleaseChecksFail"), e.getMessage()), e); //$NON-NLS-1$
+			throw new InstallerException(MessageFormat.format(
+					InstallerMessages.getString("service.admin.getReleaseChecksFail"), //$NON-NLS-1$
+					e.getMessage()), e);
 		} finally {
-			if (stmt != null) {
-				try {
+			try {
+				if (stmt != null) {
 					stmt.close();
-				} catch (SQLException e) {
-					throw new InstallerException(MessageFormat.format(
-							"Unable to close statement after check retrieval: {0}", e //$NON-NLS-1$
-									.getMessage()), e);
 				}
+			} catch (SQLException e) {
+				throw new InstallerException(MessageFormat.format(
+						"Unable to close statement after check retrieval: {0}", e.getMessage()), e); //$NON-NLS-1$
 			}
 		}
+		return check;
 	}
 
 	protected ILoggingService getLoggingService() {
@@ -623,15 +709,14 @@ public class AdminService implements IAdminService {
 	}
 
 	/**
-	 * Service injection setter, used when the installer is invoked from neXtep
-	 * designer IDE through DS injection. This setter registers the service
-	 * globally on the {@link NextepInstaller} static bean for compatibility
-	 * with standalone mode.
+	 * Service injection setter, used when the installer is invoked from neXtep designer IDE through
+	 * DS injection. This setter registers the service globally on the {@link NextepInstaller}
+	 * static bean for compatibility with standalone mode.
 	 * 
-	 * @param service
-	 *            logging service implementation
+	 * @param service logging service implementation
 	 */
 	public void setLoggingService(ILoggingService service) {
 		NextepInstaller.registerService(ILoggingService.class, service);
 	}
+
 }

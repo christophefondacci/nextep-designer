@@ -44,7 +44,7 @@ import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.datadesigner.vcs.impl.RepositoryFile;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.core.services.IRepositoryService;
 import com.nextep.designer.vcs.VCSMessages;
 import com.nextep.designer.vcs.model.IRepositoryFile;
@@ -52,12 +52,14 @@ import com.nextep.designer.vcs.model.IRepositoryFile;
 /**
  * This service provides helper methods to manipulate repository files.
  * 
- * @author Christophe
+ * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class VCSFiles {
 
-	private static final Log log = LogFactory.getLog(VCSFiles.class);
-	private static final IRepositoryService repositoryService = CorePlugin.getRepositoryService();
+	private static final Log LOGGER = LogFactory.getLog(VCSFiles.class);
+	private static final IRepositoryService repoService = CorePlugin.getRepositoryService();
+	private static final IConnectionService connService = CorePlugin.getConnectionService();
 	private static VCSFiles instance;
 
 	private VCSFiles() {
@@ -85,30 +87,30 @@ public class VCSFiles {
 		repFile.setName(file.getName());
 		// Saving properties
 		CorePlugin.getIdentifiableDao().save(repFile);
+
+		final IConnection repoConn = repoService.getRepositoryConnection();
 		// Generating BLOB
-		Connection conn = null;
-		final IDatabaseConnector repConnector = repositoryService.getRepositoryConnector();
-		final IConnection repoConn = repositoryService.getRepositoryConnection();
+		Connection jdbcConn = null;
 		try {
-			conn = repConnector.connect(repoConn);
-			switch (repositoryService.getRepositoryVendor()) {
+			jdbcConn = connService.connect(repoConn);
+			switch (repoConn.getDBVendor()) {
 			case ORACLE:
-				writeOracleBlob(conn, repFile, file);
+				writeOracleBlob(jdbcConn, repFile, file);
 				break;
 			case MYSQL:
-				writeMySQLBlob(conn, repFile, file);
+				writeMySQLBlob(jdbcConn, repFile, file);
 				break;
 			}
 			return repFile;
-		} catch (SQLException e) {
-			throw new ErrorException(e);
+		} catch (SQLException sqle) {
+			throw new ErrorException(sqle);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
+			try {
+				if (jdbcConn != null) {
+					jdbcConn.close();
 				}
+			} catch (SQLException sqle) {
+				throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -119,8 +121,14 @@ public class VCSFiles {
 		PreparedStatement stmt = null;
 		InputStream is = null;
 		try {
-			stmt = conn
-					.prepareStatement("update REP_FILES set FILE_CONTENT=?, FILESIZE=? where FILE_ID=?"); //$NON-NLS-1$
+			/*
+			 * Columns names in the SET clause cannot be qualified with an alias name because it
+			 * would fail in Postgres.
+			 */
+			stmt = conn.prepareStatement("UPDATE rep_files rf " //$NON-NLS-1$
+					+ "  SET file_content = ? " //$NON-NLS-1$
+					+ "    , filesize = ? " //$NON-NLS-1$
+					+ "WHERE rf.file_id = ? "); //$NON-NLS-1$
 			is = new FileInputStream(localFile);
 			stmt.setBinaryStream(1, is);
 			stmt.setLong(2, file.getFileSizeKB());
@@ -137,7 +145,7 @@ public class VCSFiles {
 	}
 
 	/**
-	 * Writed the specified file to the given repository file with Oracle-specific Blob support.
+	 * Write the specified file to the given repository file with Oracle-specific Blob support.
 	 * 
 	 * @param conn Oracle connection
 	 * @param file repository file which must have been created
@@ -146,16 +154,24 @@ public class VCSFiles {
 	 */
 	private void writeOracleBlob(Connection conn, IRepositoryFile file, File localFile)
 			throws SQLException {
-		PreparedStatement stmt = conn
-				.prepareStatement("update REP_FILES set FILE_CONTENT=?, FILESIZE=? where FILE_ID=?"); //$NON-NLS-1$
-		// DatabaseMetaData md = conn.getMetaData();
-		OutputStream os = null;
-		FileInputStream is = null;
-		BLOB tempBlob = null;
+		PreparedStatement stmt = null;
 		long size = 0;
-		try {
-			try {
 
+		try {
+			/*
+			 * Columns names in the SET clause cannot be qualified with an alias name because it
+			 * would fail in Postgres.
+			 */
+			stmt = conn.prepareStatement("UPDATE rep_files rf " //$NON-NLS-1$
+					+ "  SET file_content = ? " //$NON-NLS-1$
+					+ "    , filesize = ? " //$NON-NLS-1$
+					+ "WHERE rf.file_id = ? "); //$NON-NLS-1$
+
+			OutputStream os = null;
+			FileInputStream is = null;
+			BLOB tempBlob = null;
+
+			try {
 				// Get the oracle connection class for checking
 				Class<?> oracleConnectionClass = Class.forName("oracle.jdbc.OracleConnection"); //$NON-NLS-1$
 
@@ -163,14 +179,16 @@ public class VCSFiles {
 				if (!oracleConnectionClass.isAssignableFrom(conn.getClass())) {
 					throw new HibernateException(
 							VCSMessages.getString("files.invalidOracleConnection") //$NON-NLS-1$
-									+ VCSMessages.getString("files.invalidOracleConnection.2") + conn.getClass().getName()); //$NON-NLS-1$
+									+ VCSMessages.getString("files.invalidOracleConnection.2") //$NON-NLS-1$
+									+ conn.getClass().getName());
 				}
+
 				// Create our temp BLOB
 				tempBlob = BLOB.createTemporary(conn, true, BLOB.DURATION_SESSION);
-
 				tempBlob.open(BLOB.MODE_READWRITE);
 				os = tempBlob.getBinaryOutputStream();
 				is = new FileInputStream(localFile);
+
 				// Large 10K buffer for efficient read
 				byte[] buffer = new byte[10240];
 				int bytesRead = 0;
@@ -179,14 +197,14 @@ public class VCSFiles {
 					os.write(buffer, 0, bytesRead);
 					size += bytesRead;
 				}
-			} catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException cnfe) {
 				// could not find the class with reflection
-				throw new ErrorException(
-						VCSMessages.getString("files.classUnresolved") + e.getMessage()); //$NON-NLS-1$
-			} catch (FileNotFoundException e) {
+				throw new ErrorException(VCSMessages.getString("files.classUnresolved") //$NON-NLS-1$
+						+ cnfe.getMessage());
+			} catch (FileNotFoundException fnfe) {
 				throw new ErrorException(VCSMessages.getString("files.fileUnresolved")); //$NON-NLS-1$
-			} catch (IOException e) {
-				throw new ErrorException(VCSMessages.getString("files.readProblem"), e); //$NON-NLS-1$
+			} catch (IOException ioe) {
+				throw new ErrorException(VCSMessages.getString("files.readProblem"), ioe); //$NON-NLS-1$
 			} finally {
 				safeClose(os);
 				safeClose(is);
@@ -199,39 +217,36 @@ public class VCSFiles {
 			stmt.setLong(3, file.getUID().rawId());
 			stmt.execute();
 		} finally {
-			stmt.close();
+			if (stmt != null) {
+				stmt.close();
+			}
 			file.setFileSizeKB(size / 1024);
 		}
-
 	}
 
 	/**
-	 * Generates the specified repository file back to the local filesystem path. The given path
+	 * Generates the specified repository file back to the local file system path. The given path
 	 * must point to the file to create (and not to its owning directory)
 	 * 
 	 * @param file repository file to generate
 	 * @param path file path to the local file to generate
 	 */
 	public void generateFile(IRepositoryFile file, String path) {
-		Connection conn = null;
-		final IDatabaseConnector repConnector = repositoryService.getRepositoryConnector();
-		final IConnection repoConn = repositoryService.getRepositoryConnection();
+		final IConnection repoConn = repoService.getRepositoryConnection();
+
+		Connection jdbcConn = null;
 		try {
-			conn = repConnector.connect(repoConn);
-			// switch(repositoryService.getRepositoryVendor()) {
-			// case ORACLE:
-			generateOracleFile(conn, file, path);
-			// break;
-			// }
-		} catch (SQLException e) {
-			throw new ErrorException(e);
+			jdbcConn = connService.connect(repoConn);
+			generateOracleFile(jdbcConn, file, path);
+		} catch (SQLException sqle) {
+			throw new ErrorException(sqle);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
+			try {
+				if (jdbcConn != null) {
+					jdbcConn.close();
 				}
+			} catch (SQLException sqle) {
+				throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -244,7 +259,9 @@ public class VCSFiles {
 		OutputStream os = null;
 		try {
 			// Querying blob
-			stmt = conn.prepareStatement("select FILE_CONTENT from REP_FILES where FILE_ID=?"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT rf.file_content " //$NON-NLS-1$
+					+ "FROM rep_files rf " //$NON-NLS-1$
+					+ "WHERE rf.file_id = ? "); //$NON-NLS-1$
 			stmt.setLong(1, file.getUID().rawId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -253,9 +270,11 @@ public class VCSFiles {
 				if (blobStream == null) {
 					return;
 				}
+
 				// Opening output file
 				File f = new File(path);
 				os = new FileOutputStream(f);
+
 				// Large 10K buffer for efficient read
 				byte[] buffer = new byte[10240];
 				int bytesRead = 0;
@@ -286,31 +305,27 @@ public class VCSFiles {
 			try {
 				s.close();
 			} catch (IOException e) {
-				log.error(VCSMessages.getString("files.streamCloseProblem"), e); //$NON-NLS-1$
+				LOGGER.error(VCSMessages.getString("files.streamCloseProblem"), e); //$NON-NLS-1$
 			}
 		}
 	}
 
 	public String getResourceString(IRepositoryFile file) {
-		Connection conn = null;
-		IDatabaseConnector repConnector = repositoryService.getRepositoryConnector();
-		final IConnection repoConn = repositoryService.getRepositoryConnection();
+		final IConnection repoConn = repoService.getRepositoryConnection();
+
+		Connection jdbcConn = null;
 		try {
-			conn = repConnector.connect(repoConn);
-			// switch(repositoryService.getRepositoryVendor()) {
-			// case ORACLE:
-			return getFileAsString(conn, file);
-			// break;
-			// }
-		} catch (SQLException e) {
-			throw new ErrorException(e);
+			jdbcConn = connService.connect(repoConn);
+			return getFileAsString(jdbcConn, file);
+		} catch (SQLException sqle) {
+			throw new ErrorException(sqle);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
+			try {
+				if (jdbcConn != null) {
+					jdbcConn.close();
 				}
+			} catch (SQLException sqle) {
+				throw new ErrorException(VCSMessages.getString("files.closeProblem")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -323,7 +338,9 @@ public class VCSFiles {
 		StringWriter os = null;
 		try {
 			// Querying blob
-			stmt = conn.prepareStatement("select FILE_CONTENT from REP_FILES where FILE_ID=?"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT rf.file_content " //$NON-NLS-1$
+					+ "FROM rep_files rf " //$NON-NLS-1$
+					+ "WHERE rf.file_id = ? "); //$NON-NLS-1$
 			stmt.setLong(1, file.getUID().rawId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -333,8 +350,10 @@ public class VCSFiles {
 					return ""; //$NON-NLS-1$
 				}
 				reader = new InputStreamReader(blobStream);
+
 				// Opening output file
 				os = new StringWriter(10240);
+
 				// Large 10K buffer for efficient read
 				char[] buffer = new char[10240];
 				int bytesRead = 0;
@@ -360,4 +379,5 @@ public class VCSFiles {
 			}
 		}
 	}
+
 }

@@ -69,7 +69,7 @@ import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.factories.ControllerFactory;
 import com.nextep.designer.core.model.DBVendor;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.core.services.IRepositoryService;
 import com.nextep.designer.ui.CoreUiPlugin;
 import com.nextep.designer.ui.editors.RepositoryConnectionEditor;
@@ -105,9 +105,6 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 	private Button newButton = null;
 	private Label statusLabel;
 
-	/**
-	 * @see com.nextep.datadesigner.gui.model.IDesignerGUI#initializeGUI(org.eclipse.swt.widgets.Shell)
-	 */
 	@Override
 	public void initializeGUI(Shell parentGUI) {
 		GridData gridData3 = new GridData();
@@ -162,8 +159,8 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 
 			public void widgetSelected(SelectionEvent evt) {
 				try {
-					UIControllerFactory.getController(
-							IElementType.getInstance(IWorkspace.TYPE_ID)).newInstance(null);
+					UIControllerFactory.getController(IElementType.getInstance(IWorkspace.TYPE_ID))
+							.newInstance(null);
 				} catch (CancelException e) {
 					if (getViewService().getCurrentWorkspace() != null) {
 						getViewService().setCurrentWorkspace(null);
@@ -275,17 +272,11 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 		viewer.setLabelProvider(new WorkspaceLabelProvider());
 	}
 
-	/**
-	 * @see com.nextep.datadesigner.gui.model.IDesignerGUI#getDisplay()
-	 */
 	@Override
 	public Display getDisplay() {
 		return sShell.getDisplay();
 	}
 
-	/**
-	 * @see com.nextep.datadesigner.gui.model.IDesignerGUI#getShell()
-	 */
 	@Override
 	public Shell getShell() {
 		return sShell;
@@ -347,9 +338,6 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 		}
 	}
 
-	/**
-    *
-    */
 	private void refreshGUI() {
 		views = new ArrayList<IWorkspace>();
 		Connection connection = null;
@@ -358,28 +346,39 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 			try {
 				statusLabel.setText(VCSUIMessages.getString("dialog.viewSelector.connectionInit")); //$NON-NLS-1$
 				final IRepositoryService repositoryService = getRepositoryService();
-				final IDatabaseConnector dbConnector = repositoryService.getRepositoryConnector();
+				final IConnectionService connectionService = CorePlugin.getConnectionService();
 				final IConnection repoConn = repositoryService.getRepositoryConnection();
-				statusLabel.setText(MessageFormat.format(
-						VCSUIMessages.getString("dialog.viewSelector.connectionAttempt"), //$NON-NLS-1$
-						dbConnector.getConnectionURL(repoConn)));
-				connection = dbConnector.connect(repoConn);
+
+				statusLabel
+						.setText(MessageFormat.format(
+								VCSUIMessages.getString("dialog.viewSelector.connectionAttempt"), //$NON-NLS-1$
+								connectionService.getDatabaseConnector(repoConn).getConnectionURL(
+										repoConn)));
+				connection = connectionService.connect(repoConn);
+
 				statusLabel.setText(VCSUIMessages.getString("dialog.viewSelector.connected")); //$NON-NLS-1$
 			} catch (SQLException e) {
-				statusLabel
-						.setText(VCSUIMessages.getString("dialog.viewSelector.failure") + e.getMessage()); //$NON-NLS-1$
+				statusLabel.setText(VCSUIMessages.getString("dialog.viewSelector.failure") //$NON-NLS-1$
+						+ e.getMessage());
 				editRepository();
 			} catch (Exception e) {
-				statusLabel
-						.setText(VCSUIMessages.getString("dialog.viewSelector.failure") + e.getMessage()); //$NON-NLS-1$
+				statusLabel.setText(VCSUIMessages.getString("dialog.viewSelector.failure") //$NON-NLS-1$
+						+ e.getMessage());
 				log.error(e);
 				handleButtonCancelWidgetSelected();
 			}
 		}
+
 		try {
 			Statement stmt = connection.createStatement();
-			ResultSet rset = stmt
-					.executeQuery("select view_id,view_name,description,dbvendor from REP_VERSION_VIEWS order by view_name"); //$NON-NLS-1$
+			ResultSet rset = stmt.executeQuery("SELECT " //$NON-NLS-1$ 
+					+ "    vv.view_id " //$NON-NLS-1$
+					+ "  , vv.view_name " //$NON-NLS-1$
+					+ "  , vv.description " //$NON-NLS-1$
+					+ "  , vv.dbvendor " //$NON-NLS-1$
+					+ "FROM rep_version_views vv " //$NON-NLS-1$
+					+ "ORDER BY vv.view_name "); //$NON-NLS-1$
+
 			try {
 				// Fetching results and temporarily store them in the map
 				while (rset.next()) {
@@ -398,8 +397,12 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 					views.add(view);
 				}
 			} finally {
-				rset.close();
-				stmt.close();
+				if (rset != null) {
+					rset.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
 			}
 			// createSShell();
 		} catch (Exception e) {
@@ -471,14 +474,8 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 		return isOK;
 	}
 
-	/**
-	 * @see com.nextep.datadesigner.model.IEventListener#handleEvent(com.nextep.datadesigner.model.ChangeEvent,
-	 *      com.nextep.datadesigner.model.IObservable, java.lang.Object)
-	 */
 	@Override
 	public void handleEvent(ChangeEvent event, IObservable source, Object data) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void deleteView(IWorkspace view) {
@@ -507,4 +504,5 @@ public class ViewSelectorDialog implements IDesignerGUI, IEventListener {
 	private IWorkspaceService getViewService() {
 		return VCSPlugin.getService(IWorkspaceService.class);
 	}
+
 }

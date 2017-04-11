@@ -23,4 +23,7 @@ Export-Package: com.nextep.installer,
  com.nextep.installer.impl.req,
  com.nextep.installer.model,
  com.nextep.installer.services
-Service-Component: OSGI-INF/loggingServiceComponent.xml, OSGI-INF/adminServiceComponent.xml, OSGI-INF/installerServiceComponent.xml
+Service-Component: OSGI-INF/loggingServiceComponent.xml, 
+ OSGI-INF/adminServiceComponent.xml,
+ OSGI-INF/installerServiceComponent.xml,
+ OSGI-INF/connectionServiceComponent.xml

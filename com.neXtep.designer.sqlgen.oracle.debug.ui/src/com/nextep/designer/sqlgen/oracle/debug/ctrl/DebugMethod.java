@@ -31,12 +31,10 @@ import java.sql.Types;
 import oracle.jdbc.OracleTypes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.nextep.datadesigner.dbgm.services.DBGMHelper;
 import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.datadesigner.impl.MethodInvoker;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.sqlgen.helpers.CaptureHelper;
 import com.nextep.designer.sqlgen.ui.services.IBreakpoint;
 import com.nextep.designer.sqlgen.ui.services.SQLEditorUIServices;
@@ -46,52 +44,41 @@ import com.nextep.designer.sqlgen.ui.services.SQLEditorUIServices;
  */
 public class DebugMethod extends MethodInvoker {
 
-	private static final Log log = LogFactory.getLog(DebugMethod.class);
+	private static final Log LOGGER = LogFactory.getLog(DebugMethod.class);
 
 	private Connection targetConn;
 	private Connection debugConn;
 	private String debugSessionID;
 
-	/**
-	 * @see com.nextep.datadesigner.impl.MethodInvoker#getMethodName()
-	 */
 	@Override
 	public String getMethodName() {
 		return "Debug PL/SQL Procedure";
 	}
 
-	/**
-	 * @see com.nextep.datadesigner.impl.MethodInvoker#getParameterTypes()
-	 */
 	@Override
 	public Class<?>[] getParameterTypes() {
 		return new Class<?>[] { IConnection.class };
 	}
 
-	/**
-	 * @see com.nextep.datadesigner.impl.MethodInvoker#invokeMethod(java.lang.Object[])
-	 */
 	@Override
 	public Object invokeMethod(Object... arg) {
 
-		IDatabaseConnector dbConnector = CorePlugin.getConnectionService().getDatabaseConnector(
-				DBGMHelper.getCurrentVendor());
 		IConnection conn = (IConnection) arg[0];
 
 		CallableStatement stmt = null;
 		Thread debuggedThread = null;
 		try {
 			// Initializing our target connection
-			targetConn = dbConnector.connect(conn);
+			targetConn = CorePlugin.getConnectionService().connect(conn);
 			//
-			stmt = targetConn.prepareCall("alter session set plsql_debug=true"); // "{ call test_package.toto(?) }");
+			stmt = targetConn.prepareCall("ALTER SESSION SET PLSQL_DEBUG=TRUE"); //$NON-NLS-1$
 			try {
 				stmt.execute();
 			} finally {
 				CaptureHelper.safeClose(null, stmt);
 			}
 
-			stmt = targetConn.prepareCall("{ ? = call dbms_debug.initialize() }");
+			stmt = targetConn.prepareCall("{ ? = CALL DBMS_DEBUG.INITIALIZE() }"); //$NON-NLS-1$
 			try {
 				stmt.registerOutParameter(1, Types.VARCHAR);
 				stmt.execute();
@@ -103,7 +90,7 @@ public class DebugMethod extends MethodInvoker {
 			}
 
 			// Switching to debug mode
-			stmt = targetConn.prepareCall("{ call dbms_debug.debug_on() }"); // "{ call test_package.toto(?) }");
+			stmt = targetConn.prepareCall("{ CALL DBMS_DEBUG.DEBUG_ON() }"); //$NON-NLS-1$
 			try {
 				stmt.execute();
 			} finally {
@@ -113,11 +100,12 @@ public class DebugMethod extends MethodInvoker {
 			// Starting our target code
 			debuggedThread = new Thread(new TargetRunnable(targetConn));
 			debuggedThread.start();
+
 			// Now that we have our ID, we initialize debug connection
-			debugConn = dbConnector.connect(conn);
+			debugConn = CorePlugin.getConnectionService().connect(conn);
 			// new Thread(new DebugRunnable(debugConn,debugSessionID)).start();
 
-			stmt = debugConn.prepareCall("{ call dbms_debug.attach_session(?) }");
+			stmt = debugConn.prepareCall("{ CALL DBMS_DEBUG.ATTACH_SESSION(?) }"); //$NON-NLS-1$
 			try {
 				stmt.setString(1, debugSessionID);
 				stmt.execute();
@@ -127,10 +115,10 @@ public class DebugMethod extends MethodInvoker {
 				CaptureHelper.safeClose(null, stmt);
 			}
 
-			stmt = debugConn.prepareCall("{ ? = call dbms_debug.synchronize(?,0) }");
+			stmt = debugConn.prepareCall("{ ? = CALL DBMS_DEBUG.SYNCHRONIZE(?,0) }"); //$NON-NLS-1$
 			try {
 				stmt.registerOutParameter(1, Types.INTEGER);
-				stmt.registerOutParameter(2, OracleTypes.OTHER, "DBMS_DEBUG.RUNTIME_INFO");
+				stmt.registerOutParameter(2, OracleTypes.OTHER, "DBMS_DEBUG.RUNTIME_INFO"); //$NON-NLS-1$
 				stmt.execute();
 				Object o = stmt.getObject(2);
 				if (o != null) {
@@ -155,9 +143,9 @@ public class DebugMethod extends MethodInvoker {
 			// } finally {
 			// stmt.close();
 			// }
-			stmt = debugConn.prepareCall("{ ? = call dbms_debug.continue(?,0,46) }");
+			stmt = debugConn.prepareCall("{ ? = CALL DBMS_DEBUG.CONTINUE(?,0,46) }"); //$NON-NLS-1$
 			stmt.registerOutParameter(1, Types.INTEGER);
-			stmt.registerOutParameter(2, OracleTypes.OTHER, "DBMS_DEBUG.RUNTIME_INFO");
+			stmt.registerOutParameter(2, OracleTypes.OTHER, "DBMS_DEBUG.RUNTIME_INFO"); //$NON-NLS-1$
 
 			try {
 				stmt.execute();
@@ -166,7 +154,7 @@ public class DebugMethod extends MethodInvoker {
 				int line = (Integer) attrs[0];
 				int terminated = (Integer) attrs[1];
 				int breakpoint = (Integer) attrs[2];
-				log.debug("Continued to line " + line + ", terminated=" + terminated
+				LOGGER.debug("Continued to line " + line + ", terminated=" + terminated
 						+ ", breakpoint=" + breakpoint);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -201,22 +189,19 @@ public class DebugMethod extends MethodInvoker {
 			this.conn = conn;
 		}
 
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
 		@Override
 		public void run() {
 			Statement stmt = null;
 			try {
 				stmt = conn.createStatement();
-				stmt.execute("begin tech_util.clean_txt('mytest'); end;");
+				stmt.execute("BEGIN TECH_UTIL.CLEAN_TXT('mytest'); END;"); //$NON-NLS-1$
 			} catch (SQLException e) {
-				log.error("Problems in target session", e);
+				LOGGER.error("Problems in target session", e);
 			} finally {
-				log.debug("Terminating target session");
+				LOGGER.debug("Terminating target session");
 				CaptureHelper.safeClose(null, stmt);
 			}
-			log.debug("End target SUCCESS");
+			LOGGER.debug("End target SUCCESS");
 		}
 
 	}
@@ -231,14 +216,11 @@ public class DebugMethod extends MethodInvoker {
 			this.debugID = debugID;
 		}
 
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
 		@Override
 		public void run() {
 			CallableStatement stmt = null;
 			try {
-				stmt = targetConn.prepareCall("{ call adp_debug.start_debugger(?) }");
+				stmt = targetConn.prepareCall("{ CALL ADP_DEBUG.START_DEBUGGER(?) }"); //$NON-NLS-1$
 				try {
 					stmt.setString(1, debugID);
 					stmt.execute();
@@ -249,7 +231,7 @@ public class DebugMethod extends MethodInvoker {
 				}
 				// Setting breakpoints
 				stmt = conn
-						.prepareCall("{ call adp_debug.set_breakpoint(p_line=>?, p_name=>?, p_body=>true) }");
+						.prepareCall("{ CALL ADP_DEBUG.SET_BREAKPOINT(p_line=>?, p_name=>?, p_body=>true) }"); //$NON-NLS-1$
 				try {
 					for (IBreakpoint bp : SQLEditorUIServices.getInstance().getBreakpoints()) {
 						stmt.setInt(1, bp.getLine());
@@ -262,9 +244,9 @@ public class DebugMethod extends MethodInvoker {
 					CaptureHelper.safeClose(null, stmt);
 				}
 
-				stmt = targetConn.prepareCall("{ ? = call dbms_debug.continue(?,0,46) }");
+				stmt = targetConn.prepareCall("{ ? = CALL DBMS_DEBUG.CONTINUE(?,0,46) }"); //$NON-NLS-1$
 				stmt.registerOutParameter(1, Types.INTEGER);
-				stmt.registerOutParameter(2, Types.STRUCT, "dbms_debug.runtime_info");
+				stmt.registerOutParameter(2, Types.STRUCT, "DBMS_DEBUG.RUNTIME_INFO"); //$NON-NLS-1$
 				try {
 					stmt.execute();
 					Struct struct = (Struct) stmt.getObject(2);
@@ -272,7 +254,7 @@ public class DebugMethod extends MethodInvoker {
 					int line = (Integer) attrs[0];
 					int terminated = (Integer) attrs[1];
 					int breakpoint = (Integer) attrs[2];
-					log.debug("Continued to line " + line + ", terminated=" + terminated
+					LOGGER.debug("Continued to line " + line + ", terminated=" + terminated
 							+ ", breakpoint=" + breakpoint);
 				} catch (SQLException e) {
 					e.printStackTrace();

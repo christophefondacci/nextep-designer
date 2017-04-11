@@ -30,7 +30,7 @@ import com.nextep.installer.model.IStatus;
 import com.nextep.installer.model.impl.Status;
 
 /**
- * This requirements ensures that the NXTP_HOME system variable is defined and points to an existing
+ * This requirement ensures that the NXTP_HOME system variable is defined and points to an existing
  * location.
  * 
  * @author Christophe Fondacci
@@ -40,7 +40,7 @@ public class NextepHomeRequirement implements IRequirement {
 	public IStatus checkRequirement(IInstallConfigurator configurator) {
 		// Retrieving home directory from system properties
 		String home = System.getProperty(NextepInstaller.NXTP_HOME);
-		if (home != null && !"".equals(home)) {
+		if (home != null && !"".equals(home)) { //$NON-NLS-1$
 			File f = new File(home);
 			if (!f.exists()) {
 				// If the directory does not exist, it is not valid
@@ -58,6 +58,7 @@ public class NextepHomeRequirement implements IRequirement {
 	}
 
 	public String getName() {
-		return "neXtep Home NXTP_HOME";
+		return "neXtep Home " + NextepInstaller.NXTP_HOME;
 	}
+
 }

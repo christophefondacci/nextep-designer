@@ -69,8 +69,8 @@ import com.nextep.datadesigner.sqlgen.services.SQLGenUtil;
 import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.helpers.NameHelper;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.core.model.IReferenceManager;
+import com.nextep.designer.core.services.IConnectionService;
 import com.nextep.designer.sqlclient.ui.helpers.ExportHelper;
 import com.nextep.designer.sqlclient.ui.model.INextepMetadata;
 import com.nextep.designer.sqlclient.ui.model.IPinnable;
@@ -95,10 +95,13 @@ public class SQLClientService implements ISQLClientService {
 
 	private final static Log LOGGER = LogFactory.getLog(SQLClientService.class);
 
+	private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss"); //$NON-NLS-1$
 	private final static boolean AUTOCOMMIT_DEFAULT = false;
+
 	private Map<IEditorInput, List<IViewPart>> editorsViewsMap;
-	private final static DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); //$NON-NLS-1$
 	private static int secondaryId = 1;
+
+	private IConnectionService connectionService;
 
 	public SQLClientService() {
 		editorsViewsMap = new HashMap<IEditorInput, List<IViewPart>>();
@@ -466,16 +469,16 @@ public class SQLClientService implements ISQLClientService {
 	private SQLClientEditorInput openSqlClientEditor(IConnection conn, ISQLScript queryScript) {
 		// Initializing editor input
 		final SQLClientEditorInput input = new SQLClientEditorInput(queryScript, conn);
-		// Initiliazing connection
-		IDatabaseConnector dbConnector = CorePlugin.getConnectionService().getDatabaseConnector(
-				conn);
+
+		// Initializing connection
 		try {
-			Connection sqlConnection = dbConnector.connect(conn);
+			Connection sqlConnection = connectionService.connect(conn);
 			sqlConnection.setAutoCommit(AUTOCOMMIT_DEFAULT);
 			input.setSqlConnection(sqlConnection);
 		} catch (SQLException e) {
 			throw new ErrorException("Could not establish connection : " + e.getMessage(), e);
 		}
+
 		// Initializing result view
 		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage();
@@ -500,7 +503,7 @@ public class SQLClientService implements ISQLClientService {
 		final ISQLScript queryScript = new SQLScript(ScriptType.CUSTOM);
 		queryScript.setExternal(true);
 		queryScript.setDirectory(SQLGenUtil.getPreference(PreferenceConstants.TEMP_FOLDER));
-		queryScript.setName("sqlquery_" + dateFormat.format(new Date())); //$NON-NLS-1$
+		queryScript.setName("sqlquery_" + DATE_FORMATTER.format(new Date())); //$NON-NLS-1$
 		return queryScript;
 	}
 
@@ -603,4 +606,9 @@ public class SQLClientService implements ISQLClientService {
 		}
 
 	}
+
+	public void setConnectionService(IConnectionService connectionService) {
+		this.connectionService = connectionService;
+	}
+
 }

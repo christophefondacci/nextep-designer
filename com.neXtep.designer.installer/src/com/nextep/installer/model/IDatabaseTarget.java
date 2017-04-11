@@ -51,6 +51,13 @@ public interface IDatabaseTarget {
 	String getDatabase();
 
 	/**
+	 * The schema to connect to
+	 * 
+	 * @return the schema name
+	 */
+	String getSchema();
+
+	/**
 	 * The port number to use for connection
 	 * 
 	 * @return the port number
@@ -84,4 +91,7 @@ public interface IDatabaseTarget {
 	 * @param tns the TNS alias to use for connection
 	 */
 	void setTnsAlias(String tns);
+
+	boolean isSso();
+
 }

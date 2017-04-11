@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,7 +42,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-
 import com.nextep.datadesigner.Designer;
 import com.nextep.datadesigner.exception.ErrorException;
 import com.nextep.datadesigner.gui.impl.swt.FieldEditor;
@@ -71,11 +69,15 @@ import com.nextep.designer.vcs.ui.services.VersionUIHelper;
 
 /**
  * @author Christophe Fondacci
+ * @author Bruno Gautier
  */
 public class UserLoginGUI implements IDesignerGUI, IEventListener {
 
 	private static final Log LOGGER = LogFactory.getLog(UserLoginGUI.class);
 	private static final String PROP_LAST_LOGIN = "com.neXtep.designer.login.last"; //$NON-NLS-1$
+
+	private static final IRepositoryService REPO_UI_SERVICE = CoreUiPlugin.getRepositoryUIService();
+	private static final IConnectionService CONNECTION_SERVICE = CorePlugin.getConnectionService();
 
 	private Shell sShell;
 	private FieldEditor loginEditor;
@@ -169,8 +171,7 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 			public void widgetSelected(SelectionEvent e) {
 				Designer.getInstance()
 						.setProperty(PROP_LAST_LOGIN, loginEditor.getText().getText());
-				// Cocoa bugfix : controls do not loose focus when a button is
-				// pressed
+				// Cocoa bugfix : controls do not loose focus when a button is pressed
 				passwordEditor.getText().traverse(SWT.TRAVERSE_RETURN);
 				// connectButton.setFocus();
 				connect();
@@ -195,21 +196,23 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 		refreshGUI();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void refreshGUI() {
+		final IProgressMonitor monitor = Designer.getProgressMonitor();
+		statusLabel.setText(VCSUIMessages.getString("user.login.initializingConnection")); //$NON-NLS-1$
+
 		// Loading all views
 		try {
-			statusLabel.setText(VCSUIMessages.getString("user.login.initializingConnection")); //$NON-NLS-1$
-			IRepositoryService repositoryService = CoreUiPlugin.getRepositoryUIService();
-			final IDatabaseConnector dbConnector = repositoryService.getRepositoryConnector();
-			final IConnection repoConn = repositoryService.getRepositoryConnection();
+			final IDatabaseConnector<Connection> dbConnector = REPO_UI_SERVICE
+					.getRepositoryConnector();
+			final IConnection repoConn = REPO_UI_SERVICE.getRepositoryConnection();
+			final String repoConnURL = dbConnector.getConnectionURL(repoConn);
+
 			statusLabel.setText(MessageFormat.format(
-					VCSUIMessages.getString("user.login.connectionAttempt"), //$NON-NLS-1$
-					dbConnector.getConnectionURL(repoConn)));
-			IProgressMonitor monitor = Designer.getProgressMonitor();
+					VCSUIMessages.getString("user.login.connectionAttempt"), repoConnURL)); //$NON-NLS-1$
 			if (monitor != null) {
 				monitor.setTaskName(MessageFormat.format(
-						VCSUIMessages.getString("user.login.repositoryConnection"), //$NON-NLS-1$
-						dbConnector.getConnectionURL(repoConn)));
+						VCSUIMessages.getString("user.login.repositoryConnection"), repoConnURL)); //$NON-NLS-1$
 			}
 			boolean enabled = VersionUIHelper.startup();
 			if (enabled) {
@@ -220,12 +223,12 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 			if (monitor != null) {
 				monitor.setTaskName(VCSUIMessages.getString("user.login.authenticating")); //$NON-NLS-1$
 			}
+
 			// Enabling controls
 			loginEditor.getText().setEnabled(enabled);
 			passwordEditor.getText().setEnabled(enabled);
 			connectButton.setEnabled(enabled);
 			sShell.setDefaultButton(connectButton);
-
 		} catch (Exception e) {
 			statusLabel.setText(VCSUIMessages.getString("user.login.connectionFailed") //$NON-NLS-1$
 					+ e.getMessage());
@@ -238,9 +241,8 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 	}
 
 	/**
-	 * Shows up the repository edition window. This method returns only after
-	 * the user has finished to setup the repository connection and clicks ok or
-	 * cancel.
+	 * Shows up the repository edition window. This method returns only after the user has finished
+	 * to setup the repository connection and clicks ok or cancel.
 	 */
 	private void editRepository() {
 		AbstractUIController.newWizardEdition(UIMessages.getString("repositoryConnectionWizard"), //$NON-NLS-1$
@@ -254,49 +256,51 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 			repositoryLogin = ((String) data).toUpperCase();
 			break;
 		case PASSWORD_CHANGED:
-			final String securedPassword = CoreUiPlugin.getRepositoryUIService().encryptPassword(
-					((String) data).toUpperCase());
+			final String securedPassword = REPO_UI_SERVICE.encryptPassword(((String) data)
+					.toUpperCase());
 			repositoryPassword = securedPassword;
 			break;
 		}
 	}
 
 	protected void connect() {
+		final IConnection repoConn = REPO_UI_SERVICE.getRepositoryConnection();
+
 		VCSPlugin.getViewService().setCurrentUser(null);
 		authenticated = false;
+
 		// Loading all views
 		statusLabel.setText(VCSUIMessages.getString("user.login.initializingConnection")); //$NON-NLS-1$
-		final IRepositoryService repositoryService = CoreUiPlugin.getRepositoryUIService();
-		final IConnectionService connectionService = CorePlugin.getConnectionService();
-		// final IDatabaseConnector dbConnector =
-		// repositoryService.getRepositoryConnector();
-
-		final IConnection repoConn = repositoryService.getRepositoryConnection();
-
 		statusLabel.setText(VCSUIMessages.getString("user.login.authenticating")); //$NON-NLS-1$
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rset = null;
 		try {
-			// FIXME [BGA] Removed references to the connect method that does
-			// not properly handle
-			// schema information for PostgreSQL database
-			// conn = dbConnector.connect(repoConn);
-			conn = connectionService.connect(repoConn);
+			conn = CONNECTION_SERVICE.connect(repoConn);
 			secureUserAuthentication(conn);
-			stmt = conn.prepareStatement("SELECT user_id, username, description, is_admin " //$NON-NLS-1$
-					+ "FROM REP_USERS " //$NON-NLS-1$ 
-					+ "WHERE UPPER(login)=? AND secured_password=?"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT " //$NON-NLS-1$
+					+ "    ru.user_id " //$NON-NLS-1$
+					+ "  , ru.username " //$NON-NLS-1$
+					+ "  , ru.description " //$NON-NLS-1$
+					//					+ "  , ru.is_admin " //$NON-NLS-1$
+					+ "FROM rep_users ru " //$NON-NLS-1$ 
+					+ "WHERE UPPER(ru.login) = ? " //$NON-NLS-1$
+					+ "  AND ru.secured_password = ? "); //$NON-NLS-1$
 			stmt.setString(1, repositoryLogin.toUpperCase());
 			stmt.setString(2, repositoryPassword);
+
 			rset = stmt.executeQuery();
 			if (rset.next()) {
-				String name = rset.getString(2);
+				final Long userId = rset.getLong("user_id"); //$NON-NLS-1$
+				final String userName = rset.getString("username"); //$NON-NLS-1$
+				final String userDesc = rset.getString("description"); //$NON-NLS-1$
+
 				statusLabel.setText(MessageFormat.format(
-						VCSUIMessages.getString("user.login.success"), name)); //$NON-NLS-1$ 
+						VCSUIMessages.getString("user.login.success"), userName)); //$NON-NLS-1$
 				IRepositoryUser user = new RepositoryUser(repositoryLogin, repositoryPassword,
-						name, rset.getString(3));
-				user.setUID(new UID(rset.getLong(1)));
+						userName, userDesc);
+				user.setUID(new UID(userId));
 				VCSPlugin.getViewService().setCurrentUser(user);
 				statusLabel.setText(VCSUIMessages.getString("user.login.connecting")); //$NON-NLS-1$
 				HibernateUtil.getInstance();
@@ -343,21 +347,31 @@ public class UserLoginGUI implements IDesignerGUI, IEventListener {
 		PreparedStatement stmt = null;
 		PreparedStatement updStmt = null;
 		try {
-			stmt = conn.prepareStatement("SELECT user_id, password, secured_password " //$NON-NLS-1$
-					+ "FROM REP_USERS " //$NON-NLS-1$
-					+ "WHERE UPPER(login) = ?"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT " //$NON-NLS-1$
+					+ "    ru.user_id " //$NON-NLS-1$
+					+ "  , ru.password " //$NON-NLS-1$
+					+ "  , ru.secured_password " //$NON-NLS-1$
+					+ "FROM rep_users ru " //$NON-NLS-1$
+					+ "WHERE UPPER(ru.login) = ? "); //$NON-NLS-1$
 			stmt.setString(1, repositoryLogin);
+
 			ResultSet rset = stmt.executeQuery();
 			if (rset.next()) {
-				final Long userId = rset.getLong(1);
-				final String clearPassword = rset.getString(2);
-				String securedPassword = rset.getString(3);
+				final Long userId = rset.getLong("user_id"); //$NON-NLS-1$
+				final String clearPassword = rset.getString("password"); //$NON-NLS-1$
+				String securedPassword = rset.getString("secured_password"); //$NON-NLS-1$
+
 				if (clearPassword != null && !"".equals(clearPassword)) { //$NON-NLS-1$
-					securedPassword = CoreUiPlugin.getRepositoryUIService().encryptPassword(
-							clearPassword.toUpperCase());
-					updStmt = conn.prepareStatement("UPDATE REP_USERS " //$NON-NLS-1$
-							+ "SET password = NULL, secured_password = ? " //$NON-NLS-1$
-							+ "WHERE user_id = ?"); //$NON-NLS-1$
+					securedPassword = REPO_UI_SERVICE.encryptPassword(clearPassword.toUpperCase());
+
+					/*
+					 * Columns names in the SET clause cannot be qualified with an alias name
+					 * because it would fail in Postgres.
+					 */
+					updStmt = conn.prepareStatement("UPDATE REP_USERS ru " //$NON-NLS-1$
+							+ "  SET password = NULL " //$NON-NLS-1$
+							+ "    , secured_password = ? " //$NON-NLS-1$
+							+ "WHERE ru.user_id = ? "); //$NON-NLS-1$
 					updStmt.setString(1, securedPassword);
 					updStmt.setLong(2, userId);
 					updStmt.execute();

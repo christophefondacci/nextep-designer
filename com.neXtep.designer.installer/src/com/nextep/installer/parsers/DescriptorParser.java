@@ -74,10 +74,9 @@ public class DescriptorParser {
 
 	private static IDelivery parseDocument(String path, Document doc, DBVendor vendor)
 			throws ParseException {
-
 		// Retrieving root element
 		Element elt = doc.getDocumentElement();
-		boolean isAdmin = "true".equals(elt.getAttribute(ITagNames.DELV_ATTR_ADMIN));
+		boolean isAdmin = "true".equals(elt.getAttribute(ITagNames.DELV_ATTR_ADMIN)); //$NON-NLS-1$
 		// Building delivery
 		IDelivery delivery = new Delivery(isAdmin);
 		// Filling name and ref
@@ -87,12 +86,12 @@ public class DescriptorParser {
 					.longValue());
 			// Setting database vendor, preserving 1.0.0 compatibility
 			String parsedVendor = elt.getAttribute(ITagNames.DELV_DBVENDOR);
-			if (!"".equals(parsedVendor) && parsedVendor != null) {
+			if (!"".equals(parsedVendor) && parsedVendor != null) { //$NON-NLS-1$
 				delivery.setDBVendor(DBVendor.valueOf(parsedVendor));
 			}
 			// First release ?
 			String first = elt.getAttribute(ITagNames.DELV_ATTR_FIRST);
-			if (first != null && !"".equals(first)) {
+			if (first != null && !"".equals(first)) { //$NON-NLS-1$
 				delivery.setFirstRelease(new Boolean(first).booleanValue());
 			}
 		} catch (NumberFormatException e) {
@@ -139,7 +138,7 @@ public class DescriptorParser {
 					throw new ParseException(e);
 				}
 				depDelivery.setRelease(getRelease(moduleElt));
-				fillArtefacts(path + File.separator + "dependencies", depDelivery, moduleElt);
+				fillArtefacts(path + File.separator + "dependencies", depDelivery, moduleElt); //$NON-NLS-1$
 				delivery.addDependency(depDelivery);
 			}
 		}
@@ -263,7 +262,7 @@ public class DescriptorParser {
 				a.setRelativePath(path);
 				a.setFilename(deliveryElt.getAttribute(ITagNames.ATTR_ARTEFACT));
 				final String vendor = deliveryElt.getAttribute(ITagNames.ATTR_ARTEFACT_VENDOR);
-				if (vendor != null && !"".equals(vendor.trim())) {
+				if (vendor != null && !"".equals(vendor.trim())) { //$NON-NLS-1$
 					a.setDBVendor(DBVendor.valueOf(deliveryElt
 							.getAttribute(ITagNames.ATTR_ARTEFACT_VENDOR)));
 				}
@@ -286,13 +285,13 @@ public class DescriptorParser {
 			}
 			// Initializing our rule
 			IDatabaseObjectCheck objCheck = InstallerFactory
-					.buildDatabaseObjectCheckerFor(vendor == null ? delivery.getDBVendor() : vendor);// delivery.getDBVendor());
+					.buildDatabaseObjectCheckerFor(vendor == null ? delivery.getDBVendor() : vendor);
 			for (int j = 0; j < objElts.getLength(); j++) {
 				Element objElt = (Element) objElts.item(j);
 				// Building db object from XML
 				DBObject dbObj = new DBObject(
-						convertType(objElt.getAttribute(ITagNames.ATTR_TYPE)), objElt
-								.getAttribute(ITagNames.ATTR_NAME));
+						convertType(objElt.getAttribute(ITagNames.ATTR_TYPE)),
+						objElt.getAttribute(ITagNames.ATTR_NAME));
 				objCheck.addObject(dbObj);
 			}
 			// Registering rule to delivery
@@ -308,14 +307,15 @@ public class DescriptorParser {
 	 * @return the type to check in database
 	 */
 	private static String convertType(String releaseType) {
-		if ("USER_COLLECTION".equals(releaseType)) {
-			return "TYPE";
-		} else if ("USER_TYPE".equals(releaseType)) {
-			return "TYPE";
-		} else if ("SQL_VIEW".equals(releaseType)) {
-			return "VIEW";
+		if ("USER_COLLECTION".equals(releaseType)) { //$NON-NLS-1$
+			return "TYPE"; //$NON-NLS-1$
+		} else if ("USER_TYPE".equals(releaseType)) { //$NON-NLS-1$
+			return "TYPE"; //$NON-NLS-1$
+		} else if ("SQL_VIEW".equals(releaseType)) { //$NON-NLS-1$
+			return "VIEW"; //$NON-NLS-1$
 		} else {
 			return releaseType;
 		}
 	}
+
 }

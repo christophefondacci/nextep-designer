@@ -4,4 +4,5 @@
    <service>
       <provide interface="com.nextep.designer.sqlclient.ui.services.ISQLClientService"/>
    </service>
+   <reference bind="setConnectionService" cardinality="1..1" interface="com.nextep.designer.core.services.IConnectionService" name="IConnectionService" policy="static"/>
 </scr:component>

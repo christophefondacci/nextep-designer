@@ -36,9 +36,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.nextep.datadesigner.exception.ErrorException;
-import com.nextep.designer.core.CorePlugin;
 import com.nextep.designer.core.model.IConnection;
-import com.nextep.designer.core.model.IDatabaseConnector;
 import com.nextep.designer.repository.DeliveryRegistry;
 import com.nextep.designer.repository.RepositoryMessages;
 import com.nextep.designer.repository.RepositoryStatus;
@@ -59,6 +57,7 @@ import com.nextep.installer.model.IRelease;
 import com.nextep.installer.model.IRequirement;
 import com.nextep.installer.model.InstallerOption;
 import com.nextep.installer.services.IAdminService;
+import com.nextep.installer.services.IConnectionService;
 import com.nextep.installer.services.IInstallerService;
 import com.nextep.installer.services.ILoggingService;
 
@@ -77,36 +76,43 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 	private IInstallerService installerService;
 	private ILoggingService loggingService;
 	private IAdminService adminService;
+	private IConnectionService connectionService;
 
 	/**
 	 * Returns the release number of the specified module in the specified repository.
 	 * 
 	 * @param moduleId id of the module for which we need to retrieve the release number
-	 * @param repoConnection a connection to the repository
+	 * @param repoConn a connection to the repository
 	 * @return a {@link IRelease} object representing the release number of the specified module
 	 */
-	public IRelease getRelease(long moduleId, IConnection repoConnection)
+	public IRelease getRelease(long moduleId, IConnection repoConn)
 			throws NoRepositoryConnectionException {
 		// Defining target
-		final String user = repoConnection.getLogin();
-		final String password = repoConnection.getPassword();
-		final String database = repoConnection.getDatabase();
-		final String host = repoConnection.getServerIP();
-		final String port = String.valueOf(repoConnection.getServerPort());
-		final String serviceName = repoConnection.getTnsAlias();
-		final IDatabaseTarget target = InstallerFactory.createTarget(user, password, database,
-				host, port, DBVendor.valueOf(repoConnection.getDBVendor().name()), serviceName);
+		final String user = repoConn.getLogin();
+		final String password = repoConn.getPassword();
+		final String database = repoConn.getDatabase();
+		final String schema = repoConn.getSchema();
+		final String host = repoConn.getServerIP();
+		final String port = String.valueOf(repoConn.getServerPort());
+		final String serviceName = repoConn.getTnsAlias();
+
+		/*
+		 * We need to "translate" the com.nextep.designer.core.model.DBVendor enum value returned by
+		 * the IConnection#getDBVendor() method into a com.nextep.installer.model.DBVendor enum
+		 * value.
+		 */
+		final DBVendor vendor = DBVendor.valueOf(repoConn.getDBVendor().name());
+
+		IDatabaseTarget repoTarget = InstallerFactory.createTarget(user, password, database,
+				schema, host, port, vendor, serviceName);
 
 		// Building installer configurator
 		IInstallConfigurator conf = InstallerFactory.createConfigurator();
-		conf.setTarget(target);
+		conf.setTarget(repoTarget);
 		conf.setAdminInTarget(true);
 
-		// Preparing database connection
-		IDatabaseConnector connector = CorePlugin.getConnectionService().getDatabaseConnector(
-				repoConnection.getDBVendor());
 		try {
-			Connection conn = connector.connect(repoConnection);
+			Connection conn = connectionService.connect(repoTarget);
 			try {
 				IRelease currentRel = adminService.getRelease(conf, conn, moduleId, true);
 				// Compatibility : assuming 1.0.2.7
@@ -148,11 +154,19 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 
 	@Override
 	public void upgrade(final IInstallerMonitor monitor, final IConnection repoConn) {
+		/*
+		 * We need to "translate" the com.nextep.designer.core.model.DBVendor enum value returned by
+		 * the IConnection#getDBVendor() method into a com.nextep.installer.model.DBVendor enum
+		 * value.
+		 */
+		final DBVendor vendor = DBVendor.valueOf(repoConn.getDBVendor().name());
 		final List<String> deliveries = DeliveryRegistry.listDeliveriesForUpgrade(null, null,
-				DBVendor.valueOf(repoConn.getDBVendor().name()));
+				vendor);
+
 		monitor.mainStart(
 				RepositoryMessages.getString("repositoryUpdater.title"), deliveries.size() * 2); //$NON-NLS-1$
 		loggingService.setMonitor(monitor);
+
 		// Setting flag
 		new Thread(new Runnable() {
 
@@ -167,6 +181,7 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 					configurator.setOption(InstallerOption.USER, repoConn.getLogin());
 					configurator.setOption(InstallerOption.PASSWORD, repoConn.getPassword());
 					configurator.setOption(InstallerOption.DATABASE, repoConn.getDatabase());
+					configurator.setOption(InstallerOption.SCHEMA, repoConn.getSchema());
 					configurator.setOption(InstallerOption.HOST, repoConn.getServerIP());
 					configurator.setOption(InstallerOption.PORT, repoConn.getServerPort());
 					configurator.setOption(InstallerOption.TNS, repoConn.getTnsAlias());
@@ -329,6 +344,10 @@ public class RepositoryUpdaterService implements IRepositoryUpdaterService {
 
 	public void setAdminService(IAdminService adminService) {
 		this.adminService = adminService;
+	}
+
+	public void setConnectionService(IConnectionService connectionService) {
+		this.connectionService = connectionService;
 	}
 
 	@Override
