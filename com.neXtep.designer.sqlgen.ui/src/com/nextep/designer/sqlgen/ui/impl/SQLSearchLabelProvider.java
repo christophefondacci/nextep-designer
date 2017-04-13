@@ -100,7 +100,12 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 				 */
 				// +1 to exclude the newline character from the selection
 				int lineStart = sql.lastIndexOf('\n', match.getOffset()) + 1;
-				int lineEnd = sql.indexOf('\n', match.getOffset() + match.getLength());
+
+				/*
+				 * We start searching for a newline character at the beginning of the match instead
+				 * of the end in case the match spans multiple lines (regular expression search).
+				 */
+				int lineEnd = sql.indexOf('\n', match.getOffset());
 
 				/*
 				 * If no newline character has been found after the end of the match, we set the end
@@ -111,11 +116,18 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 				}
 
 				/*
+				 * If the match spans multiple lines (regular expression search), the size of the
+				 * selection is limited so as not to exceed the end of the current line.
+				 */
+				int maxSelectionLength = lineEnd - match.getOffset();
+
+				/*
 				 * Now that we have found the position of the line containing the match, we try to
 				 * define a selection window of FRAME_MAX_SIZE characters, with a minimum of
 				 * FRAME_MIN_SIZE characters before and after the match.
 				 */
-				int minSelectionIndex = match.getOffset() + match.getLength() + FRAME_MIN_SIZE
+				int minSelectionIndex = match.getOffset()
+						+ Math.min(match.getLength(), maxSelectionLength) + FRAME_MIN_SIZE
 						- FRAME_MAX_SIZE;
 				int selectionStart = Math.max(minSelectionIndex, lineStart);
 				int selectionEnd = Math.min(selectionStart + FRAME_MAX_SIZE, lineEnd);
@@ -124,19 +136,19 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 				 * If the last character of the selection window is a carriage return character or a
 				 * newline character then we remove it from the selection.
 				 */
-				while (sql.charAt(selectionEnd - 1) == '\r'
-						|| sql.charAt(selectionEnd - 1) == '\n') {
+				while (sql.charAt(selectionEnd - 1) == '\r' || sql.charAt(selectionEnd - 1) == '\n') {
 					selectionEnd--;
 				}
 
 				bString = new BasicString(sql.substring(selectionStart, selectionEnd),
-						selectionStart);
+						selectionStart, selectionEnd - selectionStart);
 			}
 		} else if (element instanceof INamedObject) {
-			bString = new BasicString(((INamedObject) element).getName(), 0);
+			String elementName = ((INamedObject) element).getName();
+			bString = new BasicString(elementName, 0, elementName.length());
 		} else {
-			String unknown = "Unknown"; //$NON-NLS-1$
-			bString = new BasicString(unknown, 0);
+			String unknownString = "Unknown"; //$NON-NLS-1$
+			bString = new BasicString(unknownString, 0, unknownString.length());
 		}
 
 		return bString;
@@ -153,7 +165,8 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 
 			// We compute the start and end positions of the match inside the match text
 			int matchStart = match.getOffset() - bString.getOffset();
-			int matchEnd = matchStart + match.getLength();
+			int matchEnd = matchStart
+					+ Math.min(match.getLength(), bString.getLength() - matchStart);
 
 			sString = new StyledString("... "); //$NON-NLS-1$
 			sString.append(text.substring(0, matchStart));
@@ -203,10 +216,12 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 
 		private String text;
 		private int offset;
+		private int length;
 
-		public BasicString(String text, int offset) {
+		public BasicString(String text, int offset, int length) {
 			this.text = text;
 			this.offset = offset;
+			this.length = length;
 		}
 
 		public String getText() {
@@ -215,6 +230,10 @@ public class SQLSearchLabelProvider extends BaseLabelProvider implements IStyled
 
 		public int getOffset() {
 			return offset;
+		}
+
+		public int getLength() {
+			return length;
 		}
 
 	}
