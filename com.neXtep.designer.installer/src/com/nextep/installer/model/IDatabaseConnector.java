@@ -6,16 +6,16 @@
 package com.nextep.installer.model;
 
 import java.sql.Connection;
-import com.nextep.installer.exception.InstallerException;
+import java.sql.SQLException;
 
 /**
  * @author Bruno Gautier
  */
 public interface IDatabaseConnector {
 
-	Connection getConnection(IDatabaseTarget target) throws InstallerException;
+	Connection getConnection(IDatabaseTarget target) throws SQLException;
 
 	void doPostConnectionSettings(IDatabaseTarget target, Connection conn)
-			throws InstallerException;
+			throws SQLException;
 
 }

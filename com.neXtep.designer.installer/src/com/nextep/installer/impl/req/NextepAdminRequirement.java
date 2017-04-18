@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.helpers.Assert;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.IDelivery;
@@ -66,7 +66,8 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	public static final String PROP_ADMIN_TNS = "admin.nextep.tnsname"; //$NON-NLS-1$
 
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
-		final ILoggingService logger = NextepInstaller.getService(ILoggingService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+
 		try {
 			// Initializing admin.properties files
 			loadProperties(configurator);
@@ -132,8 +133,14 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	private boolean checkTargetIsAdmin(IInstallConfigurator configurator, IDatabaseTarget target)
 			throws InstallerException {
 		// First, we try to connect
-		final IConnectionService connService = NextepInstaller.getService(IConnectionService.class);
-		Connection targetConnection = connService.connect(target);
+		final IConnectionService connService = ServicesHelper.getConnectionService();
+		Connection targetConnection;
+		try {
+			targetConnection = connService.connect(target);
+		} catch (SQLException sqle) {
+			throw new InstallerException("Cannot connect to admin database: " + sqle.getMessage(),
+					sqle);
+		}
 
 		// If we are in admin INSTALL mode, connection is enough
 		if (configurator.isOptionDefined(InstallerOption.INSTALL)
@@ -154,8 +161,9 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 			if (targetConnection != null) {
 				try {
 					targetConnection.close();
-				} catch (SQLException e) {
-					throw new InstallerException("Unable to close connection: " + e.getMessage(), e);
+				} catch (SQLException sqle) {
+					throw new InstallerException("Unable to close connection to admin database: "
+							+ sqle.getMessage(), sqle);
 				}
 			}
 			return false;
@@ -165,7 +173,7 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	private boolean checkAdmin(IInstallConfiguration configuration, Connection connection) {
 		IDelivery dlv = new Delivery(true);
 		dlv.setRefUID(99999999999L);
-		final IAdminService adminService = NextepInstaller.getService(IAdminService.class);
+		final IAdminService adminService = ServicesHelper.getAdminService();
 		try {
 			IRelease repRelease = adminService.getRelease(configuration, connection,
 					dlv.getRefUID(), true);
@@ -176,15 +184,17 @@ public class NextepAdminRequirement extends AbstractJDBCRequirement {
 	}
 
 	private void loadProperties(IInstallConfigurator configurator) throws InstallerException {
-		final ILoggingService log = NextepInstaller.getService(ILoggingService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		// Our property file
 		File propFile = new File(configurator.getNextepHome() + File.separator + "properties" //$NON-NLS-1$
 				+ File.separator + "neXtep.properties"); //$NON-NLS-1$
+
 		// If it does not exist, we quit
 		if (!propFile.exists()) {
 			if (configurator.isOptionDefined(InstallerOption.VERBOSE)) {
-				log.log("Warning: No admin.properties file found in: " + propFile.getAbsolutePath());
+				logger.log("Warning: No admin.properties file found in: "
+						+ propFile.getAbsolutePath());
 			}
 			return;
 		}

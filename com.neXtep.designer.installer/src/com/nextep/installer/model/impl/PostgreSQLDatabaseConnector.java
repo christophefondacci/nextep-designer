@@ -8,8 +8,7 @@ package com.nextep.installer.model.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import com.nextep.installer.NextepInstaller;
-import com.nextep.installer.exception.InstallerException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.base.AbstractJDBCDatabaseConnector;
 import com.nextep.installer.services.ILoggingService;
@@ -20,8 +19,8 @@ import com.nextep.installer.services.ILoggingService;
 public class PostgreSQLDatabaseConnector extends AbstractJDBCDatabaseConnector {
 
 	public void doPostConnectionSettings(IDatabaseTarget target, Connection conn)
-			throws InstallerException {
-		final ILoggingService logger = getLoggingService();
+			throws SQLException {
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final String schema = target.getSchema();
 
 		if (schema != null && !"".equals(schema.trim())) { //$NON-NLS-1$
@@ -31,7 +30,7 @@ public class PostgreSQLDatabaseConnector extends AbstractJDBCDatabaseConnector {
 				stmt.execute("SET SEARCH_PATH TO " + schema + ",public"); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (SQLException sqle) {
 				logger.error("Unable to set the SEARCH_PATH variable: " + sqle.getMessage(), sqle);
-				throw new InstallerException(sqle);
+				throw sqle;
 			} finally {
 				try {
 					if (stmt != null)
@@ -41,10 +40,6 @@ public class PostgreSQLDatabaseConnector extends AbstractJDBCDatabaseConnector {
 				}
 			}
 		}
-	}
-
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
 	}
 
 }

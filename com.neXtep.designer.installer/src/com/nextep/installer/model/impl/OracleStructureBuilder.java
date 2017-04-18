@@ -26,8 +26,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IDatabaseStructure;
 import com.nextep.installer.model.IDatabaseStructureBuilder;
+import com.nextep.installer.services.ILoggingService;
 
 /**
  * The Oracle object checker.
@@ -37,12 +39,14 @@ import com.nextep.installer.model.IDatabaseStructureBuilder;
 public class OracleStructureBuilder implements IDatabaseStructureBuilder {
 
 	public IDatabaseStructure buildStructure(String schema, Connection conn) throws SQLException {
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final IDatabaseStructure structure = new DatabaseStructure();
 		Statement stmt = null;
+		ResultSet rset = null;
 		try {
 			// Retrieving all defined objects for the specified user
 			stmt = conn.createStatement();
-			ResultSet rset = stmt.executeQuery("select object_type, object_name from user_objects"); //$NON-NLS-1$
+			rset = stmt.executeQuery("SELECT object_type, object_name FROM user_objects"); //$NON-NLS-1$
 
 			// Building an array of checked objects
 			while (rset.next()) {
@@ -50,7 +54,8 @@ public class OracleStructureBuilder implements IDatabaseStructureBuilder {
 				structure.addObject(dbObj);
 			}
 			rset.close();
-			rset = stmt.executeQuery("select master,log_table from user_mview_logs"); //$NON-NLS-1$
+
+			rset = stmt.executeQuery("SELECT master,log_table FROM user_mview_logs"); //$NON-NLS-1$
 			while (rset.next()) {
 				final String master = rset.getString(1);
 				final String logTab = rset.getString(2);
@@ -58,7 +63,8 @@ public class OracleStructureBuilder implements IDatabaseStructureBuilder {
 				structure.addObject(new DBObject("MVIEW_LOG", master + " (log)")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			rset.close();
-			rset = stmt.executeQuery("select table_name||'.'||column_name from user_tab_columns"); //$NON-NLS-1$
+
+			rset = stmt.executeQuery("SELECT table_name||'.'||column_name FROM user_tab_columns"); //$NON-NLS-1$
 			while (rset.next()) {
 				final String colName = rset.getString(1);
 				structure.addObject(new DBObject("COLUMN", colName)); //$NON-NLS-1$
@@ -67,8 +73,11 @@ public class OracleStructureBuilder implements IDatabaseStructureBuilder {
 			// We return the checked objects list
 			return structure;
 		} finally {
-			if (stmt != null) {
-				stmt.close();
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException sqle) {
+				logger.log("Unable to close statement: " + sqle.getMessage()); //$NON-NLS-1$
 			}
 		}
 	}

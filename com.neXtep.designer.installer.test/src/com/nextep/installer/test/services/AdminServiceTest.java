@@ -30,6 +30,7 @@ import org.junit.Test;
 import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.factories.InstallerFactory;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.impl.req.NextepAdminRequirement;
 import com.nextep.installer.impl.req.TargetUserRequirement;
 import com.nextep.installer.model.DBVendor;
@@ -66,10 +67,12 @@ public class AdminServiceTest {
 		NextepInstaller.registerService(ILoggingService.class, new LoggingService());
 		NextepInstaller.registerService(IAdminService.class, new AdminService());
 		NextepInstaller.registerService(IInstallerService.class, new InstallerService());
+
 		// Configuring installer to deploy the admin
 		IInstallConfigurator installConf = new DefaultInstallerConfigurator();
 		installConf.setNextepHome(TestConfiguration.getProperty(TestConfiguration.PROP_NXTP_HOME));
 		installConf.defineOption(InstallerOption.INSTALL);
+
 		// Admin needs to be deployed on our test target
 		IDatabaseTarget target = TestConfiguration.getTestTarget(DBVendor.MYSQL);
 		installConf.setOption(InstallerOption.USER, target.getUser());
@@ -78,8 +81,9 @@ public class AdminServiceTest {
 		installConf.setOption(InstallerOption.HOST, target.getHost());
 		installConf.setOption(InstallerOption.PORT, target.getPort());
 		installConf.setOption(InstallerOption.VENDOR, target.getVendor().getName());
+
 		// Deploying
-		NextepInstaller.getService(IInstallerService.class).install(installConf, ".");
+		ServicesHelper.getInstallerService().install(installConf, "."); //$NON-NLS-1$
 
 		// Preparing configurator
 		configurator = new DefaultInstallerConfigurator(installConf);
@@ -91,7 +95,8 @@ public class AdminServiceTest {
 
 	@Test
 	public void testStandaloneAdmin() throws InstallerException {
-		IDatabaseTarget target = TestConfiguration.getTestTarget(DBVendor.MYSQL);
+		final IInstallerService installer = ServicesHelper.getInstallerService();
+		final IDatabaseTarget target = TestConfiguration.getTestTarget(DBVendor.MYSQL);
 
 		IInstallConfigurator configurator = new DefaultInstallerConfigurator();
 		configurator.setProperty(NextepAdminRequirement.PROP_ADMIN_USER, target.getUser());
@@ -103,71 +108,74 @@ public class AdminServiceTest {
 				.getName());
 
 		// Building fake target
-		IDatabaseTarget fakeTarget = new DatabaseTarget("invalidTarget", "password", "db", "",
-				"127.0.0.1", "3306", DBVendor.MYSQL, null);
+		IDatabaseTarget fakeTarget = new DatabaseTarget("invalidTarget", "password", "db", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"127.0.0.1", "3306", DBVendor.MYSQL, null); //$NON-NLS-1$ //$NON-NLS-2$
 		configurator.setTarget(fakeTarget);
 		List<IRequirement> reqs = new ArrayList<IRequirement>();
 		reqs.add(new NextepAdminRequirement());
-		NextepInstaller.getService(IInstallerService.class).checkRequirements(configurator, reqs);
+		installer.checkRequirements(configurator, reqs);
 	}
 
 	@Test
 	public void testInstallRelease() throws InstallerException {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
+		final IAdminService admin = ServicesHelper.getAdminService();
+
 		IDelivery dlv = new Delivery(false);
 		dlv.setRefUID(1234);
-		dlv.setName("Test");
+		dlv.setName("Test"); //$NON-NLS-1$
 		dlv.setFromRelease(null);
 		IRelease rel1 = new Release(1, 0, 0, 1, 1);
 		dlv.setRelease(rel1);
 		dlv.setDBVendor(DBVendor.JDBC);
 		configurator.setDelivery(dlv);
-		service.installRelease(configurator, dlv, true);
+		admin.installRelease(configurator, dlv, true);
 		releaseId1 = rel1.getId();
 		IRelease rel2 = new Release(1, 0, 0, 2, 2);
 		dlv.setRelease(rel2);
 		IDatabaseObjectCheck check = InstallerFactory.buildDatabaseObjectCheckerFor(DBVendor.MYSQL);
-		check.addObject(new DBObject("TABLE", "NADM_MODULES"));
+		check.addObject(new DBObject("TABLE", "NADM_MODULES")); //$NON-NLS-1$ //$NON-NLS-2$
 		dlv.addCheck(check);
-		service.installRelease(configurator, dlv, true);
+		admin.installRelease(configurator, dlv, true);
 		releaseId2 = rel2.getId();
 	}
 
 	@Test
 	public void testCheck() {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
+		final IAdminService admin = ServicesHelper.getAdminService();
+
 		IDelivery dlv = new Delivery(false);
 		dlv.setRefUID(1234);
 		IDatabaseObjectCheck check = InstallerFactory.buildDatabaseObjectCheckerFor(DBVendor.MYSQL);
 		// This check should work as the table is already in the admin schema
-		check.addObject(new DBObject("TABLE", "NADM_INSTALLED_RELEASES"));
+		check.addObject(new DBObject("TABLE", "NADM_INSTALLED_RELEASES")); //$NON-NLS-1$ //$NON-NLS-2$
 		dlv.addCheck(check);
-		boolean result = service.check(configurator, dlv);
-		Assert.assertTrue("Check of db table failed", result);
+		boolean result = admin.check(configurator, dlv);
+		Assert.assertTrue("Check of db table failed", result); //$NON-NLS-1$
 		// Now adding a check which should fail
-		check.addObject(new DBObject("TABLE", "NON_EXISTING_TABLE"));
-		result = service.check(configurator, dlv);
-		Assert.assertFalse("Check of db table succeed with non existing table", result);
+		check.addObject(new DBObject("TABLE", "NON_EXISTING_TABLE")); //$NON-NLS-1$ //$NON-NLS-2$
+		result = admin.check(configurator, dlv);
+		Assert.assertFalse("Check of db table succeed with non existing table", result); //$NON-NLS-1$
 	}
 
 	@Test
 	public void testCheckAll() throws InstallerException {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
-		service.checkAll(configurator, false);
+		final IAdminService admin = ServicesHelper.getAdminService();
+		admin.checkAll(configurator, false);
 	}
 
 	@Test
 	public void testGetRelease() throws InstallerException {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
+		final IAdminService admin = ServicesHelper.getAdminService();
+
 		// Checking explicit connection
-		IRelease rel1 = service.getRelease(configurator, configurator.getAdminConnection(), 1234,
+		IRelease rel1 = admin.getRelease(configurator, configurator.getAdminConnection(), 1234,
 				true);
 		// Checking implicit connection
-		IRelease rel2 = service.getRelease(configurator, 1234, true);
+		IRelease rel2 = admin.getRelease(configurator, 1234, true);
 		// Checking explicit delivery
 		IDelivery dlv = new Delivery(false);
 		dlv.setRefUID(1234);
-		IRelease rel3 = service.getRelease(configurator, dlv);
+		IRelease rel3 = admin.getRelease(configurator, dlv);
 		// Admin = target so release should be retrieved whatever the database & user is
 		IRelease rel4, rel5;
 		IInstallConfigurator newConfig = new DefaultInstallerConfigurator(configurator);
@@ -176,12 +184,12 @@ public class AdminServiceTest {
 				TestConfiguration.getProperty(TestConfiguration.PROP_ROOT_PASSWORD));
 		// Installing new user configuration
 		new TargetUserRequirement().checkRequirement(newConfig);
-		rel4 = service.getRelease(newConfig, dlv);
+		rel4 = admin.getRelease(newConfig, dlv);
 
 		// Now simulating standalon admin
 		newConfig.setAdminInTarget(false);
-		rel5 = service.getRelease(newConfig, dlv);
-		Assert.assertEquals("getRelease differs when calling overriden method", rel1, rel2);
+		rel5 = admin.getRelease(newConfig, dlv);
+		Assert.assertEquals("getRelease differs when calling overriden method", rel1, rel2); //$NON-NLS-1$
 		Assert.assertEquals("getRelease differs when calling overriden method", rel2, rel3);
 		Assert.assertEquals("getRelease differs when called with different user", rel3, rel4);
 		Assert.assertNull(
@@ -191,26 +199,27 @@ public class AdminServiceTest {
 
 	@Test
 	public void testShowInstalledReleases() throws InstallerException {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
-		service.showInstalledReleases(configurator);
+		final IAdminService admin = ServicesHelper.getAdminService();
+		admin.showInstalledReleases(configurator);
 	}
 
 	@Test
 	public void testGetReleaseCheck() throws InstallerException {
-		IAdminService service = NextepInstaller.getService(IAdminService.class);
+		final IAdminService service = ServicesHelper.getAdminService();
+
 		IDelivery dlv = new Delivery(false);
 		dlv.setRefUID(1234);
 		configurator.setDelivery(dlv);
 		IRelease r = service.getRelease(configurator, dlv);
 		ICheck check = service.getReleaseCheck(configurator, r);
 		if (!(check instanceof IDatabaseObjectCheck)) {
-			Assert.fail("Delivery check needs to be a IDatabaseObjectCheck");
+			Assert.fail("Delivery check needs to be a IDatabaseObjectCheck"); //$NON-NLS-1$
 		}
 		final IDatabaseObjectCheck dbCheck = (IDatabaseObjectCheck) check;
 		// Checking that we have only one check as TABLE / NADM_MODULES
 		boolean passed = true;
 		for (IDBObject o : dbCheck.getObjectsToCheck()) {
-			if ("TABLE".equals(o.getType()) && "NADM_MODULES".equals(o.getName()) && passed) {
+			if ("TABLE".equals(o.getType()) && "NADM_MODULES".equals(o.getName()) && passed) { //$NON-NLS-1$ //$NON-NLS-2$
 				passed = true;
 			} else {
 				passed = false;

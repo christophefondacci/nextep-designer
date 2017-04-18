@@ -27,7 +27,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import com.nextep.installer.NextepInstaller;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IDatabaseStructure;
 import com.nextep.installer.model.IDatabaseStructureBuilder;
 import com.nextep.installer.services.ILoggingService;
@@ -38,7 +38,7 @@ import com.nextep.installer.services.ILoggingService;
 public class MySQLStructureBuilder implements IDatabaseStructureBuilder {
 
 	public IDatabaseStructure buildStructure(String schema, Connection conn) throws SQLException {
-		final ILoggingService logger = NextepInstaller.getService(ILoggingService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final IDatabaseStructure structure = new DatabaseStructure();
 		ResultSet rset = null;
 		ResultSet rsetIdx = null;
@@ -62,6 +62,7 @@ public class MySQLStructureBuilder implements IDatabaseStructureBuilder {
 				rsetIdx.close();
 			}
 			rset.close();
+
 			// Fetching table columns
 			rset = md.getColumns(null, schema, null, null);
 			while (rset.next()) {
@@ -90,14 +91,25 @@ public class MySQLStructureBuilder implements IDatabaseStructureBuilder {
 			// We return the checked objects list
 			return structure;
 		} finally {
-			if (rset != null) {
-				rset.close();
+			try {
+				if (rset != null)
+					rset.close();
+			} catch (SQLException sqle) {
+				logger.log("Unable to close result set: " + sqle.getMessage()); //$NON-NLS-1$
 			}
-			if (rsetIdx != null) {
-				rsetIdx.close();
+
+			try {
+				if (rsetIdx != null)
+					rsetIdx.close();
+			} catch (SQLException sqle) {
+				logger.log("Unable to close result set: " + sqle.getMessage()); //$NON-NLS-1$
 			}
-			if (stmt != null) {
-				stmt.close();
+
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException sqle) {
+				logger.log("Unable to close statement: " + sqle.getMessage()); //$NON-NLS-1$
 			}
 		}
 	}

@@ -52,18 +52,15 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 
 	public IDatabaseStructure buildStructure(String schema, Connection conn) throws SQLException {
 		final IDatabaseStructure structure = new DatabaseStructure();
+
 		Statement stmt = null;
 		ResultSet rset = null;
 		ResultSet rsetIdx = null;
-		// Compatibility with previous code
-		// FIXME [BGA] Removed explicit reference to public
-		//		schema = "public"; //$NON-NLS-1$
 		try {
 			DatabaseMetaData md = conn.getMetaData();
 
 			// Listing tables
-			//			rset = md.getTables(null, "public", null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			rset = md.getTables(null, schema, null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			rset = md.getTables(null, schema, null, new String[] { "TABLE", "VIEW", "SEQUENCE" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			// Building an array of checked objects
 			while (rset.next()) {
@@ -85,19 +82,20 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 				}
 			}
 			rset.close();
+
 			// Fetching table columns
-			//			rset = md.getColumns(schema, "public", null, null); //$NON-NLS-1$
-			rset = md.getColumns(null, schema, null, null); //$NON-NLS-1$
+			rset = md.getColumns(null, schema, null, null);
 			while (rset.next()) {
 				final String tabName = rset.getString("TABLE_NAME"); //$NON-NLS-1$
 				final String colName = rset.getString("COLUMN_NAME"); //$NON-NLS-1$
 				structure.addObject(new DBObject("COLUMN", tabName + "." + colName)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			rset.close();
-			// Fetching types Oid => type names mapping from postgres
+
+			// Fetching types Oid => type names mapping from Postgres
 			final Map<String, String> typesOidMap = new HashMap<String, String>();
 			stmt = conn.createStatement();
-			rset = stmt.executeQuery("select oid, typname from pg_type"); //$NON-NLS-1$
+			rset = stmt.executeQuery("SELECT oid, typname FROM pg_type"); //$NON-NLS-1$
 			while (rset.next()) {
 				final String oid = rset.getString(1);
 				final String typeName = rset.getString(2);
@@ -105,14 +103,17 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 			}
 			rset.close();
 			stmt.close();
+
 			// Fetching procedures
-			stmt = conn
-					.prepareStatement("SELECT p.proname AS procedure_name, p.proargtypes AS argument_types_oids " //$NON-NLS-1$
-							+ "FROM pg_proc p " //$NON-NLS-1$
-							+ "  LEFT JOIN pg_language l ON p.prolang=l.oid " //$NON-NLS-1$
-							+ "  LEFT JOIN pg_namespace n ON p.pronamespace=l.oid " //$NON-NLS-1$
-							+ "WHERE l.lanname!='internal' and (n.nspname=? or n.nspname is null)"); //$NON-NLS-1$
+			stmt = conn.prepareStatement("SELECT " //$NON-NLS-1$
+					+ "    p.proname AS procedure_name" //$NON-NLS-1$
+					+ "  , p.proargtypes AS argument_types_oids " //$NON-NLS-1$
+					+ "FROM pg_proc p " //$NON-NLS-1$
+					+ "  LEFT JOIN pg_language l ON p.prolang=l.oid " //$NON-NLS-1$
+					+ "  LEFT JOIN pg_namespace n ON p.pronamespace=l.oid " //$NON-NLS-1$
+					+ "WHERE l.lanname!='internal' and (n.nspname=? or n.nspname is null)"); //$NON-NLS-1$
 			((PreparedStatement) stmt).setString(1, schema);
+
 			rset = ((PreparedStatement) stmt).executeQuery();
 			while (rset.next()) {
 				final String procName = rset.getString("procedure_name"); //$NON-NLS-1$
@@ -120,6 +121,7 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 				final StringBuffer args = new StringBuffer(50);
 				args.append("("); //$NON-NLS-1$
 				String separator = ""; //$NON-NLS-1$
+
 				for (String t : types) {
 					args.append(separator);
 					if (typesOidMap.get(t) != null) {
@@ -132,13 +134,17 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 			}
 			rset.close();
 			stmt.close();
-			stmt = conn.prepareStatement("select trigger_name from information_schema.triggers " //$NON-NLS-1$
-					+ "where trigger_schema not in ('pg_catalog','information_schema')"); //$NON-NLS-1$
+
+			stmt = conn.prepareStatement("SELECT " //$NON-NLS-1$
+					+ "  trigger_name " //$NON-NLS-1$
+					+ "FROM information_schema.triggers " //$NON-NLS-1$
+					+ "WHERE trigger_schema NOT IN ('pg_catalog', 'information_schema')"); //$NON-NLS-1$
 			rset = ((PreparedStatement) stmt).executeQuery();
 			while (rset.next()) {
 				final String triggerName = rset.getString("trigger_name"); //$NON-NLS-1$
 				structure.addObject(new DBObject("TRIGGER", triggerName)); //$NON-NLS-1$
 			}
+
 			// We return the checked objects list
 			return structure;
 		} finally {
@@ -155,7 +161,7 @@ public class PostgreSqlStructureBuilder implements IDatabaseStructureBuilder {
 	}
 
 	/**
-	 * Since postgreSql make some weird datatype conversions we need to convert them back to ensure
+	 * Since PostgreSql make some weird datatype conversions we need to convert them back to ensure
 	 * proper object validation.
 	 * 
 	 * @param type original Postgres internal datatype

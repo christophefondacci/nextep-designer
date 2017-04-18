@@ -23,9 +23,10 @@
 package com.nextep.installer.impl.req;
 
 import java.sql.Connection;
-import com.nextep.installer.NextepInstaller;
+import java.sql.SQLException;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.helpers.Assert;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.IInstallConfigurator;
@@ -48,7 +49,7 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 	public static final String DEFAULT_SERVER = "127.0.0.1"; //$NON-NLS-1$
 
 	public IStatus checkRequirement(IInstallConfigurator configurator) throws InstallerException {
-		final IConnectionService connService = NextepInstaller.getService(IConnectionService.class);
+		final IConnectionService connService = ServicesHelper.getConnectionService();
 
 		final String user = configurator.getOption(InstallerOption.USER);
 		final String password = configurator.getOption(InstallerOption.PASSWORD);
@@ -92,7 +93,13 @@ public class TargetUserRequirement extends AbstractJDBCRequirement {
 			configurator.setTarget(target);
 
 			// Establishing connection
-			Connection targetConnection = connService.connect(target);
+			Connection targetConnection;
+			try {
+				targetConnection = connService.connect(target);
+			} catch (SQLException sqle) {
+				throw new InstallerException(sqle);
+			}
+
 			configurator.setTargetConnection(targetConnection);
 
 			return new Status(true, target.toString());

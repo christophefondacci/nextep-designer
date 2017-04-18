@@ -30,9 +30,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.regex.Matcher;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.helpers.PostgreSqlHelper;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.IDeployHandler;
@@ -49,7 +49,7 @@ import com.nextep.installer.services.ILoggingService;
 public class PostgreSqlDeployHandler implements IDeployHandler {
 
 	public void deploy(IInstallConfiguration conf, IArtefact artefact) throws DeployException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final IDatabaseTarget target = conf.getTarget();
 		final String schema = target.getSchema();
 
@@ -85,10 +85,6 @@ public class PostgreSqlDeployHandler implements IDeployHandler {
 			throw new DeployException("I/O Exception occurred while executing SQL.", e);
 		}
 
-	}
-
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
 	}
 
 }

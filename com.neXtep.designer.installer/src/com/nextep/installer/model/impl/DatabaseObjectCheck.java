@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import com.nextep.installer.NextepInstaller;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IDBObject;
 import com.nextep.installer.model.IDatabaseObjectCheck;
 import com.nextep.installer.model.IDatabaseStructure;
@@ -73,7 +73,8 @@ public class DatabaseObjectCheck implements IDatabaseObjectCheck {
 	}
 
 	public void install(Connection conn, String user, IRelease rel) {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement("INSERT INTO nadm_release_objects ( " //$NON-NLS-1$
@@ -81,6 +82,7 @@ public class DatabaseObjectCheck implements IDatabaseObjectCheck {
 					+ ") VALUES (" //$NON-NLS-1$
 					+ "  ?, ?, ?" //$NON-NLS-1$
 					+ ") "); //$NON-NLS-1$
+
 			for (IDBObject dbObj : objects) {
 				stmt.setLong(1, rel.getId());
 				stmt.setString(2, dbObj.getType());
@@ -109,11 +111,8 @@ public class DatabaseObjectCheck implements IDatabaseObjectCheck {
 		return missing;
 	}
 
-	protected ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
-	}
-
 	public Collection<IDBObject> getObjectsToCheck() {
 		return objects;
 	}
+
 }

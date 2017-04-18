@@ -29,9 +29,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.helpers.ExternalProgramHelper;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.IDeployHandler;
@@ -43,18 +43,14 @@ import com.nextep.installer.services.ILoggingService;
  */
 public class MySQLDeployHandler implements IDeployHandler {
 
-	/**
-	 * @see com.neXtep.installer.model.IDeployHandler#deploy(com.neXtep.installer.model.IArtefact,
-	 *      java.lang.String, java.lang.String, java.lang.String)
-	 */
 	public void deploy(IInstallConfiguration conf, IArtefact artefact) throws DeployException {
-		submit(conf, artefact.getFilename(), "source " + getFullArtefactPath(artefact) + "; ");
+		submit(conf, artefact.getFilename(), "source " + getFullArtefactPath(artefact) + "; "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void submit(IInstallConfiguration configuration, String filename, String sql)
 			throws DeployException {
-		final ILoggingService logger = getLoggingService();
-		final String mysqlBinary = ExternalProgramHelper.getProgramLocation(configuration, "mysql");
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final String mysqlBinary = ExternalProgramHelper.getProgramLocation(configuration, "mysql"); //$NON-NLS-1$
 		final IDatabaseTarget target = configuration.getTarget();
 		final String login = target.getUser();
 		final String password = target.getPassword();
@@ -66,38 +62,47 @@ public class MySQLDeployHandler implements IDeployHandler {
 		BufferedReader error = null;
 		try {
 			logger.log("Submitting artefact '" + filename + "', please wait...");
+
 			ProcessBuilder pb = null;
 			List<String> args = new ArrayList<String>();
 			args.add(mysqlBinary);
-			args.add("-u" + login);
-			if (password != null && !"".equals(password.trim())) {
-				args.add("-p" + password);
+			args.add("-u" + login); //$NON-NLS-1$
+
+			if (password != null && !"".equals(password.trim())) { //$NON-NLS-1$
+				args.add("-p" + password); //$NON-NLS-1$
 			}
-			if (server != null && !"".equals(server.trim())) {
-				args.add("-h" + server);
+
+			if (server != null && !"".equals(server.trim())) { //$NON-NLS-1$
+				args.add("-h" + server); //$NON-NLS-1$
 			}
-			args.add("-P" + port);
-			args.add("-vvv");
-			args.add("-f");
-			args.add("--unbuffered");
+
+			args.add("-P" + port); //$NON-NLS-1$
+			args.add("-vvv"); //$NON-NLS-1$
+			args.add("-f"); //$NON-NLS-1$
+			args.add("--unbuffered"); //$NON-NLS-1$
 			args.add(sid);
+
 			pb = new ProcessBuilder(args);
 			pb.redirectErrorStream(true);
 			Process p = pb.start();
-			// Keeping the input buffer association first because MySQL binary seems
-			// to have problems when writing output stream first on Linux (maybe Linux related?)
+
+			/*
+			 * Keeping the input buffer association first because MySQL binary seems to have
+			 * problems when writing output stream first on Linux (maybe Linux related?)
+			 */
 			input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			writer.write(sql);
 			writer.newLine();
-			writer.write("exit");
+			writer.write("exit"); //$NON-NLS-1$
 			writer.newLine();
 			writer.flush();
 			writer.close();
 			String line;
+
 			// Writing MySQL output
 			while ((line = input.readLine()) != null) {
-				logger.log("\tSQL> " + line);
+				logger.log("\tSQL> " + line); //$NON-NLS-1$
 			}
 
 		} catch (IOException e) {
@@ -117,17 +122,14 @@ public class MySQLDeployHandler implements IDeployHandler {
 	}
 
 	/**
-	 * Builds a MySQL-compatible relative file path to the artefact file
+	 * Builds a MySQL-compatible relative file path to the artefact file.
 	 * 
 	 * @param artefact artefact
 	 * @return the MySQL-understandable local path
 	 */
 	protected String getFullArtefactPath(IArtefact artefact) {
-		return artefact.getRelativePath().replace('\\', '/') + "/"
+		return artefact.getRelativePath().replace('\\', '/') + "/" //$NON-NLS-1$
 				+ artefact.getFilename().replace('\\', '/');
 	}
 
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
-	}
 }

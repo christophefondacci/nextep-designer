@@ -33,8 +33,8 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import com.neXtep.shared.parser.JdbcScriptParser;
 import com.neXtep.shared.parser.ParsedItem;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDeployHandler;
@@ -113,8 +113,15 @@ public class JdbcDeployHandler implements IDeployHandler {
 		} catch (IOException e) {
 			throw new DeployException("Problems while parsing SQL script", e);
 		} finally {
-			if (stmt != null) {
-				stmt.close();
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException sqle) {
+				try {
+					log("Unable to close statement: " + sqle.getMessage());
+				} catch (IOException ioe) {
+					// Do nothing
+				}
 			}
 		}
 	}
@@ -152,7 +159,7 @@ public class JdbcDeployHandler implements IDeployHandler {
 	}
 
 	private void log(String text) throws IOException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		if (text.indexOf('\n') >= 0) {
 			BufferedReader r = new BufferedReader(new StringReader(text));
@@ -166,7 +173,4 @@ public class JdbcDeployHandler implements IDeployHandler {
 		}
 	}
 
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
-	}
 }

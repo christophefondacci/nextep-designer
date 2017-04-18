@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.helpers.ExternalProgramHelper;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDatabaseTarget;
 import com.nextep.installer.model.IDeployHandler;
@@ -47,7 +47,7 @@ import com.nextep.installer.services.ILoggingService;
 public class OracleDeployHandler implements IDeployHandler {
 
 	public void deploy(IInstallConfiguration conf, IArtefact artefact) throws DeployException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final String sqlPlusBinary = ExternalProgramHelper.getProgramLocation(conf, "sqlplus"); //$NON-NLS-1$
 		final IDatabaseTarget target = conf.getTarget();
 
@@ -107,10 +107,6 @@ public class OracleDeployHandler implements IDeployHandler {
 		sb.append(")").append(")"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return sb.toString();
-	}
-
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
 	}
 
 }

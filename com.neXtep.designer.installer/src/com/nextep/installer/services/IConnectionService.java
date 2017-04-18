@@ -6,7 +6,7 @@
 package com.nextep.installer.services;
 
 import java.sql.Connection;
-import com.nextep.installer.exception.InstallerException;
+import java.sql.SQLException;
 import com.nextep.installer.model.IDatabaseTarget;
 
 /**
@@ -14,6 +14,6 @@ import com.nextep.installer.model.IDatabaseTarget;
  */
 public interface IConnectionService {
 
-	Connection connect(IDatabaseTarget target) throws InstallerException;
+	Connection connect(IDatabaseTarget target) throws SQLException;
 
 }

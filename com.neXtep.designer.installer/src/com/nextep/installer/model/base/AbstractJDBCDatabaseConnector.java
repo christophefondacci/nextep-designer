@@ -26,10 +26,11 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
-import com.nextep.installer.exception.InstallerException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.IDatabaseConnector;
 import com.nextep.installer.model.IDatabaseTarget;
+import com.nextep.installer.services.ILoggingService;
 
 /**
  * @author Bruno Gautier
@@ -42,31 +43,36 @@ public abstract class AbstractJDBCDatabaseConnector implements IDatabaseConnecto
 	 * 
 	 * @param target the {@link IDatabaseTarget} information on the connection to establish
 	 * @return the opened JDBC {@link Connection}
-	 * @throws InstallerException whenever the connection could not be established
 	 */
-	public Connection getConnection(IDatabaseTarget target) throws InstallerException {
+	public Connection getConnection(IDatabaseTarget target) throws SQLException {
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final DBVendor vendor = target.getVendor();
+
 		String connectionUrl = vendor.buildConnectionURL(target.getHost(), target.getPort(),
 				target.getDatabase(), target.getTnsAlias());
+
 		try {
 			Driver driver = (Driver) Class.forName(target.getVendor().getDriverClass())
 					.newInstance();
+
 			Properties connectionInfo = new Properties();
 			connectionInfo.put("user", target.getUser()); //$NON-NLS-1$
 			if (target.getPassword() != null && !"".equals(target.getPassword())) { //$NON-NLS-1$
 				connectionInfo.put("password", getEscapedPassword(target)); //$NON-NLS-1$
 			}
+
 			Connection connection = driver.connect(connectionUrl, connectionInfo);
+
 			return connection;
-		} catch (SQLException e) {
-			throw new InstallerException("Unable to connect to database URL [" + connectionUrl
-					+ "]", e); //$NON-NLS-1$
-		} catch (ClassNotFoundException e) {
-			throw new InstallerException("Unable to load JDBC driver, verify your classpath.", e);
-		} catch (InstantiationException e) {
-			throw new InstallerException("Problems while initializing JDBC driver.", e);
-		} catch (IllegalAccessException e) {
-			throw new InstallerException("Illegal access.", e);
+		} catch (ClassNotFoundException cnfe) {
+			throw new SQLException("Unable to load JDBC driver, verify your classpath.", cnfe);
+		} catch (InstantiationException ie) {
+			throw new SQLException("Problems while initializing JDBC driver.", ie);
+		} catch (IllegalAccessException iae) {
+			throw new SQLException("Illegal access.", iae);
+		} catch (SQLException sqle) {
+			logger.error("Unable to connect to database URL [" + connectionUrl + "]", sqle); //$NON-NLS-2$
+			throw sqle;
 		}
 	}
 

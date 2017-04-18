@@ -39,6 +39,7 @@ import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.factories.InstallerFactory;
 import com.nextep.installer.helpers.Assert;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.ICheck;
 import com.nextep.installer.model.IDBObject;
@@ -89,6 +90,7 @@ public class AdminService implements IAdminService {
 	}
 
 	private IDatabaseStructure buildDatabaseStructure(IInstallConfiguration configuration) {
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final DBVendor vendor = configuration.getTarget().getVendor();
 		final Connection conn = configuration.getTargetConnection();
 		final IDatabaseStructureBuilder builder = InstallerFactory
@@ -98,8 +100,7 @@ public class AdminService implements IAdminService {
 		} catch (SQLException e) {
 			// Logging in verbose mode
 			if (configuration.isOptionDefined(InstallerOption.VERBOSE)) {
-				getLoggingService().error("Unable to fetch database structure : " + e.getMessage(),
-						e);
+				logger.error("Unable to fetch database structure : " + e.getMessage(), e);
 			}
 			// Returning empty structure
 			return new DatabaseStructure();
@@ -109,11 +110,11 @@ public class AdminService implements IAdminService {
 	public boolean checkAll(IInstallConfiguration configuration, boolean errorsOnly)
 			throws InstallerException {
 		if (configuration.isOptionDefined(InstallerOption.FULL_INSTALL)) {
-			// On full install, we always consider the check as OK to avoid
-			// fetching the database
-			// structure all the time. In this case we assume the caller of the
-			// install will perform
-			// a full check at the end of the install
+			/*
+			 * On full install, we always consider the check as OK to avoid fetching the database
+			 * structure all the time. In this case we assume the caller of the install will perform
+			 * a full check at the end of the install.
+			 */
 			return true;
 		}
 		return checkAllForce(configuration, errorsOnly);
@@ -121,7 +122,7 @@ public class AdminService implements IAdminService {
 
 	public boolean checkAllForce(IInstallConfiguration configuration, boolean errorsOnly)
 			throws InstallerException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 		final Connection conn = configuration.getAdminConnection();
 		final IDatabaseTarget target = configuration.getTarget();
 		final String user = target.getUser();
@@ -256,6 +257,8 @@ public class AdminService implements IAdminService {
 
 	public IRelease getRelease(IInstallConfiguration configuration, Connection conn,
 			long moduleRefId, boolean raise) throws InstallerException {
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+
 		PreparedStatement stmt = null;
 		ResultSet rset = null;
 		final IDatabaseTarget target = configuration.getTarget();
@@ -331,16 +334,16 @@ public class AdminService implements IAdminService {
 					rset.close();
 				}
 			} catch (SQLException e) {
-				getLoggingService().error(
-						InstallerMessages.getString("service.admin.closeResultSetException"), e); //$NON-NLS-1$
+				logger.error(InstallerMessages.getString("service.admin.closeResultSetException"), //$NON-NLS-1$
+						e);
 			}
 			try {
 				if (stmt != null) {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				getLoggingService().error(
-						InstallerMessages.getString("service.admin.closeStatementException"), e); //$NON-NLS-1$
+				logger.error(InstallerMessages.getString("service.admin.closeStatementException"), //$NON-NLS-1$
+						e);
 			}
 		}
 	}
@@ -405,12 +408,11 @@ public class AdminService implements IAdminService {
 			}
 			stmt.close();
 
-			// Manually computing next ID
-			long relId = latestInstalledReleaseId++; // Really cannot understand
-														// why MySQL does not
-														// return a non-null ID
-														// on the second admin
-														// install
+			/*
+			 * Manually computing next ID: Really cannot understand why MySQL does not return a
+			 * non-null ID on the second admin install.
+			 */
+			long relId = latestInstalledReleaseId++;
 			stmt = conn.prepareStatement("SELECT (MAX(irel_id) + 1) AS rel_id " //$NON-NLS-1$
 					+ "FROM nadm_installed_releases "); //$NON-NLS-1$
 			rset = stmt.executeQuery();
@@ -423,6 +425,7 @@ public class AdminService implements IAdminService {
 			}
 			rset.close();
 			stmt.close();
+
 			// Unflag the last installed release (may update 0 line for new
 			// modules)
 			// Bug INS-12: Handling case-insensitivity for unflagging releases
@@ -445,6 +448,7 @@ public class AdminService implements IAdminService {
 
 			stmt = conn.prepareStatement(buf.toString());
 			stmt.setLong(1, delivery.getRefUID());
+
 			// Registering owner & database info for standalone admins
 			if (!configuration.isAdminInTarget()) {
 				stmt.setString(2, owner);
@@ -568,7 +572,7 @@ public class AdminService implements IAdminService {
 
 	public void showInstalledReleases(IInstallConfiguration configuration)
 			throws InstallerException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		final Connection conn = configuration.getAdminConnection();
 		final IDatabaseTarget target = configuration.getTarget();
@@ -702,10 +706,6 @@ public class AdminService implements IAdminService {
 			}
 		}
 		return check;
-	}
-
-	protected ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
 	}
 
 	/**

@@ -39,25 +39,27 @@ public final class PostgreSqlHelper {
 		String host = target.getHost();
 		final String port = target.getPort();
 		final String sid = target.getDatabase();
-		final String bin = ExternalProgramHelper.getProgramLocation(conf, "psql");
+		final String bin = ExternalProgramHelper.getProgramLocation(conf, "psql"); //$NON-NLS-1$
 
 		List<String> args = new ArrayList<String>();
-		args.add(bin == null ? "psql" : bin);
+		args.add(bin == null ? "psql" : bin); //$NON-NLS-1$
 		StringBuffer buf = new StringBuffer(50);
 		if (host == null) {
-			host = "127.0.0.1";
+			host = "127.0.0.1"; //$NON-NLS-1$
 		}
-		buf.append("host='" + host + "'");
+		buf.append("host='" + host + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (port != null) {
-			buf.append(" port=" + port);
+			buf.append(" port=" + port); //$NON-NLS-1$
 		}
-		buf.append(" dbname='" + sid + "'");
-		buf.append(" user='" + login + "'");
+		buf.append(" dbname='" + sid + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+		buf.append(" user='" + login + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (password != null) {
-			buf.append(" password='" + password + "'");
+			buf.append(" password='" + password + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		// buf.append("\"");
 		args.add(buf.toString());
+
 		return args;
 	}
+
 }

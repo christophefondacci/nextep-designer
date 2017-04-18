@@ -26,8 +26,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDeployHandler;
 import com.nextep.installer.model.IInstallConfiguration;
@@ -36,17 +36,17 @@ import com.nextep.installer.services.ILoggingService;
 public class OracleSysdbaDeployHandler implements IDeployHandler {
 
 	public void deploy(IInstallConfiguration conf, IArtefact artefact) throws DeployException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
-		ProcessBuilder pb = new ProcessBuilder(new String[] { "sqlplus", "-S", "/ as sysdba",
-				"@" + artefact.getRelativePath() + File.separator + artefact.getFilename() });
+		ProcessBuilder pb = new ProcessBuilder(new String[] { "sqlplus", "-S", "/ as sysdba", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"@" + artefact.getRelativePath() + File.separator + artefact.getFilename() }); //$NON-NLS-1$
 		pb.redirectErrorStream(true);
 		try {
 			Process p = pb.start();
 			String line;
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
-				logger.log("\tSQL> " + line);
+				logger.log("\tSQL> " + line); //$NON-NLS-1$
 			}
 			input.close();
 		} catch (IOException e) {
@@ -54,7 +54,4 @@ public class OracleSysdbaDeployHandler implements IDeployHandler {
 		}
 	}
 
-	private ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
-	}
 }

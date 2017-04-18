@@ -25,9 +25,9 @@ package com.nextep.installer.handlers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.exception.InstallerException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.impl.req.DeliveryRequirement;
 import com.nextep.installer.model.IArtefact;
 import com.nextep.installer.model.IDeployHandler;
@@ -50,12 +50,12 @@ public class DeliveryDeployHandler implements IDeployHandler {
 		// Checking that our descriptor exists
 		if (!descriptor.exists()) {
 			throw new DeployException("No descriptor found for delivery artefact '"
-					+ artefact.getFilename() + "'");
+					+ artefact.getFilename() + "'"); //$NON-NLS-1$
 		}
 
 		// Deploying nested delivery
-		final ILoggingService logger = NextepInstaller.getService(ILoggingService.class);
-		final IInstallerService installer = NextepInstaller.getService(IInstallerService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IInstallerService installer = ServicesHelper.getInstallerService();
 		try {
 			logger.pad();
 			// We copy the configurator so we make sure required deliveries will not interfere

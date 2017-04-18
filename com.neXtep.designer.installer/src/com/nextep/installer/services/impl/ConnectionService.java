@@ -6,8 +6,8 @@
 package com.nextep.installer.services.impl;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import com.nextep.installer.NextepInstaller;
-import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.handlers.DatabaseConnectorHandler;
 import com.nextep.installer.model.DBVendor;
 import com.nextep.installer.model.IDatabaseConnector;
@@ -20,16 +20,12 @@ import com.nextep.installer.services.ILoggingService;
  */
 public class ConnectionService implements IConnectionService {
 
-	public Connection connect(IDatabaseTarget target) throws InstallerException {
+	public Connection connect(IDatabaseTarget target) throws SQLException {
 		final DBVendor vendor = target.getVendor();
 		IDatabaseConnector connector = DatabaseConnectorHandler.getDatabaseConnector(vendor);
 		Connection conn = connector.getConnection(target);
 		connector.doPostConnectionSettings(target, conn);
 		return conn;
-	}
-
-	protected ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
 	}
 
 	/**

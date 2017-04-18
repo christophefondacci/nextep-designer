@@ -33,6 +33,7 @@ import java.util.NoSuchElementException;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.exception.InvalidOptionException;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.impl.req.DeliveryRequirement;
 import com.nextep.installer.impl.req.NextepAdminRequirement;
 import com.nextep.installer.impl.req.NextepHomeRequirement;
@@ -82,7 +83,7 @@ public class NextepInstaller {
 	 * Displays program header with legal mentions & versions.
 	 */
 	public static void printLaunchHeader() {
-		final ILoggingService logger = getService(ILoggingService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		Date d = new Date();
 		SimpleDateFormat f = new SimpleDateFormat("EEE d MMM yyyy"); //$NON-NLS-1$
@@ -97,7 +98,7 @@ public class NextepInstaller {
 	 * Displays the installer help with the help of the {@link ILoggingService}.
 	 */
 	private static void displayHelp() {
-		final ILoggingService logger = getService(ILoggingService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		logger.log(InstallerMessages.getString("installer.usageLine1")); //$NON-NLS-1$
 		logger.log(InstallerMessages.getString("installer.usageLine2")); //$NON-NLS-1$
@@ -137,8 +138,8 @@ public class NextepInstaller {
 		registerService(IInstallerService.class, new InstallerService());
 		registerService(IConnectionService.class, new ConnectionService());
 
-		final ILoggingService logger = getService(ILoggingService.class);
-		final IInstallerService installer = getService(IInstallerService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IInstallerService installer = ServicesHelper.getInstallerService();
 
 		// Launching header
 		printLaunchHeader();
@@ -225,20 +226,20 @@ public class NextepInstaller {
 	 * @throws DeployException if we fail to perform the structure check
 	 */
 	private static void showInfo(IInstallConfigurator configurator) throws InstallerException {
-		final ILoggingService logger = getService(ILoggingService.class);
-		final IAdminService adminService = getService(IAdminService.class);
-		final IInstallerService installerService = getService(IInstallerService.class);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IInstallerService installer = ServicesHelper.getInstallerService();
+		final IAdminService admin = ServicesHelper.getAdminService();
 
 		// Preparing info requirements
 		List<IRequirement> reqs = new ArrayList<IRequirement>();
 		reqs.add(new NextepHomeRequirement());
 		reqs.add(new TargetUserRequirement());
 		reqs.add(new NextepAdminRequirement());
-		installerService.checkRequirements(configurator, reqs);
+		installer.checkRequirements(configurator, reqs);
 		logger.log(""); //$NON-NLS-1$
-		adminService.showInstalledReleases(configurator);
+		admin.showInstalledReleases(configurator);
 		logger.log(""); //$NON-NLS-1$
-		adminService.checkAll(configurator, false);
+		admin.checkAll(configurator, false);
 	}
 
 	/**
@@ -261,7 +262,8 @@ public class NextepInstaller {
 	 * @return the string entered by the user
 	 */
 	public static String getUserInput(String defaultResponse, boolean password) {
-		getService(ILoggingService.class).log(defaultResponse);
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		logger.log(defaultResponse);
 		return defaultResponse;
 	}
 

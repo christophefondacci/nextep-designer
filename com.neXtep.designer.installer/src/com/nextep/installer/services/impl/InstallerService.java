@@ -34,6 +34,7 @@ import com.nextep.installer.NextepInstaller;
 import com.nextep.installer.exception.DeployException;
 import com.nextep.installer.exception.InstallerException;
 import com.nextep.installer.handlers.DeployHandlerManager;
+import com.nextep.installer.helpers.ServicesHelper;
 import com.nextep.installer.impl.req.DeliveryRequirement;
 import com.nextep.installer.impl.req.NextepAdminRequirement;
 import com.nextep.installer.impl.req.TargetUserRequirement;
@@ -63,8 +64,8 @@ public class InstallerService implements IInstallerService {
 
 	public boolean install(IInstallConfigurator configurator, String deliveryLocation,
 			List<IRequirement> requirements) throws InstallerException {
-		final ILoggingService logger = getLoggingService();
-		final IAdminService adminService = getAdminService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IAdminService adminService = ServicesHelper.getAdminService();
 
 		configurator.setDeliveryPath(deliveryLocation);
 		// Checking requirements
@@ -159,7 +160,7 @@ public class InstallerService implements IInstallerService {
 	 */
 	public void checkRequirements(IInstallConfigurator configurator, List<IRequirement> requirements)
 			throws InstallerException {
-		final ILoggingService logger = getLoggingService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
 
 		logger.log(""); //$NON-NLS-1$
 		logger.log(InstallerMessages.getString("service.installer.configCheck")); //$NON-NLS-1$
@@ -214,8 +215,8 @@ public class InstallerService implements IInstallerService {
 	 * @throws DeployException whenever the deployment failed for any reason.
 	 */
 	private boolean deploy(IInstallConfiguration configuration) throws InstallerException {
-		final ILoggingService logger = getLoggingService();
-		final IAdminService adminService = getAdminService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IAdminService adminService = ServicesHelper.getAdminService();
 
 		// Getting information from configuration
 		final IDelivery delivery = configuration.getDelivery();
@@ -349,7 +350,8 @@ public class InstallerService implements IInstallerService {
 	 */
 	private List<IDelivery> getInstallDeliveriesSequence(IInstallConfiguration configuration,
 			IDelivery delivery) throws InstallerException {
-		final IAdminService adminService = getAdminService();
+		final IAdminService adminService = ServicesHelper.getAdminService();
+
 		// List of deliveries to install
 		List<IDelivery> deliveries = new ArrayList<IDelivery>();
 		// Retrieving current release
@@ -444,8 +446,8 @@ public class InstallerService implements IInstallerService {
 	 */
 	private void checkStructure(IInstallConfiguration configuration) throws SQLException,
 			InstallerException {
-		final ILoggingService logger = getLoggingService();
-		final IAdminService adminService = getAdminService();
+		final ILoggingService logger = ServicesHelper.getLoggingService();
+		final IAdminService adminService = ServicesHelper.getAdminService();
 
 		boolean noCheck = configuration.isOptionDefined(InstallerOption.NOCHECK);
 		if (configuration.isOptionDefined(InstallerOption.INSTALL)
@@ -474,7 +476,7 @@ public class InstallerService implements IInstallerService {
 
 	private boolean needInstall(IInstallConfiguration conf, IDelivery delivery)
 			throws InstallerException {
-		final IAdminService adminService = getAdminService();
+		final IAdminService adminService = ServicesHelper.getAdminService();
 		try {
 			IRelease currentRelease = adminService.getRelease(conf, delivery);
 			return (currentRelease.compareTo(delivery.getRelease()) < 0);
@@ -511,10 +513,6 @@ public class InstallerService implements IInstallerService {
 		}
 	}
 
-	protected ILoggingService getLoggingService() {
-		return NextepInstaller.getService(ILoggingService.class);
-	}
-
 	/**
 	 * Service injection setter, used when the installer is invoked from neXtep designer IDE through
 	 * DS injection. This setter registers the service globally on the {@link NextepInstaller}
@@ -526,10 +524,6 @@ public class InstallerService implements IInstallerService {
 		NextepInstaller.registerService(ILoggingService.class, service);
 	}
 
-	protected IAdminService getAdminService() {
-		return NextepInstaller.getService(IAdminService.class);
-	}
-
 	/**
 	 * Service injection setter, used when the installer is invoked from neXtep designer IDE through
 	 * DS injection. This setter registers the service globally on the {@link NextepInstaller}
@@ -539,10 +533,6 @@ public class InstallerService implements IInstallerService {
 	 */
 	public void setAdminService(IAdminService service) {
 		NextepInstaller.registerService(IAdminService.class, service);
-	}
-
-	protected IConnectionService getConnectionService() {
-		return NextepInstaller.getService(IConnectionService.class);
 	}
 
 	/**
