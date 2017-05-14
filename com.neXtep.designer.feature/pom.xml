@@ -8,7 +8,7 @@
     <version>1.8.0-SNAPSHOT</version>
   </parent>
   <groupId>com.nextep</groupId>
-  <artifactId>org.eclipse.nebula.widgets.compositetable</artifactId>
-  <version>1.0.0</version>
-  <packaging>eclipse-plugin</packaging>
+  <artifactId>com.neXtep.designer.feature</artifactId>
+  <version>1.0.7.201704071004</version>
+  <packaging>eclipse-feature</packaging>
 </project>

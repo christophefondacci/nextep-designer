@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.nextep.datadesigner.impl.Reference" table="REP_VERSION_REFERENCES"
+		lazy="false">
+		<id name="id" column="VREF_ID">
+			<generator class="hilo" />
+		</id>
+		<property name="type"
+			type="com.nextep.designer.core.dao.types.ElementTypeType"
+			column="VERSION_TYPE" />
+		<property name="arbitraryName" column="ARBITRARY_NAME" />
+		<property name="volatile" column="IS_VOLATILE"
+			type="com.nextep.designer.core.dao.types.BooleanType" />
+		<!--
+			<set name="versions" inverse="true" cascade="all"> <key
+			column="VREF_ID"/> <one-to-many
+			class="com.nextep.datadesigner.vcs.impl.VersionInfo"/> </set>
+		-->
+
+	</class>
+</hibernate-mapping>
