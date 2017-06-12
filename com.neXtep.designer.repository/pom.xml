@@ -7,7 +7,7 @@
     <groupId>com.nextep</groupId>
     <artifactId>com.neXtep.designer.tycho.configuration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-  <relativePath>../releng/com.neXtep.designer.tycho.configuration</relativePath>
+    <relativePath>../releng/com.neXtep.designer.tycho.configuration</relativePath>
   </parent>
 
   <groupId>com.nextep</groupId>

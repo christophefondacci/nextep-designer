@@ -3,7 +3,7 @@
    <description name="neXtep softwares" url="http://openupdate.nextep-softwares.com">
       neXtep Softwares update site
    </description>
-   <feature url="features/com.neXtep.designer.feature_1.0.3.201010081321.jar" id="com.neXtep.designer.feature" version="1.0.3.201010081321">
+   <feature url="features/com.neXtep.designer.feature_1.0.7.201704071004.jar" id="com.neXtep.designer.feature" version="1.0.7.201704071004">
       <category name="com.neXtep.designer"/>
    </feature>
    <category-def name="com.neXtep.designer" label="Database development"/>

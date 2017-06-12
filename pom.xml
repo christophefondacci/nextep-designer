@@ -8,16 +8,9 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <!--parent>
-    <groupId>com.nextep</groupId>
-    <artifactId>com.neXtep.designer.tycho.configuration</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>./releng/com.neXtep.designer.tycho.configuration</relativePath>
-  </parent-->
-
   <modules>
     <module>./Apache Commons</module>
-    <!--module>./com.neXtep.Designer</module-->
+    <module>./com.neXtep.Designer</module>
     <module>./com.neXtep.designer.beng</module>
     <module>./com.neXtep.designer.beng.ui</module>
     <module>./com.neXtep.designer.core</module>
@@ -31,7 +24,7 @@
     <module>./com.neXtep.designer.dbgm.postgre</module>
     <module>./com.neXtep.designer.dbgm.postgre.ui</module>
     <module>./com.neXtep.designer.dbgm.ui</module>
-    <!--module>./com.neXtep.designer.feature</module-->
+    <module>./com.neXtep.designer.feature</module>
     <module>./com.neXtep.designer.help</module>
     <module>./com.neXtep.designer.hibernate</module>
     <module>./com.neXtep.designer.installer</module>
@@ -44,7 +37,7 @@
     <module>./com.neXtep.designer.jdbc.postgre</module>
     <!--module>com.neXtep.designer.jdbc.sqlite</module-->
     <module>./com.neXtep.designer.logging</module>
-    <!--module>./com.neXtep.designer.p2</module-->
+    <module>./com.neXtep.designer.p2</module>
     <module>./com.neXtep.designer.repository</module>
     <module>./com.neXtep.designer.shared</module>
     <module>./com.neXtep.designer.sqlclient.ui</module>
@@ -63,7 +56,7 @@
     <module>./com.neXtep.designer.synch.ui</module>
     <module>./com.neXtep.designer.testing</module>
     <module>./com.neXtep.designer.ui</module>
-    <!--module>./com.neXtep.designer.update</module-->
+    <module>./com.neXtep.designer.update</module>
     <!--module>./com.neXtep.designer.update.p2</module-->
     <module>./com.neXtep.designer.vcs</module>
     <module>./com.neXtep.designer.vcs.ui</module>

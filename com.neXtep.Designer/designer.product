@@ -38,8 +38,10 @@ Apache Software Foundation http://www.apache.org/
    <launcherArgs>
       <vmArgs>-Xms128m
 -Xmx512m
--XX:MaxPermSize=128m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+-XX:MaxPermSize=128m
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="icons/DesignerIconTiny.ico" i32="icons/DesignerIconSmall.ico" i48="icons/DesignerIconMedium.ico" i64="icons/DesignerIconLarge.ico"/>
@@ -750,7 +752,7 @@ Public License instead of this License.  But first, please read
 
    <plugins>
       <plugin id="Apache_Commons"/>
-      <plugin id="Hibernate_Core" fragment=""/>
+      <plugin id="Hibernate_Core"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.neXtep.Designer"/>
       <plugin id="com.neXtep.designer.beng"/>
@@ -800,7 +802,7 @@ Public License instead of this License.  But first, please read
       <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.compatibility" fragment="true"/>
-      <plugin id="org.eclipse.core.resources.win32" fragment=""/>
+      <plugin id="org.eclipse.core.resources.win32"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
@@ -854,12 +856,19 @@ Public License instead of this License.  But first, please read
       <plugin id="org.eclipse.update.core.linux" fragment="true"/>
       <plugin id="org.eclipse.update.core.win32" fragment="true"/>
       <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.mortbay.jetty" fragment=""/>
+      <plugin id="org.mortbay.jetty"/>
    </plugins>
 
    <features>
       <feature id="com.neXtep.designer.feature"/>
    </features>
 
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
 
 </product>
