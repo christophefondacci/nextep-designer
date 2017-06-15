@@ -1056,12 +1056,12 @@ Public License instead of this License.  But first, please read
       <import plugin="org.eclipse.e4.ui.css.swt" version="0.11.100" match="greaterOrEqual"/>
    </requires>
 
-   <!--plugin
+   <plugin
          id="com.neXtep.Designer"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/-->
+         unpack="false"/>
 
    <plugin
          id="com.neXtep.designer.core"

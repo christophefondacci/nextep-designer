@@ -63,5 +63,6 @@
     <module>./com.neXtep.designer.welcome</module>
     <module>./org.apache.db.derby</module>
     <module>./org.eclipse.nebula.widgets.compositetable</module>
+    <module>./releng/com.neXtep.designer.tycho.product</module>
   </modules>
 </project>
